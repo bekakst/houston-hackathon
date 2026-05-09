@@ -1,0 +1,32 @@
+[
+  {
+    "productId": "honey-cake-slice",
+    "name": "Honey cake slice",
+    "priceUsd": 8.5,
+    "estimatedMarginPct": 68
+  },
+  {
+    "productId": "whole-honey-cake",
+    "name": "Whole honey cake",
+    "priceUsd": 55,
+    "estimatedMarginPct": 62
+  },
+  {
+    "productId": "pistachio-roll",
+    "name": "Pistachio roll",
+    "priceUsd": 9.5,
+    "estimatedMarginPct": 64
+  },
+  {
+    "productId": "custom-birthday-cake",
+    "name": "Custom birthday cake",
+    "priceUsd": 95,
+    "estimatedMarginPct": 58
+  },
+  {
+    "productId": "office-dessert-box",
+    "name": "Office dessert box",
+    "priceUsd": 120,
+    "estimatedMarginPct": 60
+  }
+]

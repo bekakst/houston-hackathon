@@ -1,0 +1,38 @@
+[
+  {
+    "month": "2025-11",
+    "revenueUsd": 14820,
+    "orders": 612,
+    "avgTicketUsd": 24.22
+  },
+  {
+    "month": "2025-12",
+    "revenueUsd": 19240,
+    "orders": 738,
+    "avgTicketUsd": 26.07
+  },
+  {
+    "month": "2026-01",
+    "revenueUsd": 15110,
+    "orders": 621,
+    "avgTicketUsd": 24.33
+  },
+  {
+    "month": "2026-02",
+    "revenueUsd": 16890,
+    "orders": 668,
+    "avgTicketUsd": 25.28
+  },
+  {
+    "month": "2026-03",
+    "revenueUsd": 17640,
+    "orders": 691,
+    "avgTicketUsd": 25.53
+  },
+  {
+    "month": "2026-04",
+    "revenueUsd": 18320,
+    "orders": 724,
+    "avgTicketUsd": 25.3
+  }
+]

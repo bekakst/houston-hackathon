@@ -1,0 +1,16 @@
+name: "Adversarial — replay idempotency"
+channel: web
+sender: web_guest_replay
+sender_name: guest
+thread_id: scn_adv_replay
+turns:
+  # The runner doesn't replay through the gateway, but the same inbound
+  # message twice in a thread should produce a sensible reply both times
+  # (no crashes, no duplicate orders). The gateway's idempotency layer is
+  # tested separately in unit tests.
+  - customer: "How much is cake Milk Maiden whole?"
+    expect:
+      intent: intake
+  - customer: "How much is cake Milk Maiden whole?"
+    expect:
+      intent: intake

@@ -1,1 +1,13 @@
 .DS_Store
+.claude/
+
+# Per-team subprojects each have their own .gitignore for venv/sqlite/secrets.
+# Belt-and-braces: make sure nobody's .env leaks at the parent level either.
+**/.env
+**/.venv/
+**/__pycache__/
+**/*.sqlite
+**/*.sqlite-journal
+**/.pytest_cache/
+**/.ipynb_checkpoints/
+**/judge/

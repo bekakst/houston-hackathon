@@ -1,0 +1,33 @@
+# HappyCake US — kitchen capacity calendar
+# Used by mcp.kitchen.feasibility(spec, target_datetime) to check whether a requested
+# cake spec fits the kitchen's lead-time and capacity for that date.
+#
+# Capacity unit: cakes per day, classed by complexity:
+#   - daily_classics: same-day-bakeable single-tier cakes (Honey, Milk Maiden)
+#   - 24h_classics:   needs an overnight rest (Napoleon, Tiramisu, Cloud, etc.)
+#   - custom_jobs:    custom cakes — must be booked 48h ahead
+
+defaults:
+  daily_classics_per_day: 18
+  twenty_four_hour_classics_per_day: 12
+  custom_jobs_per_day: 4
+  open_days: [tue, wed, thu, fri, sat, sun]
+
+# Booked load per upcoming date (relative to 2026-05-09; refreshed in production by mcp.kitchen)
+bookings:
+  "2026-05-09": {daily_classics: 6, twenty_four_hour: 4, custom: 1}
+  "2026-05-10": {daily_classics: 9, twenty_four_hour: 7, custom: 2}  # Mother's Day demand
+  "2026-05-11": {daily_classics: 0, twenty_four_hour: 0, custom: 0}  # closed Monday
+  "2026-05-12": {daily_classics: 4, twenty_four_hour: 2, custom: 1}
+  "2026-05-13": {daily_classics: 5, twenty_four_hour: 3, custom: 1}
+  "2026-05-14": {daily_classics: 6, twenty_four_hour: 5, custom: 2}
+  "2026-05-15": {daily_classics: 8, twenty_four_hour: 6, custom: 3}  # Friday peak
+  "2026-05-16": {daily_classics: 10, twenty_four_hour: 8, custom: 3} # Saturday peak
+
+# Holiday demand multipliers (informational; does not change capacity)
+holiday_multipliers:
+  "2026-05-10": {name: "Mother's Day", multiplier: 2.5}
+  "2026-06-21": {name: "Father's Day", multiplier: 1.4}
+  "2026-11-26": {name: "Thanksgiving", multiplier: 2.0}
+  "2026-12-24": {name: "Christmas Eve", multiplier: 2.2}
+  "2026-12-25": {name: "Christmas",    multiplier: 1.8}

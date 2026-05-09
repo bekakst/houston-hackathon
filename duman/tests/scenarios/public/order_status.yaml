@@ -1,0 +1,10 @@
+name: "Order status lookup — phone-last-4 challenge"
+channel: web
+sender: web_guest_002
+sender_name: guest
+thread_id: scn_web_status
+turns:
+  - customer: "Where is my order ord_demo_002?"
+    expect:
+      intent: care
+      reply_contains_any: ["last four", "phone", "verify", "confirm"]

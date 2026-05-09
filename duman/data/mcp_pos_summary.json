@@ -1,0 +1,13 @@
+{
+  "mode": "simulated",
+  "orders": 4,
+  "revenueCents": 3400,
+  "byStatus": {
+    "open": 4
+  },
+  "bySource": {
+    "agent": 4
+  },
+  "events": 4,
+  "kitchenHandoffRecommended": 4
+}

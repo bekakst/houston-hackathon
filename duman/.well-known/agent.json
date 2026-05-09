@@ -1,0 +1,205 @@
+{
+  "schema_version": "1.0",
+  "name": "HappyCake US",
+  "description": "Handmade cakes in Sugar Land, Texas. This manifest is the canonical machine-readable description of the storefront for AI agents.",
+  "business": {
+    "name": "HappyCake US",
+    "legal_name": "Happy Cake US",
+    "wordmark": "HappyCake",
+    "address": "350 Promenade Way, Suite 500, Sugar Land, TX 77478",
+    "phone": "(281) 979-8320",
+    "website": "https://happycake.us",
+    "instagram_handle": "@happycake.us"
+  },
+  "hours": {
+    "monday": "closed",
+    "tuesday": "11:00-19:00",
+    "wednesday": "11:00-19:00",
+    "thursday": "11:00-19:00",
+    "friday": "11:00-19:00",
+    "saturday": "11:00-19:00",
+    "sunday": "12:00-18:00"
+  },
+  "endpoints": {
+    "catalog": "/agent/catalog.json",
+    "manifest_dynamic": "/agent/manifest",
+    "manifest_static": "/.well-known/agent.json",
+    "assistant": {
+      "method": "POST",
+      "url": "/assistant/message",
+      "request_schema": {
+        "thread_id": "string (caller-chosen, stable across turns)",
+        "text": "string (the customer message)"
+      },
+      "response_schema": {
+        "reply_to_customer": "string",
+        "needs_owner_approval": "boolean",
+        "evidence": "array of {tool,args,result_snippet,at}"
+      }
+    },
+    "order_status": {
+      "method": "POST",
+      "url": "/assistant/message",
+      "instructions": "Send the order id (e.g. ord_20260509_0042) inside text. Phone-last-4 will be requested before disclosure."
+    }
+  },
+  "rate_limit_hint": {
+    "requests_per_minute": 10
+  },
+  "agent_friendliness": {
+    "scraping_required": false,
+    "json_ld_present_on_product_pages": true,
+    "structured_endpoints_first": true
+  },
+  "cake_configuration_schema": {
+    "type": "object",
+    "properties": {
+      "base_cake_slug": {
+        "type": "string",
+        "enum": [
+          "honey",
+          "napoleon",
+          "milk-maiden",
+          "pistachio-roll",
+          "tiramisu",
+          "cloud",
+          "carrot",
+          "red-velvet",
+          "custom"
+        ]
+      },
+      "size_label": {
+        "type": "string",
+        "enum": [
+          "slice",
+          "small",
+          "medium",
+          "large",
+          "whole"
+        ]
+      },
+      "tiers": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 3
+      },
+      "flavor": {
+        "type": "string"
+      },
+      "filling": {
+        "type": "string"
+      },
+      "decoration": {
+        "type": "string"
+      },
+      "inscription": {
+        "type": "string"
+      },
+      "deadline": {
+        "type": "string",
+        "format": "date-time"
+      },
+      "fulfillment": {
+        "type": "string",
+        "enum": [
+          "pickup",
+          "delivery"
+        ]
+      },
+      "delivery_zone": {
+        "type": "string",
+        "enum": [
+          "sugar-land",
+          "missouri-city",
+          "stafford",
+          "bellaire"
+        ]
+      },
+      "delivery_address": {
+        "type": "string"
+      },
+      "allergen_constraints": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      }
+    },
+    "required": [
+      "base_cake_slug",
+      "size_label",
+      "deadline",
+      "fulfillment"
+    ]
+  },
+  "policies": {
+    "delivery_zones": [
+      {
+        "slug": "sugar-land",
+        "name": "Sugar Land",
+        "radius_miles": 5,
+        "fee_usd": 6,
+        "min_order_usd": 30
+      },
+      {
+        "slug": "missouri-city",
+        "name": "Missouri City",
+        "radius_miles": 8,
+        "fee_usd": 8,
+        "min_order_usd": 30
+      },
+      {
+        "slug": "stafford",
+        "name": "Stafford",
+        "radius_miles": 7,
+        "fee_usd": 8,
+        "min_order_usd": 30
+      },
+      {
+        "slug": "bellaire",
+        "name": "Bellaire",
+        "radius_miles": 12,
+        "fee_usd": 12,
+        "min_order_usd": 45
+      }
+    ],
+    "pickup": {
+      "location": "350 Promenade Way, Suite 500, Sugar Land, TX 77478",
+      "notice_hours": 4,
+      "cutoff_today": "16:00",
+      "notes": "Pickup orders placed before 4 PM are usually ready the same day for the classics. Custom cakes need 48 hours."
+    },
+    "allergens": {
+      "declared": [
+        "gluten",
+        "dairy",
+        "egg",
+        "tree-nut",
+        "soy",
+        "sesame"
+      ],
+      "cross_contamination_warning": "Our kitchen handles flour, dairy, eggs, and tree nuts (walnut, pistachio, almond)\ndaily. We cannot guarantee zero cross-contamination. For severe allergies, please\nspeak with the owner before ordering — every allergen question routes to a person.\n",
+      "escalation_rule": "Any customer message that mentions allergy, allergic, peanut, nut, gluten, dairy,\nlactose, milk-free, egg, eggless, soy, wheat, coeliac, or celiac is escalated to\nthe owner before the assistant commits to an answer.\n"
+    },
+    "refund": {
+      "same_day": "Same-day refunds for damage on delivery, wrong order, or cake quality issues.\nPhoto or in-store inspection within 24 hours of receipt.\n",
+      "threshold_usd": 50,
+      "escalation_rule": "Refunds over $50 require owner approval before issue."
+    },
+    "custom_cake": {
+      "min_lead_time_hours": 48,
+      "max_tiers": 3,
+      "figurines": "Available for owner-approved designs only.",
+      "inspiration_photos": "Customers can share inspiration photos. We can take inspiration from another design\nbut never copy a competitor's specific work — those requests are escalated to the\nowner for redesign.\n"
+    }
+  },
+  "constraints_machine_readable": true,
+  "supported_locales": [
+    "en-US"
+  ],
+  "contact": {
+    "address": "350 Promenade Way, Suite 500, Sugar Land, TX 77478",
+    "phone": "(281) 979-8320",
+    "instagram": "@happycake.us"
+  }
+}

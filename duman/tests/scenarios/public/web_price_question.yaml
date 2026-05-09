@@ -1,0 +1,12 @@
+name: "Website assistant — price for cake Honey"
+channel: web
+sender: web_guest_001
+sender_name: guest
+thread_id: scn_web_price
+turns:
+  - customer: 'How much is cake "Honey"?'
+    expect:
+      intent: intake
+      owner_approval: false
+      reply_contains_any: ["55", "Honey", "8.50", "$"]
+      reply_does_not_contain: ["Happy Cake "]   # wordmark must be HappyCake (no space)

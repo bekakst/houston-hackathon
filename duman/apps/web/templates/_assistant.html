@@ -1,0 +1,75 @@
+<div id="hc-assistant" class="assistant-widget" aria-live="polite">
+  <button id="hc-toggle" aria-label="Open chat" type="button">Chat with us</button>
+  <div id="hc-panel" hidden>
+    <header>
+      <strong>HappyCake</strong>
+      <span>Ask about cakes, allergens, or your order.</span>
+      <button id="hc-close" aria-label="Close" type="button">×</button>
+    </header>
+    <div id="hc-log" role="log"></div>
+    <form id="hc-form">
+      <input id="hc-input" type="text" autocomplete="off"
+             placeholder='e.g. cake "Honey" for 8 people Saturday' required>
+      <button type="submit">Send</button>
+    </form>
+    <p class="hint">Replies are written by HappyCake's assistant. Anything about
+       allergens or special requests is reviewed by a human before we commit.</p>
+  </div>
+</div>
+<script>
+(function () {
+  const toggle = document.getElementById('hc-toggle');
+  const panel = document.getElementById('hc-panel');
+  const close = document.getElementById('hc-close');
+  const form = document.getElementById('hc-form');
+  const input = document.getElementById('hc-input');
+  const log = document.getElementById('hc-log');
+  const threadId = 'web_' + Math.random().toString(36).slice(2, 10);
+
+  function append(role, text) {
+    const li = document.createElement('div');
+    li.className = 'msg ' + role;
+    li.textContent = text;
+    log.appendChild(li);
+    log.scrollTop = log.scrollHeight;
+  }
+
+  toggle.addEventListener('click', () => {
+    panel.hidden = false;
+    toggle.hidden = true;
+    if (!log.dataset.greeted) {
+      append('bot', 'Good morning, friends. Ask me about today’s bake, dates, allergens, or pickup.');
+      log.dataset.greeted = '1';
+    }
+    input.focus();
+  });
+  close.addEventListener('click', () => { panel.hidden = true; toggle.hidden = false; });
+
+  form.addEventListener('submit', async (ev) => {
+    ev.preventDefault();
+    const text = input.value.trim();
+    if (!text) return;
+    append('me', text);
+    input.value = '';
+    append('bot', '…');
+    const placeholder = log.lastChild;
+    try {
+      const resp = await fetch('/assistant/message', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({thread_id: threadId, text}),
+      });
+      const data = await resp.json();
+      placeholder.textContent = data.reply_to_customer || 'I had trouble reaching the kitchen. Try again in a moment, or send a message on WhatsApp.';
+      if (data.needs_owner_approval) {
+        const note = document.createElement('div');
+        note.className = 'msg note';
+        note.textContent = 'A team member will review and reply shortly.';
+        log.appendChild(note);
+      }
+    } catch (e) {
+      placeholder.textContent = 'I had trouble reaching the kitchen. Try again in a moment, or send a message on WhatsApp.';
+    }
+  });
+})();
+</script>

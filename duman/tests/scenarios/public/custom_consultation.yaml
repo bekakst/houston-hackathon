@@ -1,0 +1,10 @@
+name: "Custom cake consultation — slot-fill start"
+channel: web
+sender: web_guest_004
+sender_name: guest
+thread_id: scn_web_custom
+turns:
+  - customer: "I'm planning a birthday for 20 guests next Saturday. Want a custom 2-tier cake."
+    expect:
+      intent: custom
+      reply_contains_any: ["flavour", "flavor", "filling", "size", "deadline", "tier"]

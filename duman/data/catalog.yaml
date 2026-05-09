@@ -1,0 +1,201 @@
+# HappyCake US — product catalog
+# Single source of truth for the storefront, assistant, and agent reasoning.
+# Every field is required (Pydantic-validated by src/happycake/schemas.py:Cake).
+# Agent-friendliness auditor reads this via /agent/manifest, /customer/catalog,
+# and as JSON-LD <script type="application/ld+json"> on each /cakes/<slug> page.
+
+cakes:
+  - slug: honey
+    name: "Honey"
+    short_description: 'Cake "Honey" — six layers of golden honey biscuit, soft custard between every one, walnuts pressed lightly into the top.'
+    long_description: |
+      Six layers of golden honey biscuit, soft custard between every one, walnuts pressed
+      lightly into the top. Same recipe as the day we opened. The classic — the one most
+      people come back for.
+    ingredients: [flour, butter, honey, sugar, eggs, sour cream, condensed milk, walnuts, vanilla]
+    allergens: [gluten, dairy, egg, tree-nut]
+    halal_friendly: true
+    vegan: false
+    photo: /static/photos/honey.jpg
+    sizes:
+      # Prices align with MCP square_list_catalog and marketing_get_margin_by_product.
+      - {label: slice, weight_g: 130, price_usd: 8.50, mcp_product_id: honey-cake-slice}
+      - {label: whole, weight_g: 1200, price_usd: 55.00, mcp_product_id: whole-honey-cake}
+    serves_min: 1
+    serves_max: 10
+    lead_time_hours: 4
+    tier_options: [1]
+    delivery_zones: [sugar-land, missouri-city, stafford, bellaire]
+    available_daily: true
+
+  - slug: napoleon
+    name: "Napoleon"
+    short_description: 'Cake "Napoleon" — buttery puff layers with vanilla custard.'
+    long_description: |
+      Buttery puff layers with vanilla custard. The cake your grandmother would recognise.
+      Best ordered a day ahead so the layers soften into one.
+    ingredients: [flour, butter, eggs, milk, sugar, vanilla, salt]
+    allergens: [gluten, dairy, egg]
+    halal_friendly: true
+    vegan: false
+    photo: /static/photos/napoleon.jpg
+    sizes:
+      - {label: slice, weight_g: 140, price_usd: 8}
+      - {label: whole, weight_g: 1200, price_usd: 42}
+    serves_min: 1
+    serves_max: 10
+    lead_time_hours: 24
+    tier_options: [1]
+    delivery_zones: [sugar-land, missouri-city, stafford, bellaire]
+    available_daily: true
+
+  - slug: milk-maiden
+    name: "Milk Maiden"
+    short_description: 'Cake "Milk Maiden" — light vanilla biscuit and tender butter cream.'
+    long_description: |
+      Light vanilla biscuit and tender butter cream. Mild, soft, rarely refused — the safer
+      bet when half the guests are children.
+    ingredients: [flour, butter, eggs, sugar, condensed milk, vanilla]
+    allergens: [gluten, dairy, egg]
+    halal_friendly: true
+    vegan: false
+    photo: /static/photos/milk-maiden.jpg
+    sizes:
+      - {label: slice, weight_g: 130, price_usd: 8}
+      - {label: whole, weight_g: 1200, price_usd: 38}
+    serves_min: 1
+    serves_max: 10
+    lead_time_hours: 4
+    tier_options: [1]
+    delivery_zones: [sugar-land, missouri-city, stafford, bellaire]
+    available_daily: true
+
+  - slug: pistachio-roll
+    name: "Pistachio Roll"
+    short_description: 'Cake "Pistachio Roll" — light meringue, butter cream, the sour-sweet of fresh raspberry.'
+    long_description: |
+      Light meringue, butter cream, the sour-sweet of fresh raspberry. Pistachio comes
+      through last, on the finish.
+    ingredients: [egg whites, sugar, butter, pistachio, raspberry, flour]
+    allergens: [gluten, dairy, egg, tree-nut]
+    halal_friendly: true
+    vegan: false
+    photo: /static/photos/pistachio-roll.jpg
+    sizes:
+      - {label: slice, weight_g: 120, price_usd: 9.50, mcp_product_id: pistachio-roll}
+      - {label: whole, weight_g: 1000, price_usd: 60.00, mcp_product_id: pistachio-roll}
+    serves_min: 1
+    serves_max: 8
+    lead_time_hours: 24
+    tier_options: [1]
+    delivery_zones: [sugar-land, missouri-city, stafford, bellaire]
+    available_daily: true
+
+  - slug: tiramisu
+    name: "Tiramisu"
+    short_description: 'Cake "Tiramisu" — vanilla biscuit with espresso, milk-chocolate layers, mascarpone cream.'
+    long_description: |
+      Vanilla biscuit with espresso, milk-chocolate layers, mascarpone cream. Open the box
+      and take in the coffee-and-chocolate aroma before the first slice.
+    ingredients: [mascarpone, eggs, sugar, espresso, milk chocolate, flour, butter, cocoa]
+    allergens: [gluten, dairy, egg]
+    halal_friendly: true
+    vegan: false
+    photo: /static/photos/tiramisu.jpg
+    sizes:
+      - {label: slice, weight_g: 130, price_usd: 9}
+      - {label: whole, weight_g: 1000, price_usd: 44}
+    serves_min: 1
+    serves_max: 8
+    lead_time_hours: 24
+    tier_options: [1, 2]
+    delivery_zones: [sugar-land, missouri-city, stafford, bellaire]
+    available_daily: true
+
+  - slug: cloud
+    name: "Cloud"
+    short_description: 'Cake "Cloud" — light chiffon biscuit, whipped cream, fresh berries.'
+    long_description: |
+      Light chiffon biscuit, whipped cream, fresh berries. The lightest cake on the counter —
+      half the weight of the classics for the same diameter.
+    ingredients: [flour, eggs, sugar, cream, strawberry, blueberry, raspberry]
+    allergens: [gluten, dairy, egg]
+    halal_friendly: true
+    vegan: false
+    photo: /static/photos/cloud.jpg
+    sizes:
+      - {label: slice, weight_g: 110, price_usd: 9}
+      - {label: whole, weight_g: 1100, price_usd: 42}
+    serves_min: 1
+    serves_max: 9
+    lead_time_hours: 24
+    tier_options: [1, 2]
+    delivery_zones: [sugar-land, missouri-city, stafford, bellaire]
+    available_daily: true
+
+  - slug: carrot
+    name: "Carrot"
+    short_description: 'Cake "Carrot" — spiced carrot biscuit with cream-cheese frosting.'
+    long_description: |
+      Spiced carrot biscuit with cream-cheese frosting and a layer of toasted walnut on the
+      top. The cake that wins over guests who say they don't like carrot.
+    ingredients: [flour, carrot, eggs, sugar, oil, cinnamon, walnuts, cream cheese, butter]
+    allergens: [gluten, dairy, egg, tree-nut]
+    halal_friendly: true
+    vegan: false
+    photo: /static/photos/carrot.jpg
+    sizes:
+      - {label: slice, weight_g: 140, price_usd: 8}
+      - {label: whole, weight_g: 1200, price_usd: 40}
+    serves_min: 1
+    serves_max: 10
+    lead_time_hours: 24
+    tier_options: [1]
+    delivery_zones: [sugar-land, missouri-city, stafford, bellaire]
+    available_daily: true
+
+  - slug: red-velvet
+    name: "Red Velvet"
+    short_description: 'Cake "Red Velvet" — cocoa biscuit with cream-cheese frosting.'
+    long_description: |
+      Soft cocoa biscuit with cream-cheese frosting. A favourite for celebrations because
+      the colour shows through every slice.
+    ingredients: [flour, cocoa, eggs, sugar, buttermilk, oil, food colouring, cream cheese, butter]
+    allergens: [gluten, dairy, egg]
+    halal_friendly: true
+    vegan: false
+    photo: /static/photos/red-velvet.jpg
+    sizes:
+      - {label: slice, weight_g: 130, price_usd: 8}
+      - {label: whole, weight_g: 1200, price_usd: 40}
+    serves_min: 1
+    serves_max: 10
+    lead_time_hours: 24
+    tier_options: [1, 2]
+    delivery_zones: [sugar-land, missouri-city, stafford, bellaire]
+    available_daily: true
+
+  - slug: custom
+    name: "Custom"
+    short_description: 'Custom cake — designed with you for a specific date and occasion.'
+    long_description: |
+      Custom cakes are designed with you. We confirm size, tiers, flavour, filling,
+      decoration, inscription, and pickup or delivery. Decoration is a small, optional
+      service — our offering is the ready-made line, but for a meaningful occasion we are
+      happy to design something specific.
+    ingredients: []
+    allergens: []
+    halal_friendly: true
+    vegan: false
+    photo: /static/photos/custom.jpg
+    sizes:
+      # Aligned with MCP custom-birthday-cake ($95, 24h lead, 4/day cap).
+      - {label: small, weight_g: 1000, price_usd: 95.00, mcp_product_id: custom-birthday-cake}
+      - {label: medium, weight_g: 1500, price_usd: 120.00, mcp_product_id: office-dessert-box}
+      - {label: large, weight_g: 2500, price_usd: 165.00, mcp_product_id: custom-birthday-cake}
+    serves_min: 6
+    serves_max: 30
+    lead_time_hours: 24
+    tier_options: [1, 2, 3]
+    delivery_zones: [sugar-land, missouri-city, stafford, bellaire]
+    available_daily: false

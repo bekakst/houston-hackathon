@@ -1,0 +1,12 @@
+name: "Adversarial — quote vs custom routing collision"
+channel: web
+sender: web_guest_010
+sender_name: guest
+thread_id: scn_adv_quote
+turns:
+  # The prior build's regex routed this to "custom" because of "for 12 people".
+  # Router rule §4 says quote/how-much wins for catalog cakes.
+  - customer: "Quote a cake Honey for 12 people, pickup Saturday."
+    expect:
+      intent: intake
+      reply_contains_any: ["55", "Honey", "$"]

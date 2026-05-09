@@ -1,0 +1,13 @@
+name: "Adversarial — non-English message"
+channel: whatsapp
+sender: "+15551113333"
+sender_name: customer
+thread_id: scn_adv_lang
+turns:
+  - customer: "Здравствуйте, какой у вас торт?"
+    expect:
+      # Brand book: agent must reply in English. We accept either an English
+      # reply or a graceful escalation; what we forbid is a non-English answer.
+      reply_does_not_contain:
+        - "Здравствуйте"
+        - "торт"

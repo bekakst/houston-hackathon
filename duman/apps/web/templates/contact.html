@@ -1,0 +1,24 @@
+{% extends "_base.html" %}
+
+{% block content %}
+<section class="page-head">
+  <p class="eyebrow">◆ Visit</p>
+  <h1>{{ policies.business.address }}</h1>
+</section>
+
+<section class="policy">
+  <p>Promenade shopping area, Sugar Land. Free parking out front.</p>
+  <p>Phone: <a href="tel:+12819798320">{{ policies.business.phone }}</a><br>
+     WhatsApp: <a href="https://wa.me/12819798320">message us</a><br>
+     Instagram: <a href="https://instagram.com/happycake.us">{{ policies.business.instagram_handle }}</a></p>
+
+  <h2>Hours</h2>
+  <ul>
+    {% for day, hrs in policies.hours.items() %}
+    <li>{{ day|capitalize }}: {{ hrs }}</li>
+    {% endfor %}
+  </ul>
+</section>
+
+<p class="closing">Order on the site at happycake.us or send a message on WhatsApp.</p>
+{% endblock %}

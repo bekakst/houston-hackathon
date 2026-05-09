@@ -1,0 +1,527 @@
+order_id,ts,channel,cake_slug,cake_name,size,quantity,price_usd,fulfillment,status
+ord_20260208_0001,2026-02-08T21:28:00+00:00,walk-in,red-velvet,Red Velvet,whole,1,40,pickup,completed
+ord_20260208_0002,2026-02-08T20:00:00+00:00,whatsapp,honey,Honey,slice,2,16,pickup,completed
+ord_20260208_0003,2026-02-08T14:53:00+00:00,website,napoleon,Napoleon,whole,1,42,pickup,completed
+ord_20260208_0004,2026-02-08T19:45:00+00:00,whatsapp,napoleon,Napoleon,whole,1,42,pickup,completed
+ord_20260208_0005,2026-02-08T17:49:00+00:00,walk-in,milk-maiden,Milk Maiden,whole,1,38,pickup,completed
+ord_20260208_0006,2026-02-08T19:02:00+00:00,walk-in,honey,Honey,whole,1,39,pickup,completed
+ord_20260208_0007,2026-02-08T14:57:00+00:00,instagram,honey,Honey,slice,2,16,pickup,completed
+ord_20260210_0008,2026-02-10T13:44:00+00:00,instagram,tiramisu,Tiramisu,whole,1,44,delivery,completed
+ord_20260210_0009,2026-02-10T09:46:00+00:00,walk-in,red-velvet,Red Velvet,slice,1,8,delivery,completed
+ord_20260210_0010,2026-02-10T13:27:00+00:00,website,napoleon,Napoleon,slice,3,24,pickup,completed
+ord_20260210_0011,2026-02-10T14:50:00+00:00,walk-in,cloud,Cloud,slice,3,27,pickup,completed
+ord_20260210_0012,2026-02-10T15:38:00+00:00,walk-in,carrot,Carrot,slice,3,24,pickup,completed
+ord_20260210_0013,2026-02-10T13:02:00+00:00,walk-in,napoleon,Napoleon,slice,1,8,pickup,completed
+ord_20260210_0014,2026-02-10T16:24:00+00:00,walk-in,honey,Honey,slice,2,16,pickup,completed
+ord_20260210_0015,2026-02-10T14:58:00+00:00,walk-in,carrot,Carrot,whole,1,40,delivery,completed
+ord_20260211_0016,2026-02-11T14:24:00+00:00,whatsapp,cloud,Cloud,whole,1,42,delivery,completed
+ord_20260211_0017,2026-02-11T10:19:00+00:00,whatsapp,honey,Honey,slice,2,16,pickup,completed
+ord_20260211_0018,2026-02-11T12:32:00+00:00,walk-in,milk-maiden,Milk Maiden,whole,1,38,pickup,completed
+ord_20260211_0019,2026-02-11T18:29:00+00:00,whatsapp,napoleon,Napoleon,slice,1,8,pickup,completed
+ord_20260211_0020,2026-02-11T14:38:00+00:00,website,red-velvet,Red Velvet,slice,3,24,pickup,completed
+ord_20260211_0021,2026-02-11T19:48:00+00:00,whatsapp,napoleon,Napoleon,slice,3,24,pickup,completed
+ord_20260212_0022,2026-02-12T20:17:00+00:00,instagram,tiramisu,Tiramisu,slice,2,18,delivery,completed
+ord_20260212_0023,2026-02-12T21:59:00+00:00,walk-in,honey,Honey,slice,2,16,pickup,completed
+ord_20260212_0024,2026-02-12T18:01:00+00:00,instagram,cloud,Cloud,slice,2,18,pickup,completed
+ord_20260212_0025,2026-02-12T21:39:00+00:00,whatsapp,milk-maiden,Milk Maiden,whole,1,38,delivery,completed
+ord_20260212_0026,2026-02-12T15:54:00+00:00,walk-in,tiramisu,Tiramisu,slice,2,18,delivery,completed
+ord_20260212_0027,2026-02-12T13:40:00+00:00,whatsapp,cloud,Cloud,slice,2,18,pickup,completed
+ord_20260212_0028,2026-02-12T16:26:00+00:00,website,milk-maiden,Milk Maiden,whole,1,38,delivery,completed
+ord_20260213_0029,2026-02-13T18:37:00+00:00,instagram,pistachio-roll,Pistachio Roll,whole,1,44,pickup,completed
+ord_20260213_0030,2026-02-13T12:43:00+00:00,walk-in,tiramisu,Tiramisu,slice,2,18,delivery,completed
+ord_20260213_0031,2026-02-13T20:47:00+00:00,whatsapp,milk-maiden,Milk Maiden,whole,1,38,pickup,completed
+ord_20260213_0032,2026-02-13T12:56:00+00:00,whatsapp,pistachio-roll,Pistachio Roll,slice,1,9,pickup,completed
+ord_20260213_0033,2026-02-13T15:27:00+00:00,website,milk-maiden,Milk Maiden,whole,1,38,pickup,completed
+ord_20260213_0034,2026-02-13T20:52:00+00:00,whatsapp,napoleon,Napoleon,slice,2,16,pickup,completed
+ord_20260213_0035,2026-02-13T16:10:00+00:00,website,pistachio-roll,Pistachio Roll,whole,1,44,pickup,completed
+ord_20260214_0036,2026-02-14T21:36:00+00:00,website,honey,Honey,slice,3,24,pickup,completed
+ord_20260214_0037,2026-02-14T16:31:00+00:00,website,pistachio-roll,Pistachio Roll,whole,1,44,pickup,completed
+ord_20260214_0038,2026-02-14T16:40:00+00:00,walk-in,cloud,Cloud,slice,1,9,pickup,completed
+ord_20260214_0039,2026-02-14T12:42:00+00:00,walk-in,honey,Honey,slice,1,8,pickup,completed
+ord_20260214_0040,2026-02-14T20:45:00+00:00,walk-in,napoleon,Napoleon,slice,3,24,pickup,completed
+ord_20260214_0041,2026-02-14T18:13:00+00:00,walk-in,cloud,Cloud,slice,3,27,pickup,completed
+ord_20260214_0042,2026-02-14T13:48:00+00:00,website,milk-maiden,Milk Maiden,whole,1,38,pickup,completed
+ord_20260214_0043,2026-02-14T19:49:00+00:00,walk-in,pistachio-roll,Pistachio Roll,slice,1,9,pickup,completed
+ord_20260214_0044,2026-02-14T19:57:00+00:00,instagram,red-velvet,Red Velvet,whole,1,40,pickup,completed
+ord_20260214_0045,2026-02-14T18:05:00+00:00,instagram,milk-maiden,Milk Maiden,slice,2,16,pickup,completed
+ord_20260214_0046,2026-02-14T09:54:00+00:00,instagram,pistachio-roll,Pistachio Roll,whole,1,44,pickup,completed
+ord_20260215_0047,2026-02-15T14:50:00+00:00,website,honey,Honey,slice,3,24,delivery,completed
+ord_20260215_0048,2026-02-15T18:38:00+00:00,whatsapp,milk-maiden,Milk Maiden,whole,1,38,pickup,completed
+ord_20260215_0049,2026-02-15T20:02:00+00:00,instagram,napoleon,Napoleon,slice,3,24,delivery,completed
+ord_20260215_0050,2026-02-15T13:05:00+00:00,whatsapp,honey,Honey,whole,1,39,pickup,completed
+ord_20260215_0051,2026-02-15T20:08:00+00:00,website,pistachio-roll,Pistachio Roll,whole,1,44,delivery,completed
+ord_20260215_0052,2026-02-15T20:44:00+00:00,whatsapp,napoleon,Napoleon,whole,1,42,pickup,completed
+ord_20260215_0053,2026-02-15T19:27:00+00:00,walk-in,carrot,Carrot,whole,1,40,pickup,completed
+ord_20260216_0054,2026-02-16T12:10:00+00:00,walk-in,carrot,Carrot,whole,1,40,delivery,completed
+ord_20260217_0055,2026-02-17T13:02:00+00:00,walk-in,tiramisu,Tiramisu,slice,3,27,pickup,completed
+ord_20260217_0056,2026-02-17T17:46:00+00:00,whatsapp,milk-maiden,Milk Maiden,slice,1,8,pickup,completed
+ord_20260218_0057,2026-02-18T17:26:00+00:00,whatsapp,honey,Honey,slice,3,24,pickup,completed
+ord_20260218_0058,2026-02-18T13:33:00+00:00,walk-in,carrot,Carrot,slice,1,8,pickup,completed
+ord_20260218_0059,2026-02-18T17:55:00+00:00,walk-in,honey,Honey,slice,2,16,pickup,completed
+ord_20260218_0060,2026-02-18T21:51:00+00:00,whatsapp,honey,Honey,whole,1,39,pickup,completed
+ord_20260218_0061,2026-02-18T09:54:00+00:00,website,honey,Honey,slice,1,8,pickup,completed
+ord_20260218_0062,2026-02-18T16:11:00+00:00,walk-in,carrot,Carrot,whole,1,40,pickup,completed
+ord_20260219_0063,2026-02-19T11:45:00+00:00,website,honey,Honey,whole,1,39,pickup,completed
+ord_20260219_0064,2026-02-19T18:43:00+00:00,walk-in,red-velvet,Red Velvet,slice,1,8,pickup,completed
+ord_20260219_0065,2026-02-19T16:52:00+00:00,whatsapp,milk-maiden,Milk Maiden,slice,1,8,pickup,completed
+ord_20260219_0066,2026-02-19T14:46:00+00:00,website,honey,Honey,slice,1,8,pickup,completed
+ord_20260219_0067,2026-02-19T20:46:00+00:00,website,milk-maiden,Milk Maiden,slice,1,8,delivery,completed
+ord_20260220_0068,2026-02-20T11:43:00+00:00,walk-in,tiramisu,Tiramisu,whole,1,44,pickup,completed
+ord_20260220_0069,2026-02-20T10:27:00+00:00,instagram,cloud,Cloud,whole,1,42,pickup,completed
+ord_20260220_0070,2026-02-20T17:36:00+00:00,instagram,cloud,Cloud,slice,1,9,pickup,completed
+ord_20260220_0071,2026-02-20T18:28:00+00:00,instagram,milk-maiden,Milk Maiden,slice,1,8,pickup,completed
+ord_20260221_0072,2026-02-21T14:19:00+00:00,whatsapp,milk-maiden,Milk Maiden,slice,2,16,pickup,completed
+ord_20260221_0073,2026-02-21T14:46:00+00:00,whatsapp,carrot,Carrot,whole,1,40,pickup,completed
+ord_20260221_0074,2026-02-21T18:25:00+00:00,instagram,napoleon,Napoleon,whole,1,42,delivery,completed
+ord_20260221_0075,2026-02-21T20:11:00+00:00,walk-in,pistachio-roll,Pistachio Roll,slice,2,18,pickup,refunded
+ord_20260221_0076,2026-02-21T14:23:00+00:00,instagram,milk-maiden,Milk Maiden,slice,1,8,pickup,completed
+ord_20260221_0077,2026-02-21T19:57:00+00:00,walk-in,napoleon,Napoleon,whole,1,42,delivery,completed
+ord_20260221_0078,2026-02-21T20:30:00+00:00,walk-in,tiramisu,Tiramisu,slice,1,9,pickup,completed
+ord_20260221_0079,2026-02-21T21:48:00+00:00,instagram,napoleon,Napoleon,whole,1,42,delivery,completed
+ord_20260221_0080,2026-02-21T16:01:00+00:00,walk-in,pistachio-roll,Pistachio Roll,whole,1,44,pickup,completed
+ord_20260221_0081,2026-02-21T12:10:00+00:00,website,red-velvet,Red Velvet,whole,1,40,delivery,completed
+ord_20260221_0082,2026-02-21T18:42:00+00:00,instagram,tiramisu,Tiramisu,whole,1,44,pickup,completed
+ord_20260221_0083,2026-02-21T13:35:00+00:00,website,carrot,Carrot,slice,1,8,delivery,completed
+ord_20260221_0084,2026-02-21T19:44:00+00:00,instagram,pistachio-roll,Pistachio Roll,whole,1,44,pickup,completed
+ord_20260222_0085,2026-02-22T18:33:00+00:00,walk-in,napoleon,Napoleon,whole,1,42,pickup,completed
+ord_20260222_0086,2026-02-22T20:55:00+00:00,walk-in,honey,Honey,whole,1,39,pickup,completed
+ord_20260222_0087,2026-02-22T21:42:00+00:00,instagram,cloud,Cloud,slice,2,18,pickup,completed
+ord_20260222_0088,2026-02-22T10:29:00+00:00,instagram,cloud,Cloud,slice,1,9,delivery,completed
+ord_20260222_0089,2026-02-22T15:02:00+00:00,instagram,honey,Honey,slice,1,8,pickup,completed
+ord_20260222_0090,2026-02-22T13:42:00+00:00,instagram,red-velvet,Red Velvet,whole,1,40,pickup,completed
+ord_20260222_0091,2026-02-22T19:14:00+00:00,whatsapp,napoleon,Napoleon,whole,1,42,delivery,completed
+ord_20260222_0092,2026-02-22T14:37:00+00:00,instagram,honey,Honey,slice,3,24,delivery,completed
+ord_20260224_0093,2026-02-24T19:44:00+00:00,walk-in,honey,Honey,whole,1,39,delivery,completed
+ord_20260224_0094,2026-02-24T19:21:00+00:00,website,honey,Honey,slice,2,16,delivery,completed
+ord_20260224_0095,2026-02-24T18:44:00+00:00,website,red-velvet,Red Velvet,slice,2,16,delivery,completed
+ord_20260224_0096,2026-02-24T16:52:00+00:00,whatsapp,napoleon,Napoleon,slice,1,8,pickup,completed
+ord_20260225_0097,2026-02-25T14:23:00+00:00,instagram,pistachio-roll,Pistachio Roll,slice,2,18,pickup,completed
+ord_20260225_0098,2026-02-25T21:11:00+00:00,walk-in,cloud,Cloud,whole,1,42,pickup,completed
+ord_20260225_0099,2026-02-25T17:18:00+00:00,walk-in,honey,Honey,slice,1,8,pickup,completed
+ord_20260225_0100,2026-02-25T21:42:00+00:00,website,napoleon,Napoleon,slice,1,8,pickup,completed
+ord_20260225_0101,2026-02-25T18:10:00+00:00,website,milk-maiden,Milk Maiden,whole,1,38,delivery,completed
+ord_20260225_0102,2026-02-25T20:04:00+00:00,walk-in,carrot,Carrot,whole,1,40,pickup,completed
+ord_20260226_0103,2026-02-26T21:03:00+00:00,website,pistachio-roll,Pistachio Roll,whole,1,44,pickup,completed
+ord_20260226_0104,2026-02-26T17:26:00+00:00,walk-in,napoleon,Napoleon,slice,2,16,pickup,completed
+ord_20260226_0105,2026-02-26T14:24:00+00:00,whatsapp,cloud,Cloud,whole,1,42,delivery,completed
+ord_20260226_0106,2026-02-26T13:09:00+00:00,walk-in,milk-maiden,Milk Maiden,whole,1,38,pickup,completed
+ord_20260226_0107,2026-02-26T16:48:00+00:00,walk-in,honey,Honey,slice,1,8,pickup,completed
+ord_20260226_0108,2026-02-26T10:54:00+00:00,instagram,napoleon,Napoleon,whole,1,42,pickup,completed
+ord_20260226_0109,2026-02-26T19:10:00+00:00,walk-in,honey,Honey,slice,2,16,pickup,completed
+ord_20260226_0110,2026-02-26T15:20:00+00:00,whatsapp,carrot,Carrot,slice,1,8,pickup,completed
+ord_20260227_0111,2026-02-27T19:18:00+00:00,walk-in,milk-maiden,Milk Maiden,whole,1,38,delivery,completed
+ord_20260227_0112,2026-02-27T18:23:00+00:00,walk-in,honey,Honey,whole,1,39,pickup,completed
+ord_20260227_0113,2026-02-27T18:36:00+00:00,whatsapp,carrot,Carrot,slice,3,24,pickup,refunded
+ord_20260227_0114,2026-02-27T14:37:00+00:00,whatsapp,milk-maiden,Milk Maiden,slice,2,16,pickup,completed
+ord_20260227_0115,2026-02-27T18:47:00+00:00,walk-in,napoleon,Napoleon,slice,1,8,delivery,completed
+ord_20260227_0116,2026-02-27T13:14:00+00:00,whatsapp,milk-maiden,Milk Maiden,whole,1,38,pickup,completed
+ord_20260227_0117,2026-02-27T13:25:00+00:00,instagram,milk-maiden,Milk Maiden,slice,2,16,delivery,completed
+ord_20260227_0118,2026-02-27T16:24:00+00:00,website,honey,Honey,whole,1,39,pickup,completed
+ord_20260227_0119,2026-02-27T19:18:00+00:00,walk-in,milk-maiden,Milk Maiden,whole,1,38,pickup,completed
+ord_20260228_0120,2026-02-28T08:50:00+00:00,website,red-velvet,Red Velvet,whole,1,40,pickup,completed
+ord_20260228_0121,2026-02-28T10:17:00+00:00,walk-in,honey,Honey,whole,1,39,pickup,completed
+ord_20260228_0122,2026-02-28T18:04:00+00:00,instagram,honey,Honey,slice,1,8,pickup,completed
+ord_20260228_0123,2026-02-28T20:34:00+00:00,whatsapp,milk-maiden,Milk Maiden,whole,1,38,pickup,completed
+ord_20260228_0124,2026-02-28T14:08:00+00:00,instagram,milk-maiden,Milk Maiden,whole,1,38,delivery,completed
+ord_20260228_0125,2026-02-28T14:59:00+00:00,instagram,milk-maiden,Milk Maiden,whole,1,38,pickup,completed
+ord_20260228_0126,2026-02-28T10:07:00+00:00,website,tiramisu,Tiramisu,slice,3,27,pickup,completed
+ord_20260228_0127,2026-02-28T18:34:00+00:00,instagram,pistachio-roll,Pistachio Roll,whole,1,44,pickup,completed
+ord_20260301_0128,2026-03-01T18:18:00+00:00,walk-in,tiramisu,Tiramisu,slice,1,9,pickup,completed
+ord_20260301_0129,2026-03-01T15:34:00+00:00,instagram,tiramisu,Tiramisu,whole,1,44,pickup,completed
+ord_20260302_0130,2026-03-02T20:35:00+00:00,walk-in,pistachio-roll,Pistachio Roll,whole,1,44,pickup,completed
+ord_20260303_0131,2026-03-03T11:29:00+00:00,instagram,carrot,Carrot,slice,2,16,pickup,completed
+ord_20260303_0132,2026-03-03T19:39:00+00:00,website,honey,Honey,whole,1,39,pickup,completed
+ord_20260303_0133,2026-03-03T19:11:00+00:00,instagram,honey,Honey,slice,2,16,pickup,completed
+ord_20260303_0134,2026-03-03T21:14:00+00:00,whatsapp,tiramisu,Tiramisu,slice,1,9,delivery,completed
+ord_20260303_0135,2026-03-03T13:40:00+00:00,whatsapp,napoleon,Napoleon,slice,1,8,delivery,completed
+ord_20260303_0136,2026-03-03T17:28:00+00:00,walk-in,napoleon,Napoleon,whole,1,42,pickup,completed
+ord_20260304_0137,2026-03-04T20:54:00+00:00,walk-in,cloud,Cloud,whole,1,42,pickup,completed
+ord_20260304_0138,2026-03-04T09:15:00+00:00,instagram,carrot,Carrot,slice,1,8,pickup,refunded
+ord_20260304_0139,2026-03-04T14:26:00+00:00,website,milk-maiden,Milk Maiden,whole,1,38,pickup,completed
+ord_20260304_0140,2026-03-04T14:51:00+00:00,walk-in,honey,Honey,whole,1,39,delivery,completed
+ord_20260304_0141,2026-03-04T10:51:00+00:00,whatsapp,red-velvet,Red Velvet,slice,1,8,delivery,completed
+ord_20260305_0142,2026-03-05T15:55:00+00:00,whatsapp,cloud,Cloud,slice,3,27,pickup,completed
+ord_20260305_0143,2026-03-05T13:30:00+00:00,walk-in,honey,Honey,whole,1,39,pickup,completed
+ord_20260306_0144,2026-03-06T15:26:00+00:00,website,pistachio-roll,Pistachio Roll,slice,3,27,pickup,completed
+ord_20260306_0145,2026-03-06T11:21:00+00:00,website,cloud,Cloud,whole,1,42,pickup,completed
+ord_20260306_0146,2026-03-06T13:19:00+00:00,whatsapp,pistachio-roll,Pistachio Roll,whole,1,44,pickup,completed
+ord_20260306_0147,2026-03-06T11:14:00+00:00,whatsapp,milk-maiden,Milk Maiden,slice,1,8,pickup,completed
+ord_20260306_0148,2026-03-06T14:47:00+00:00,instagram,milk-maiden,Milk Maiden,slice,2,16,delivery,completed
+ord_20260306_0149,2026-03-06T17:22:00+00:00,instagram,milk-maiden,Milk Maiden,slice,1,8,pickup,completed
+ord_20260307_0150,2026-03-07T18:14:00+00:00,instagram,honey,Honey,whole,1,39,pickup,completed
+ord_20260307_0151,2026-03-07T13:49:00+00:00,whatsapp,milk-maiden,Milk Maiden,whole,1,38,pickup,completed
+ord_20260307_0152,2026-03-07T14:18:00+00:00,walk-in,cloud,Cloud,whole,1,42,pickup,completed
+ord_20260307_0153,2026-03-07T09:00:00+00:00,instagram,honey,Honey,whole,1,39,pickup,completed
+ord_20260307_0154,2026-03-07T15:55:00+00:00,instagram,napoleon,Napoleon,slice,1,8,pickup,completed
+ord_20260307_0155,2026-03-07T13:51:00+00:00,walk-in,honey,Honey,whole,1,39,pickup,refunded
+ord_20260307_0156,2026-03-07T13:44:00+00:00,instagram,milk-maiden,Milk Maiden,slice,1,8,pickup,completed
+ord_20260307_0157,2026-03-07T21:08:00+00:00,whatsapp,napoleon,Napoleon,whole,1,42,pickup,completed
+ord_20260307_0158,2026-03-07T19:56:00+00:00,whatsapp,milk-maiden,Milk Maiden,slice,3,24,pickup,completed
+ord_20260309_0159,2026-03-09T08:33:00+00:00,instagram,milk-maiden,Milk Maiden,whole,1,38,delivery,completed
+ord_20260310_0160,2026-03-10T15:53:00+00:00,walk-in,red-velvet,Red Velvet,slice,3,24,delivery,completed
+ord_20260310_0161,2026-03-10T09:34:00+00:00,whatsapp,carrot,Carrot,whole,1,40,delivery,completed
+ord_20260310_0162,2026-03-10T19:15:00+00:00,whatsapp,tiramisu,Tiramisu,slice,3,27,delivery,completed
+ord_20260310_0163,2026-03-10T14:05:00+00:00,walk-in,pistachio-roll,Pistachio Roll,slice,1,9,pickup,completed
+ord_20260311_0164,2026-03-11T17:33:00+00:00,whatsapp,carrot,Carrot,slice,1,8,pickup,completed
+ord_20260311_0165,2026-03-11T18:04:00+00:00,website,honey,Honey,slice,1,8,pickup,completed
+ord_20260311_0166,2026-03-11T19:14:00+00:00,website,carrot,Carrot,slice,3,24,pickup,completed
+ord_20260311_0167,2026-03-11T09:07:00+00:00,instagram,tiramisu,Tiramisu,whole,1,44,pickup,completed
+ord_20260311_0168,2026-03-11T11:30:00+00:00,whatsapp,honey,Honey,slice,3,24,pickup,completed
+ord_20260311_0169,2026-03-11T19:21:00+00:00,walk-in,napoleon,Napoleon,slice,2,16,delivery,completed
+ord_20260312_0170,2026-03-12T17:58:00+00:00,website,honey,Honey,slice,1,8,delivery,completed
+ord_20260312_0171,2026-03-12T19:41:00+00:00,instagram,cloud,Cloud,slice,2,18,pickup,completed
+ord_20260312_0172,2026-03-12T09:40:00+00:00,walk-in,carrot,Carrot,whole,1,40,pickup,completed
+ord_20260312_0173,2026-03-12T17:31:00+00:00,instagram,napoleon,Napoleon,whole,1,42,pickup,completed
+ord_20260312_0174,2026-03-12T15:48:00+00:00,walk-in,pistachio-roll,Pistachio Roll,whole,1,44,delivery,completed
+ord_20260312_0175,2026-03-12T14:16:00+00:00,walk-in,napoleon,Napoleon,whole,1,42,delivery,completed
+ord_20260312_0176,2026-03-12T19:13:00+00:00,website,cloud,Cloud,slice,1,9,pickup,completed
+ord_20260312_0177,2026-03-12T08:40:00+00:00,instagram,milk-maiden,Milk Maiden,slice,3,24,pickup,completed
+ord_20260313_0178,2026-03-13T12:03:00+00:00,whatsapp,cloud,Cloud,whole,1,42,pickup,completed
+ord_20260313_0179,2026-03-13T18:51:00+00:00,whatsapp,cloud,Cloud,slice,1,9,pickup,completed
+ord_20260313_0180,2026-03-13T11:21:00+00:00,instagram,tiramisu,Tiramisu,slice,3,27,pickup,completed
+ord_20260313_0181,2026-03-13T19:39:00+00:00,walk-in,napoleon,Napoleon,slice,2,16,pickup,completed
+ord_20260313_0182,2026-03-13T16:15:00+00:00,instagram,tiramisu,Tiramisu,whole,1,44,pickup,refunded
+ord_20260313_0183,2026-03-13T11:21:00+00:00,walk-in,honey,Honey,whole,1,39,delivery,completed
+ord_20260313_0184,2026-03-13T12:54:00+00:00,whatsapp,pistachio-roll,Pistachio Roll,slice,2,18,pickup,completed
+ord_20260313_0185,2026-03-13T18:03:00+00:00,whatsapp,honey,Honey,slice,3,24,pickup,completed
+ord_20260314_0186,2026-03-14T18:03:00+00:00,website,honey,Honey,slice,2,16,pickup,completed
+ord_20260314_0187,2026-03-14T16:02:00+00:00,instagram,carrot,Carrot,slice,2,16,pickup,completed
+ord_20260314_0188,2026-03-14T15:44:00+00:00,website,carrot,Carrot,slice,3,24,delivery,completed
+ord_20260314_0189,2026-03-14T19:16:00+00:00,instagram,cloud,Cloud,whole,1,42,pickup,completed
+ord_20260314_0190,2026-03-14T19:27:00+00:00,whatsapp,red-velvet,Red Velvet,slice,1,8,pickup,completed
+ord_20260314_0191,2026-03-14T10:05:00+00:00,instagram,cloud,Cloud,whole,1,42,delivery,completed
+ord_20260315_0192,2026-03-15T20:12:00+00:00,instagram,honey,Honey,slice,1,8,delivery,completed
+ord_20260315_0193,2026-03-15T19:16:00+00:00,walk-in,napoleon,Napoleon,whole,1,42,pickup,completed
+ord_20260315_0194,2026-03-15T17:03:00+00:00,instagram,honey,Honey,whole,1,39,pickup,completed
+ord_20260315_0195,2026-03-15T14:05:00+00:00,whatsapp,honey,Honey,slice,3,24,pickup,completed
+ord_20260315_0196,2026-03-15T12:37:00+00:00,walk-in,milk-maiden,Milk Maiden,whole,1,38,pickup,completed
+ord_20260315_0197,2026-03-15T17:13:00+00:00,whatsapp,honey,Honey,whole,1,39,pickup,completed
+ord_20260315_0198,2026-03-15T18:56:00+00:00,website,honey,Honey,whole,1,39,delivery,completed
+ord_20260315_0199,2026-03-15T17:53:00+00:00,whatsapp,honey,Honey,slice,1,8,pickup,completed
+ord_20260316_0200,2026-03-16T11:21:00+00:00,whatsapp,milk-maiden,Milk Maiden,slice,3,24,pickup,completed
+ord_20260317_0201,2026-03-17T20:19:00+00:00,walk-in,honey,Honey,whole,1,39,pickup,completed
+ord_20260317_0202,2026-03-17T14:02:00+00:00,walk-in,honey,Honey,slice,1,8,pickup,completed
+ord_20260317_0203,2026-03-17T18:33:00+00:00,walk-in,honey,Honey,slice,1,8,pickup,completed
+ord_20260317_0204,2026-03-17T13:11:00+00:00,whatsapp,tiramisu,Tiramisu,slice,2,18,delivery,completed
+ord_20260318_0205,2026-03-18T20:25:00+00:00,whatsapp,napoleon,Napoleon,slice,3,24,pickup,completed
+ord_20260318_0206,2026-03-18T17:26:00+00:00,instagram,carrot,Carrot,whole,1,40,delivery,completed
+ord_20260318_0207,2026-03-18T10:05:00+00:00,website,honey,Honey,slice,1,8,pickup,completed
+ord_20260318_0208,2026-03-18T16:21:00+00:00,instagram,honey,Honey,slice,1,8,delivery,completed
+ord_20260318_0209,2026-03-18T13:40:00+00:00,walk-in,red-velvet,Red Velvet,whole,1,40,delivery,completed
+ord_20260318_0210,2026-03-18T16:16:00+00:00,instagram,red-velvet,Red Velvet,whole,1,40,pickup,completed
+ord_20260319_0211,2026-03-19T13:25:00+00:00,whatsapp,carrot,Carrot,whole,1,40,pickup,completed
+ord_20260319_0212,2026-03-19T19:28:00+00:00,website,napoleon,Napoleon,slice,3,24,delivery,completed
+ord_20260319_0213,2026-03-19T20:19:00+00:00,whatsapp,red-velvet,Red Velvet,slice,2,16,pickup,completed
+ord_20260319_0214,2026-03-19T14:51:00+00:00,instagram,tiramisu,Tiramisu,whole,1,44,delivery,completed
+ord_20260319_0215,2026-03-19T20:27:00+00:00,instagram,milk-maiden,Milk Maiden,slice,1,8,pickup,completed
+ord_20260319_0216,2026-03-19T19:18:00+00:00,walk-in,tiramisu,Tiramisu,slice,1,9,pickup,completed
+ord_20260320_0217,2026-03-20T19:43:00+00:00,instagram,milk-maiden,Milk Maiden,slice,1,8,delivery,completed
+ord_20260320_0218,2026-03-20T16:36:00+00:00,walk-in,tiramisu,Tiramisu,whole,1,44,pickup,completed
+ord_20260320_0219,2026-03-20T20:00:00+00:00,website,milk-maiden,Milk Maiden,slice,1,8,pickup,completed
+ord_20260320_0220,2026-03-20T11:28:00+00:00,whatsapp,carrot,Carrot,whole,1,40,delivery,completed
+ord_20260320_0221,2026-03-20T18:01:00+00:00,instagram,tiramisu,Tiramisu,whole,1,44,pickup,completed
+ord_20260320_0222,2026-03-20T17:37:00+00:00,instagram,carrot,Carrot,slice,2,16,pickup,completed
+ord_20260320_0223,2026-03-20T19:12:00+00:00,whatsapp,honey,Honey,slice,1,8,delivery,completed
+ord_20260320_0224,2026-03-20T10:16:00+00:00,whatsapp,honey,Honey,slice,1,8,delivery,completed
+ord_20260321_0225,2026-03-21T11:20:00+00:00,whatsapp,honey,Honey,whole,1,39,pickup,completed
+ord_20260321_0226,2026-03-21T19:47:00+00:00,walk-in,napoleon,Napoleon,slice,1,8,pickup,completed
+ord_20260321_0227,2026-03-21T20:08:00+00:00,walk-in,napoleon,Napoleon,whole,1,42,pickup,completed
+ord_20260321_0228,2026-03-21T20:07:00+00:00,whatsapp,napoleon,Napoleon,slice,1,8,pickup,completed
+ord_20260321_0229,2026-03-21T13:31:00+00:00,walk-in,napoleon,Napoleon,whole,1,42,pickup,completed
+ord_20260322_0230,2026-03-22T10:21:00+00:00,whatsapp,cloud,Cloud,whole,1,42,pickup,completed
+ord_20260322_0231,2026-03-22T19:29:00+00:00,walk-in,milk-maiden,Milk Maiden,slice,3,24,delivery,completed
+ord_20260322_0232,2026-03-22T19:22:00+00:00,walk-in,milk-maiden,Milk Maiden,whole,1,38,delivery,completed
+ord_20260322_0233,2026-03-22T14:29:00+00:00,walk-in,honey,Honey,whole,1,39,pickup,completed
+ord_20260322_0234,2026-03-22T09:38:00+00:00,walk-in,tiramisu,Tiramisu,slice,1,9,pickup,completed
+ord_20260324_0235,2026-03-24T18:05:00+00:00,walk-in,carrot,Carrot,whole,1,40,pickup,completed
+ord_20260324_0236,2026-03-24T16:11:00+00:00,whatsapp,napoleon,Napoleon,slice,3,24,delivery,completed
+ord_20260324_0237,2026-03-24T19:01:00+00:00,walk-in,honey,Honey,slice,2,16,pickup,completed
+ord_20260324_0238,2026-03-24T15:44:00+00:00,whatsapp,napoleon,Napoleon,slice,1,8,pickup,completed
+ord_20260325_0239,2026-03-25T21:33:00+00:00,walk-in,cloud,Cloud,whole,1,42,pickup,completed
+ord_20260325_0240,2026-03-25T16:23:00+00:00,instagram,cloud,Cloud,slice,2,18,delivery,completed
+ord_20260325_0241,2026-03-25T10:21:00+00:00,whatsapp,honey,Honey,whole,1,39,delivery,completed
+ord_20260325_0242,2026-03-25T15:47:00+00:00,whatsapp,red-velvet,Red Velvet,whole,1,40,pickup,completed
+ord_20260325_0243,2026-03-25T08:16:00+00:00,instagram,tiramisu,Tiramisu,slice,1,9,pickup,completed
+ord_20260325_0244,2026-03-25T08:27:00+00:00,website,milk-maiden,Milk Maiden,slice,3,24,pickup,completed
+ord_20260325_0245,2026-03-25T12:26:00+00:00,walk-in,cloud,Cloud,whole,1,42,pickup,completed
+ord_20260326_0246,2026-03-26T20:14:00+00:00,whatsapp,honey,Honey,whole,1,39,delivery,completed
+ord_20260326_0247,2026-03-26T13:34:00+00:00,walk-in,tiramisu,Tiramisu,slice,1,9,pickup,completed
+ord_20260326_0248,2026-03-26T20:35:00+00:00,instagram,napoleon,Napoleon,slice,1,8,pickup,completed
+ord_20260326_0249,2026-03-26T19:48:00+00:00,whatsapp,red-velvet,Red Velvet,whole,1,40,pickup,completed
+ord_20260327_0250,2026-03-27T14:08:00+00:00,walk-in,tiramisu,Tiramisu,whole,1,44,delivery,completed
+ord_20260327_0251,2026-03-27T21:56:00+00:00,website,pistachio-roll,Pistachio Roll,whole,1,44,pickup,completed
+ord_20260327_0252,2026-03-27T17:42:00+00:00,website,napoleon,Napoleon,whole,1,42,pickup,completed
+ord_20260327_0253,2026-03-27T13:42:00+00:00,walk-in,cloud,Cloud,slice,1,9,delivery,completed
+ord_20260327_0254,2026-03-27T10:18:00+00:00,walk-in,napoleon,Napoleon,slice,1,8,pickup,completed
+ord_20260327_0255,2026-03-27T18:24:00+00:00,website,red-velvet,Red Velvet,slice,2,16,delivery,completed
+ord_20260327_0256,2026-03-27T20:27:00+00:00,instagram,red-velvet,Red Velvet,slice,2,16,pickup,completed
+ord_20260327_0257,2026-03-27T14:32:00+00:00,whatsapp,cloud,Cloud,whole,1,42,pickup,completed
+ord_20260327_0258,2026-03-27T14:39:00+00:00,whatsapp,napoleon,Napoleon,slice,2,16,pickup,completed
+ord_20260327_0259,2026-03-27T17:45:00+00:00,instagram,honey,Honey,whole,1,39,delivery,completed
+ord_20260327_0260,2026-03-27T14:19:00+00:00,website,cloud,Cloud,slice,2,18,pickup,completed
+ord_20260328_0261,2026-03-28T19:31:00+00:00,instagram,milk-maiden,Milk Maiden,slice,1,8,pickup,completed
+ord_20260328_0262,2026-03-28T17:02:00+00:00,website,milk-maiden,Milk Maiden,slice,2,16,pickup,completed
+ord_20260328_0263,2026-03-28T19:00:00+00:00,whatsapp,napoleon,Napoleon,whole,1,42,pickup,completed
+ord_20260328_0264,2026-03-28T12:11:00+00:00,whatsapp,milk-maiden,Milk Maiden,whole,1,38,delivery,completed
+ord_20260328_0265,2026-03-28T10:13:00+00:00,instagram,milk-maiden,Milk Maiden,slice,1,8,pickup,completed
+ord_20260328_0266,2026-03-28T13:09:00+00:00,walk-in,tiramisu,Tiramisu,slice,1,9,delivery,completed
+ord_20260328_0267,2026-03-28T11:32:00+00:00,website,honey,Honey,whole,1,39,pickup,completed
+ord_20260328_0268,2026-03-28T10:55:00+00:00,website,tiramisu,Tiramisu,slice,1,9,pickup,completed
+ord_20260328_0269,2026-03-28T12:29:00+00:00,walk-in,carrot,Carrot,whole,1,40,pickup,completed
+ord_20260328_0270,2026-03-28T14:20:00+00:00,instagram,milk-maiden,Milk Maiden,whole,1,38,pickup,completed
+ord_20260328_0271,2026-03-28T10:00:00+00:00,instagram,carrot,Carrot,whole,1,40,pickup,completed
+ord_20260328_0272,2026-03-28T19:01:00+00:00,instagram,tiramisu,Tiramisu,whole,1,44,delivery,completed
+ord_20260328_0273,2026-03-28T11:34:00+00:00,whatsapp,pistachio-roll,Pistachio Roll,slice,1,9,pickup,completed
+ord_20260328_0274,2026-03-28T15:04:00+00:00,walk-in,honey,Honey,slice,2,16,delivery,completed
+ord_20260329_0275,2026-03-29T19:55:00+00:00,whatsapp,napoleon,Napoleon,slice,1,8,delivery,completed
+ord_20260329_0276,2026-03-29T16:36:00+00:00,instagram,pistachio-roll,Pistachio Roll,whole,1,44,pickup,completed
+ord_20260329_0277,2026-03-29T18:40:00+00:00,instagram,honey,Honey,whole,1,39,delivery,completed
+ord_20260329_0278,2026-03-29T08:05:00+00:00,whatsapp,pistachio-roll,Pistachio Roll,whole,1,44,pickup,completed
+ord_20260329_0279,2026-03-29T12:02:00+00:00,walk-in,milk-maiden,Milk Maiden,slice,2,16,pickup,completed
+ord_20260331_0280,2026-03-31T18:38:00+00:00,whatsapp,pistachio-roll,Pistachio Roll,slice,3,27,pickup,completed
+ord_20260331_0281,2026-03-31T11:29:00+00:00,walk-in,cloud,Cloud,slice,3,27,pickup,completed
+ord_20260331_0282,2026-03-31T14:39:00+00:00,instagram,honey,Honey,whole,1,39,delivery,completed
+ord_20260331_0283,2026-03-31T19:54:00+00:00,instagram,honey,Honey,slice,1,8,pickup,completed
+ord_20260331_0284,2026-03-31T17:36:00+00:00,walk-in,pistachio-roll,Pistachio Roll,slice,2,18,delivery,refunded
+ord_20260331_0285,2026-03-31T10:14:00+00:00,instagram,cloud,Cloud,slice,2,18,pickup,completed
+ord_20260331_0286,2026-03-31T13:21:00+00:00,instagram,pistachio-roll,Pistachio Roll,slice,1,9,pickup,completed
+ord_20260331_0287,2026-03-31T19:10:00+00:00,walk-in,pistachio-roll,Pistachio Roll,slice,2,18,pickup,completed
+ord_20260401_0288,2026-04-01T14:12:00+00:00,walk-in,red-velvet,Red Velvet,whole,1,40,pickup,completed
+ord_20260401_0289,2026-04-01T19:28:00+00:00,walk-in,honey,Honey,slice,1,8,pickup,completed
+ord_20260401_0290,2026-04-01T16:21:00+00:00,walk-in,napoleon,Napoleon,slice,1,8,pickup,completed
+ord_20260401_0291,2026-04-01T11:09:00+00:00,whatsapp,tiramisu,Tiramisu,slice,1,9,pickup,completed
+ord_20260401_0292,2026-04-01T11:04:00+00:00,whatsapp,honey,Honey,slice,2,16,pickup,completed
+ord_20260401_0293,2026-04-01T20:32:00+00:00,instagram,cloud,Cloud,slice,1,9,pickup,completed
+ord_20260402_0294,2026-04-02T13:59:00+00:00,walk-in,honey,Honey,slice,1,8,pickup,completed
+ord_20260402_0295,2026-04-02T11:12:00+00:00,instagram,red-velvet,Red Velvet,whole,1,40,delivery,completed
+ord_20260402_0296,2026-04-02T19:11:00+00:00,whatsapp,tiramisu,Tiramisu,slice,3,27,pickup,completed
+ord_20260402_0297,2026-04-02T21:17:00+00:00,website,red-velvet,Red Velvet,slice,1,8,pickup,completed
+ord_20260402_0298,2026-04-02T20:13:00+00:00,walk-in,pistachio-roll,Pistachio Roll,whole,1,44,pickup,completed
+ord_20260403_0299,2026-04-03T09:12:00+00:00,walk-in,carrot,Carrot,slice,1,8,pickup,completed
+ord_20260403_0300,2026-04-03T16:48:00+00:00,instagram,honey,Honey,whole,1,39,pickup,completed
+ord_20260403_0301,2026-04-03T17:32:00+00:00,whatsapp,carrot,Carrot,slice,2,16,pickup,completed
+ord_20260403_0302,2026-04-03T20:03:00+00:00,instagram,milk-maiden,Milk Maiden,whole,1,38,pickup,completed
+ord_20260403_0303,2026-04-03T15:33:00+00:00,walk-in,honey,Honey,whole,1,39,delivery,completed
+ord_20260403_0304,2026-04-03T16:48:00+00:00,whatsapp,cloud,Cloud,whole,1,42,pickup,completed
+ord_20260403_0305,2026-04-03T09:41:00+00:00,whatsapp,napoleon,Napoleon,slice,3,24,delivery,completed
+ord_20260403_0306,2026-04-03T18:52:00+00:00,walk-in,red-velvet,Red Velvet,whole,1,40,delivery,completed
+ord_20260403_0307,2026-04-03T21:55:00+00:00,website,napoleon,Napoleon,whole,1,42,pickup,completed
+ord_20260403_0308,2026-04-03T19:16:00+00:00,website,pistachio-roll,Pistachio Roll,slice,1,9,pickup,completed
+ord_20260403_0309,2026-04-03T18:13:00+00:00,instagram,honey,Honey,whole,1,39,pickup,completed
+ord_20260403_0310,2026-04-03T17:22:00+00:00,website,milk-maiden,Milk Maiden,whole,1,38,pickup,completed
+ord_20260403_0311,2026-04-03T21:45:00+00:00,walk-in,milk-maiden,Milk Maiden,whole,1,38,pickup,completed
+ord_20260403_0312,2026-04-03T14:03:00+00:00,whatsapp,honey,Honey,whole,1,39,delivery,completed
+ord_20260404_0313,2026-04-04T12:23:00+00:00,instagram,napoleon,Napoleon,slice,1,8,pickup,completed
+ord_20260404_0314,2026-04-04T11:59:00+00:00,whatsapp,cloud,Cloud,slice,1,9,pickup,completed
+ord_20260404_0315,2026-04-04T20:00:00+00:00,instagram,honey,Honey,slice,2,16,pickup,completed
+ord_20260404_0316,2026-04-04T17:59:00+00:00,whatsapp,honey,Honey,slice,1,8,pickup,completed
+ord_20260404_0317,2026-04-04T16:51:00+00:00,walk-in,honey,Honey,whole,1,39,delivery,completed
+ord_20260404_0318,2026-04-04T15:26:00+00:00,whatsapp,carrot,Carrot,whole,1,40,delivery,completed
+ord_20260405_0319,2026-04-05T19:22:00+00:00,walk-in,honey,Honey,whole,1,39,pickup,completed
+ord_20260405_0320,2026-04-05T12:50:00+00:00,walk-in,napoleon,Napoleon,whole,1,42,pickup,completed
+ord_20260405_0321,2026-04-05T19:07:00+00:00,walk-in,cloud,Cloud,whole,1,42,pickup,completed
+ord_20260405_0322,2026-04-05T08:40:00+00:00,whatsapp,carrot,Carrot,slice,2,16,pickup,completed
+ord_20260405_0323,2026-04-05T11:48:00+00:00,whatsapp,carrot,Carrot,slice,2,16,delivery,completed
+ord_20260405_0324,2026-04-05T14:05:00+00:00,instagram,cloud,Cloud,whole,1,42,delivery,completed
+ord_20260405_0325,2026-04-05T16:13:00+00:00,walk-in,milk-maiden,Milk Maiden,slice,1,8,delivery,completed
+ord_20260405_0326,2026-04-05T18:12:00+00:00,instagram,honey,Honey,slice,2,16,pickup,completed
+ord_20260405_0327,2026-04-05T11:00:00+00:00,walk-in,napoleon,Napoleon,slice,1,8,pickup,completed
+ord_20260406_0328,2026-04-06T15:01:00+00:00,walk-in,pistachio-roll,Pistachio Roll,slice,1,9,pickup,completed
+ord_20260407_0329,2026-04-07T18:59:00+00:00,whatsapp,honey,Honey,whole,1,39,pickup,completed
+ord_20260407_0330,2026-04-07T13:57:00+00:00,walk-in,honey,Honey,whole,1,39,pickup,completed
+ord_20260407_0331,2026-04-07T09:51:00+00:00,walk-in,carrot,Carrot,slice,1,8,pickup,completed
+ord_20260407_0332,2026-04-07T20:46:00+00:00,walk-in,milk-maiden,Milk Maiden,slice,1,8,pickup,completed
+ord_20260407_0333,2026-04-07T15:43:00+00:00,website,honey,Honey,slice,1,8,pickup,completed
+ord_20260408_0334,2026-04-08T11:58:00+00:00,walk-in,milk-maiden,Milk Maiden,whole,1,38,pickup,completed
+ord_20260409_0335,2026-04-09T17:33:00+00:00,whatsapp,pistachio-roll,Pistachio Roll,whole,1,44,delivery,completed
+ord_20260409_0336,2026-04-09T14:54:00+00:00,website,milk-maiden,Milk Maiden,slice,3,24,pickup,refunded
+ord_20260409_0337,2026-04-09T19:46:00+00:00,instagram,tiramisu,Tiramisu,slice,1,9,delivery,completed
+ord_20260409_0338,2026-04-09T09:05:00+00:00,website,napoleon,Napoleon,whole,1,42,pickup,completed
+ord_20260409_0339,2026-04-09T20:11:00+00:00,instagram,red-velvet,Red Velvet,whole,1,40,pickup,completed
+ord_20260409_0340,2026-04-09T16:54:00+00:00,walk-in,napoleon,Napoleon,slice,1,8,pickup,completed
+ord_20260409_0341,2026-04-09T17:31:00+00:00,walk-in,tiramisu,Tiramisu,slice,2,18,pickup,completed
+ord_20260410_0342,2026-04-10T18:45:00+00:00,walk-in,napoleon,Napoleon,slice,1,8,pickup,completed
+ord_20260410_0343,2026-04-10T16:04:00+00:00,website,tiramisu,Tiramisu,whole,1,44,pickup,completed
+ord_20260410_0344,2026-04-10T12:43:00+00:00,whatsapp,milk-maiden,Milk Maiden,whole,1,38,pickup,completed
+ord_20260410_0345,2026-04-10T13:00:00+00:00,walk-in,napoleon,Napoleon,slice,1,8,pickup,completed
+ord_20260410_0346,2026-04-10T15:28:00+00:00,walk-in,napoleon,Napoleon,whole,1,42,pickup,completed
+ord_20260410_0347,2026-04-10T12:47:00+00:00,whatsapp,napoleon,Napoleon,whole,1,42,delivery,completed
+ord_20260411_0348,2026-04-11T14:14:00+00:00,whatsapp,pistachio-roll,Pistachio Roll,slice,3,27,pickup,completed
+ord_20260411_0349,2026-04-11T12:11:00+00:00,instagram,napoleon,Napoleon,slice,1,8,delivery,completed
+ord_20260411_0350,2026-04-11T21:51:00+00:00,website,pistachio-roll,Pistachio Roll,whole,1,44,delivery,completed
+ord_20260411_0351,2026-04-11T21:08:00+00:00,website,milk-maiden,Milk Maiden,whole,1,38,pickup,completed
+ord_20260411_0352,2026-04-11T11:17:00+00:00,website,honey,Honey,slice,1,8,delivery,completed
+ord_20260411_0353,2026-04-11T17:27:00+00:00,whatsapp,napoleon,Napoleon,whole,1,42,pickup,completed
+ord_20260411_0354,2026-04-11T12:48:00+00:00,walk-in,honey,Honey,slice,3,24,pickup,completed
+ord_20260411_0355,2026-04-11T15:52:00+00:00,whatsapp,milk-maiden,Milk Maiden,slice,1,8,pickup,completed
+ord_20260411_0356,2026-04-11T10:31:00+00:00,website,milk-maiden,Milk Maiden,whole,1,38,pickup,completed
+ord_20260411_0357,2026-04-11T19:30:00+00:00,instagram,carrot,Carrot,whole,1,40,pickup,completed
+ord_20260412_0358,2026-04-12T17:32:00+00:00,whatsapp,napoleon,Napoleon,slice,2,16,pickup,completed
+ord_20260412_0359,2026-04-12T14:57:00+00:00,instagram,milk-maiden,Milk Maiden,whole,1,38,delivery,completed
+ord_20260412_0360,2026-04-12T15:05:00+00:00,instagram,tiramisu,Tiramisu,whole,1,44,pickup,completed
+ord_20260412_0361,2026-04-12T11:45:00+00:00,walk-in,pistachio-roll,Pistachio Roll,whole,1,44,delivery,completed
+ord_20260412_0362,2026-04-12T21:29:00+00:00,whatsapp,tiramisu,Tiramisu,slice,3,27,delivery,completed
+ord_20260412_0363,2026-04-12T21:40:00+00:00,walk-in,milk-maiden,Milk Maiden,whole,1,38,pickup,completed
+ord_20260413_0364,2026-04-13T10:18:00+00:00,whatsapp,tiramisu,Tiramisu,slice,2,18,pickup,completed
+ord_20260414_0365,2026-04-14T19:45:00+00:00,walk-in,milk-maiden,Milk Maiden,whole,1,38,pickup,completed
+ord_20260414_0366,2026-04-14T15:14:00+00:00,whatsapp,honey,Honey,slice,2,16,delivery,completed
+ord_20260414_0367,2026-04-14T17:30:00+00:00,walk-in,milk-maiden,Milk Maiden,whole,1,38,pickup,completed
+ord_20260414_0368,2026-04-14T12:04:00+00:00,walk-in,red-velvet,Red Velvet,whole,1,40,pickup,completed
+ord_20260414_0369,2026-04-14T19:40:00+00:00,walk-in,honey,Honey,whole,1,39,pickup,completed
+ord_20260414_0370,2026-04-14T16:17:00+00:00,instagram,honey,Honey,whole,1,39,pickup,completed
+ord_20260414_0371,2026-04-14T15:21:00+00:00,website,honey,Honey,slice,1,8,pickup,completed
+ord_20260415_0372,2026-04-15T12:21:00+00:00,instagram,napoleon,Napoleon,whole,1,42,pickup,completed
+ord_20260415_0373,2026-04-15T08:03:00+00:00,instagram,pistachio-roll,Pistachio Roll,slice,1,9,delivery,completed
+ord_20260415_0374,2026-04-15T17:35:00+00:00,instagram,napoleon,Napoleon,slice,1,8,delivery,completed
+ord_20260415_0375,2026-04-15T10:43:00+00:00,website,honey,Honey,whole,1,39,pickup,completed
+ord_20260415_0376,2026-04-15T12:07:00+00:00,instagram,cloud,Cloud,whole,1,42,delivery,completed
+ord_20260416_0377,2026-04-16T19:55:00+00:00,walk-in,honey,Honey,slice,1,8,pickup,completed
+ord_20260416_0378,2026-04-16T11:43:00+00:00,website,carrot,Carrot,slice,1,8,pickup,completed
+ord_20260416_0379,2026-04-16T15:39:00+00:00,instagram,honey,Honey,whole,1,39,pickup,completed
+ord_20260416_0380,2026-04-16T20:34:00+00:00,walk-in,red-velvet,Red Velvet,whole,1,40,delivery,completed
+ord_20260417_0381,2026-04-17T21:43:00+00:00,whatsapp,honey,Honey,slice,1,8,delivery,completed
+ord_20260417_0382,2026-04-17T14:59:00+00:00,walk-in,carrot,Carrot,slice,3,24,pickup,completed
+ord_20260417_0383,2026-04-17T15:46:00+00:00,walk-in,milk-maiden,Milk Maiden,whole,1,38,pickup,completed
+ord_20260417_0384,2026-04-17T20:31:00+00:00,walk-in,napoleon,Napoleon,slice,1,8,pickup,completed
+ord_20260417_0385,2026-04-17T14:08:00+00:00,instagram,tiramisu,Tiramisu,slice,2,18,pickup,completed
+ord_20260418_0386,2026-04-18T17:15:00+00:00,walk-in,napoleon,Napoleon,whole,1,42,pickup,completed
+ord_20260418_0387,2026-04-18T20:20:00+00:00,website,carrot,Carrot,slice,3,24,delivery,completed
+ord_20260418_0388,2026-04-18T18:00:00+00:00,whatsapp,tiramisu,Tiramisu,whole,1,44,delivery,completed
+ord_20260418_0389,2026-04-18T19:59:00+00:00,whatsapp,red-velvet,Red Velvet,slice,1,8,delivery,completed
+ord_20260418_0390,2026-04-18T11:08:00+00:00,instagram,milk-maiden,Milk Maiden,slice,2,16,pickup,completed
+ord_20260419_0391,2026-04-19T21:41:00+00:00,instagram,carrot,Carrot,whole,1,40,pickup,completed
+ord_20260419_0392,2026-04-19T20:03:00+00:00,walk-in,pistachio-roll,Pistachio Roll,whole,1,44,pickup,completed
+ord_20260419_0393,2026-04-19T17:48:00+00:00,walk-in,honey,Honey,slice,1,8,pickup,completed
+ord_20260419_0394,2026-04-19T16:06:00+00:00,walk-in,honey,Honey,slice,1,8,delivery,completed
+ord_20260419_0395,2026-04-19T19:36:00+00:00,walk-in,tiramisu,Tiramisu,whole,1,44,delivery,completed
+ord_20260419_0396,2026-04-19T13:47:00+00:00,walk-in,honey,Honey,slice,1,8,pickup,completed
+ord_20260420_0397,2026-04-20T16:13:00+00:00,instagram,honey,Honey,slice,1,8,delivery,completed
+ord_20260421_0398,2026-04-21T16:19:00+00:00,whatsapp,carrot,Carrot,slice,1,8,delivery,completed
+ord_20260421_0399,2026-04-21T11:09:00+00:00,whatsapp,honey,Honey,whole,1,39,pickup,completed
+ord_20260421_0400,2026-04-21T21:43:00+00:00,instagram,honey,Honey,slice,3,24,pickup,completed
+ord_20260421_0401,2026-04-21T18:17:00+00:00,website,napoleon,Napoleon,slice,1,8,pickup,completed
+ord_20260422_0402,2026-04-22T17:40:00+00:00,walk-in,napoleon,Napoleon,slice,1,8,pickup,completed
+ord_20260422_0403,2026-04-22T21:11:00+00:00,whatsapp,pistachio-roll,Pistachio Roll,slice,3,27,pickup,completed
+ord_20260422_0404,2026-04-22T19:10:00+00:00,website,pistachio-roll,Pistachio Roll,slice,3,27,pickup,completed
+ord_20260422_0405,2026-04-22T17:24:00+00:00,whatsapp,milk-maiden,Milk Maiden,slice,1,8,pickup,completed
+ord_20260422_0406,2026-04-22T18:52:00+00:00,walk-in,milk-maiden,Milk Maiden,whole,1,38,pickup,completed
+ord_20260422_0407,2026-04-22T19:48:00+00:00,walk-in,honey,Honey,slice,3,24,pickup,completed
+ord_20260422_0408,2026-04-22T10:38:00+00:00,whatsapp,tiramisu,Tiramisu,whole,1,44,delivery,completed
+ord_20260422_0409,2026-04-22T16:37:00+00:00,walk-in,milk-maiden,Milk Maiden,whole,1,38,pickup,completed
+ord_20260423_0410,2026-04-23T20:17:00+00:00,whatsapp,pistachio-roll,Pistachio Roll,whole,1,44,pickup,completed
+ord_20260423_0411,2026-04-23T16:45:00+00:00,instagram,red-velvet,Red Velvet,slice,1,8,pickup,completed
+ord_20260423_0412,2026-04-23T20:31:00+00:00,instagram,milk-maiden,Milk Maiden,whole,1,38,pickup,completed
+ord_20260423_0413,2026-04-23T11:54:00+00:00,instagram,honey,Honey,whole,1,39,delivery,completed
+ord_20260423_0414,2026-04-23T19:56:00+00:00,walk-in,cloud,Cloud,whole,1,42,delivery,completed
+ord_20260423_0415,2026-04-23T17:56:00+00:00,walk-in,honey,Honey,slice,1,8,delivery,completed
+ord_20260423_0416,2026-04-23T09:00:00+00:00,website,pistachio-roll,Pistachio Roll,slice,1,9,pickup,completed
+ord_20260424_0417,2026-04-24T11:45:00+00:00,walk-in,red-velvet,Red Velvet,whole,1,40,pickup,completed
+ord_20260424_0418,2026-04-24T11:32:00+00:00,website,honey,Honey,slice,3,24,delivery,completed
+ord_20260424_0419,2026-04-24T18:08:00+00:00,whatsapp,red-velvet,Red Velvet,whole,1,40,pickup,completed
+ord_20260424_0420,2026-04-24T14:57:00+00:00,instagram,milk-maiden,Milk Maiden,slice,3,24,pickup,completed
+ord_20260424_0421,2026-04-24T16:13:00+00:00,walk-in,milk-maiden,Milk Maiden,whole,1,38,pickup,completed
+ord_20260424_0422,2026-04-24T09:53:00+00:00,walk-in,tiramisu,Tiramisu,slice,3,27,pickup,completed
+ord_20260424_0423,2026-04-24T21:46:00+00:00,instagram,cloud,Cloud,slice,1,9,pickup,completed
+ord_20260424_0424,2026-04-24T09:06:00+00:00,website,pistachio-roll,Pistachio Roll,slice,2,18,pickup,completed
+ord_20260424_0425,2026-04-24T12:27:00+00:00,instagram,cloud,Cloud,whole,1,42,pickup,completed
+ord_20260424_0426,2026-04-24T16:21:00+00:00,walk-in,tiramisu,Tiramisu,whole,1,44,pickup,completed
+ord_20260424_0427,2026-04-24T18:49:00+00:00,website,pistachio-roll,Pistachio Roll,whole,1,44,pickup,completed
+ord_20260424_0428,2026-04-24T20:37:00+00:00,website,honey,Honey,whole,1,39,pickup,completed
+ord_20260424_0429,2026-04-24T18:49:00+00:00,walk-in,napoleon,Napoleon,whole,1,42,pickup,completed
+ord_20260425_0430,2026-04-25T15:19:00+00:00,website,honey,Honey,whole,1,39,pickup,completed
+ord_20260425_0431,2026-04-25T19:11:00+00:00,walk-in,napoleon,Napoleon,whole,1,42,delivery,completed
+ord_20260425_0432,2026-04-25T20:20:00+00:00,website,cloud,Cloud,slice,1,9,pickup,completed
+ord_20260425_0433,2026-04-25T18:17:00+00:00,website,milk-maiden,Milk Maiden,slice,1,8,pickup,completed
+ord_20260425_0434,2026-04-25T14:59:00+00:00,whatsapp,honey,Honey,whole,1,39,delivery,completed
+ord_20260425_0435,2026-04-25T20:37:00+00:00,instagram,milk-maiden,Milk Maiden,slice,1,8,pickup,completed
+ord_20260426_0436,2026-04-26T15:10:00+00:00,website,napoleon,Napoleon,slice,1,8,pickup,completed
+ord_20260426_0437,2026-04-26T15:35:00+00:00,whatsapp,milk-maiden,Milk Maiden,whole,1,38,pickup,completed
+ord_20260426_0438,2026-04-26T09:35:00+00:00,instagram,milk-maiden,Milk Maiden,whole,1,38,delivery,completed
+ord_20260426_0439,2026-04-26T16:51:00+00:00,walk-in,tiramisu,Tiramisu,slice,3,27,pickup,completed
+ord_20260426_0440,2026-04-26T18:53:00+00:00,whatsapp,red-velvet,Red Velvet,slice,1,8,pickup,completed
+ord_20260426_0441,2026-04-26T18:13:00+00:00,walk-in,milk-maiden,Milk Maiden,whole,1,38,delivery,completed
+ord_20260426_0442,2026-04-26T13:09:00+00:00,whatsapp,pistachio-roll,Pistachio Roll,whole,1,44,pickup,completed
+ord_20260426_0443,2026-04-26T12:10:00+00:00,whatsapp,honey,Honey,whole,1,39,delivery,completed
+ord_20260427_0444,2026-04-27T10:57:00+00:00,walk-in,cloud,Cloud,slice,1,9,pickup,completed
+ord_20260428_0445,2026-04-28T19:39:00+00:00,walk-in,honey,Honey,slice,2,16,pickup,completed
+ord_20260428_0446,2026-04-28T19:21:00+00:00,instagram,milk-maiden,Milk Maiden,slice,1,8,delivery,completed
+ord_20260428_0447,2026-04-28T20:44:00+00:00,walk-in,pistachio-roll,Pistachio Roll,whole,1,44,delivery,completed
+ord_20260428_0448,2026-04-28T21:56:00+00:00,whatsapp,cloud,Cloud,slice,2,18,pickup,completed
+ord_20260428_0449,2026-04-28T14:03:00+00:00,instagram,milk-maiden,Milk Maiden,slice,1,8,pickup,completed
+ord_20260428_0450,2026-04-28T16:25:00+00:00,whatsapp,carrot,Carrot,slice,2,16,pickup,completed
+ord_20260428_0451,2026-04-28T18:52:00+00:00,walk-in,red-velvet,Red Velvet,whole,1,40,pickup,completed
+ord_20260429_0452,2026-04-29T20:19:00+00:00,instagram,napoleon,Napoleon,whole,1,42,pickup,completed
+ord_20260429_0453,2026-04-29T19:47:00+00:00,walk-in,milk-maiden,Milk Maiden,whole,1,38,delivery,completed
+ord_20260429_0454,2026-04-29T20:00:00+00:00,walk-in,honey,Honey,whole,1,39,pickup,completed
+ord_20260430_0455,2026-04-30T18:18:00+00:00,instagram,honey,Honey,whole,1,39,pickup,completed
+ord_20260430_0456,2026-04-30T19:27:00+00:00,walk-in,red-velvet,Red Velvet,whole,1,40,delivery,completed
+ord_20260430_0457,2026-04-30T13:31:00+00:00,whatsapp,honey,Honey,whole,1,39,delivery,completed
+ord_20260430_0458,2026-04-30T14:19:00+00:00,whatsapp,milk-maiden,Milk Maiden,slice,1,8,delivery,completed
+ord_20260501_0459,2026-05-01T13:43:00+00:00,instagram,honey,Honey,whole,1,39,pickup,completed
+ord_20260501_0460,2026-05-01T17:59:00+00:00,instagram,pistachio-roll,Pistachio Roll,slice,2,18,delivery,completed
+ord_20260501_0461,2026-05-01T19:59:00+00:00,walk-in,cloud,Cloud,whole,1,42,pickup,completed
+ord_20260501_0462,2026-05-01T14:54:00+00:00,website,honey,Honey,whole,1,39,delivery,completed
+ord_20260501_0463,2026-05-01T13:14:00+00:00,whatsapp,cloud,Cloud,whole,1,42,pickup,completed
+ord_20260501_0464,2026-05-01T14:28:00+00:00,whatsapp,carrot,Carrot,whole,1,40,pickup,completed
+ord_20260501_0465,2026-05-01T19:29:00+00:00,walk-in,honey,Honey,whole,1,39,pickup,completed
+ord_20260501_0466,2026-05-01T09:45:00+00:00,whatsapp,milk-maiden,Milk Maiden,slice,2,16,pickup,completed
+ord_20260501_0467,2026-05-01T19:59:00+00:00,instagram,honey,Honey,slice,1,8,pickup,completed
+ord_20260501_0468,2026-05-01T13:52:00+00:00,walk-in,honey,Honey,whole,1,39,delivery,completed
+ord_20260502_0469,2026-05-02T14:57:00+00:00,walk-in,honey,Honey,slice,3,24,pickup,completed
+ord_20260502_0470,2026-05-02T08:22:00+00:00,walk-in,honey,Honey,whole,1,39,pickup,completed
+ord_20260502_0471,2026-05-02T16:13:00+00:00,walk-in,milk-maiden,Milk Maiden,whole,1,38,pickup,completed
+ord_20260502_0472,2026-05-02T21:17:00+00:00,instagram,napoleon,Napoleon,slice,2,16,pickup,completed
+ord_20260502_0473,2026-05-02T19:48:00+00:00,website,carrot,Carrot,whole,1,40,delivery,completed
+ord_20260502_0474,2026-05-02T17:36:00+00:00,instagram,cloud,Cloud,whole,1,42,pickup,refunded
+ord_20260502_0475,2026-05-02T15:51:00+00:00,walk-in,milk-maiden,Milk Maiden,whole,1,38,pickup,completed
+ord_20260502_0476,2026-05-02T19:31:00+00:00,instagram,honey,Honey,whole,1,39,pickup,completed
+ord_20260502_0477,2026-05-02T15:49:00+00:00,whatsapp,pistachio-roll,Pistachio Roll,slice,1,9,pickup,completed
+ord_20260502_0478,2026-05-02T14:23:00+00:00,whatsapp,honey,Honey,slice,1,8,pickup,completed
+ord_20260503_0479,2026-05-03T20:09:00+00:00,whatsapp,tiramisu,Tiramisu,whole,1,44,delivery,completed
+ord_20260503_0480,2026-05-03T20:22:00+00:00,whatsapp,honey,Honey,whole,1,39,pickup,completed
+ord_20260503_0481,2026-05-03T14:53:00+00:00,website,napoleon,Napoleon,whole,1,42,pickup,completed
+ord_20260503_0482,2026-05-03T18:00:00+00:00,website,milk-maiden,Milk Maiden,slice,1,8,delivery,completed
+ord_20260503_0483,2026-05-03T19:41:00+00:00,walk-in,milk-maiden,Milk Maiden,whole,1,38,pickup,completed
+ord_20260503_0484,2026-05-03T10:06:00+00:00,walk-in,cloud,Cloud,slice,2,18,pickup,completed
+ord_20260503_0485,2026-05-03T17:18:00+00:00,walk-in,carrot,Carrot,whole,1,40,pickup,completed
+ord_20260503_0486,2026-05-03T20:47:00+00:00,walk-in,tiramisu,Tiramisu,slice,2,18,pickup,completed
+ord_20260505_0487,2026-05-05T09:15:00+00:00,walk-in,honey,Honey,slice,1,8,delivery,completed
+ord_20260505_0488,2026-05-05T11:24:00+00:00,whatsapp,pistachio-roll,Pistachio Roll,slice,1,9,pickup,refunded
+ord_20260505_0489,2026-05-05T17:12:00+00:00,instagram,milk-maiden,Milk Maiden,whole,1,38,pickup,completed
+ord_20260505_0490,2026-05-05T12:21:00+00:00,instagram,honey,Honey,whole,1,39,pickup,completed
+ord_20260505_0491,2026-05-05T14:52:00+00:00,walk-in,cloud,Cloud,slice,1,9,pickup,completed
+ord_20260505_0492,2026-05-05T17:00:00+00:00,website,milk-maiden,Milk Maiden,slice,3,24,pickup,completed
+ord_20260505_0493,2026-05-05T17:32:00+00:00,walk-in,milk-maiden,Milk Maiden,whole,1,38,pickup,completed
+ord_20260505_0494,2026-05-05T20:44:00+00:00,walk-in,tiramisu,Tiramisu,slice,3,27,delivery,completed
+ord_20260506_0495,2026-05-06T20:44:00+00:00,instagram,milk-maiden,Milk Maiden,slice,1,8,delivery,completed
+ord_20260506_0496,2026-05-06T19:01:00+00:00,website,honey,Honey,slice,1,8,pickup,completed
+ord_20260507_0497,2026-05-07T12:14:00+00:00,website,honey,Honey,slice,2,16,pickup,completed
+ord_20260507_0498,2026-05-07T09:00:00+00:00,walk-in,milk-maiden,Milk Maiden,whole,1,38,delivery,completed
+ord_20260507_0499,2026-05-07T21:00:00+00:00,whatsapp,napoleon,Napoleon,slice,3,24,delivery,completed
+ord_20260507_0500,2026-05-07T12:46:00+00:00,walk-in,napoleon,Napoleon,whole,1,42,pickup,completed
+ord_20260507_0501,2026-05-07T08:33:00+00:00,walk-in,napoleon,Napoleon,whole,1,42,pickup,completed
+ord_20260507_0502,2026-05-07T11:06:00+00:00,walk-in,milk-maiden,Milk Maiden,slice,3,24,delivery,completed
+ord_20260507_0503,2026-05-07T20:50:00+00:00,walk-in,honey,Honey,whole,1,39,pickup,completed
+ord_20260507_0504,2026-05-07T10:55:00+00:00,website,pistachio-roll,Pistachio Roll,slice,1,9,pickup,completed
+ord_20260508_0505,2026-05-08T13:28:00+00:00,website,carrot,Carrot,slice,1,8,delivery,completed
+ord_20260508_0506,2026-05-08T13:45:00+00:00,walk-in,honey,Honey,slice,3,24,delivery,completed
+ord_20260508_0507,2026-05-08T11:41:00+00:00,walk-in,napoleon,Napoleon,whole,1,42,delivery,completed
+ord_20260508_0508,2026-05-08T16:08:00+00:00,walk-in,honey,Honey,slice,2,16,delivery,completed
+ord_20260508_0509,2026-05-08T20:00:00+00:00,whatsapp,red-velvet,Red Velvet,whole,1,40,pickup,completed
+ord_20260508_0510,2026-05-08T17:51:00+00:00,instagram,tiramisu,Tiramisu,slice,1,9,pickup,completed
+ord_20260508_0511,2026-05-08T12:51:00+00:00,whatsapp,carrot,Carrot,slice,1,8,pickup,completed
+ord_20260508_0512,2026-05-08T19:49:00+00:00,instagram,milk-maiden,Milk Maiden,slice,1,8,pickup,completed
+ord_20260509_0513,2026-05-09T18:02:00+00:00,walk-in,honey,Honey,whole,1,39,pickup,completed
+ord_20260509_0514,2026-05-09T20:31:00+00:00,instagram,cloud,Cloud,whole,1,42,pickup,completed
+ord_20260509_0515,2026-05-09T20:48:00+00:00,walk-in,red-velvet,Red Velvet,slice,3,24,pickup,completed
+ord_20260509_0516,2026-05-09T20:18:00+00:00,walk-in,red-velvet,Red Velvet,whole,1,40,delivery,completed
+ord_20260509_0517,2026-05-09T14:14:00+00:00,walk-in,cloud,Cloud,slice,2,18,pickup,completed
+ord_20260509_0518,2026-05-09T19:48:00+00:00,website,honey,Honey,slice,2,16,pickup,completed
+ord_20260509_0519,2026-05-09T19:22:00+00:00,instagram,napoleon,Napoleon,whole,1,42,pickup,completed
+ord_20260509_0520,2026-05-09T15:31:00+00:00,whatsapp,carrot,Carrot,whole,1,40,delivery,completed
+ord_20260509_0521,2026-05-09T20:38:00+00:00,walk-in,cloud,Cloud,whole,1,42,delivery,completed
+ord_20260509_0522,2026-05-09T15:18:00+00:00,instagram,tiramisu,Tiramisu,whole,1,44,pickup,completed
+ord_20260509_0523,2026-05-09T16:36:00+00:00,whatsapp,honey,Honey,slice,2,16,pickup,completed
+ord_20260509_0524,2026-05-09T12:42:00+00:00,walk-in,honey,Honey,slice,3,24,pickup,completed
+ord_20260509_0525,2026-05-09T14:41:00+00:00,walk-in,cloud,Cloud,whole,1,42,delivery,completed
+ord_20260509_0526,2026-05-09T18:52:00+00:00,walk-in,cloud,Cloud,whole,1,42,pickup,completed

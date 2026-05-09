@@ -1,0 +1,70 @@
+{% extends "_base.html" %}
+
+{% block content %}
+
+<section class="hero">
+  <div>
+    <p class="eyebrow">◆ HappyCake · Sugar Land</p>
+    <h1>The original taste of happiness.</h1>
+    <p class="lead">Handmade cakes, baked here in Sugar Land. Every recipe was perfected over years before it earned its name. Today's bake is on the counter.</p>
+    <p class="ctas">
+      <a class="btn primary" href="/cakes">See today's cakes</a>
+      <a class="btn ghost" href="/custom">Plan a custom cake</a>
+    </p>
+  </div>
+  <aside class="visit">
+    <h3>Visit the counter</h3>
+    <p>{{ policies.business.address }}<br>
+       Tue–Sat 11:00–19:00 · Sun 12:00–18:00</p>
+    <p><a href="/contact">Directions and parking →</a></p>
+  </aside>
+</section>
+
+<section class="grid">
+  <h2>Today on the counter</h2>
+  <ul class="cards">
+    {% for cake in catalog if cake.slug != 'custom' %}
+    <li class="card"
+        data-slug="{{ cake.slug }}"
+        data-price-slice-usd="{{ cake.sizes[0].price_usd }}"
+        data-price-whole-usd="{{ cake.sizes[-1].price_usd }}"
+        data-lead-time-hours="{{ cake.lead_time_hours }}"
+        data-allergens="{{ cake.allergens|join(',') }}"
+        data-serves-min="{{ cake.serves_min }}"
+        data-serves-max="{{ cake.serves_max }}">
+      <a href="/cakes/{{ cake.slug }}">
+        <img src="{{ cake.photo }}" alt='{{ cake.display_name() }}' loading="lazy">
+        <h3>{{ cake.display_name() }}</h3>
+        <p class="desc">{{ cake.short_description }}</p>
+        <p class="meta">
+          <span>{{ cake.sizes[-1].weight_g }} g, ${{ "%.0f"|format(cake.sizes[-1].price_usd) }}</span>
+          <span>· slice ${{ "%.0f"|format(cake.sizes[0].price_usd) }}</span>
+          <span>· {{ cake.lead_time_hours }}h notice</span>
+        </p>
+      </a>
+    </li>
+    {% endfor %}
+  </ul>
+</section>
+
+<section class="strip">
+  <div>
+    <h2>Custom cakes</h2>
+    <p>Decoration is a small, optional service — our offering is the ready-made line.
+       For a meaningful occasion we are happy to design something specific. We confirm
+       size, tiers, flavour, filling, decoration, inscription, and pickup or delivery in
+       one short conversation. Custom cakes need 48 hours.</p>
+    <p><a class="btn ghost" href="/custom">Start a custom cake</a></p>
+  </div>
+  <div>
+    <h2>Allergens, plainly</h2>
+    <p>Our kitchen handles flour, dairy, eggs, and tree nuts daily. We list every
+       allergen on every cake. For severe allergies, please ask before ordering — every
+       allergen question routes to a person on the team.</p>
+    <p><a class="btn ghost" href="/policies/allergens">Read our allergen policy</a></p>
+  </div>
+</section>
+
+<p class="closing">Order on the site at happycake.us or send a message on WhatsApp.</p>
+
+{% endblock %}

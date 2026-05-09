@@ -1,0 +1,8 @@
+{
+  "dailyCapacityMinutes": 420,
+  "defaultLeadTimeMinutes": 45,
+  "activePrepMinutes": 3,
+  "remainingCapacityMinutes": 417,
+  "queuedTickets": 1,
+  "acceptedTickets": 0
+}

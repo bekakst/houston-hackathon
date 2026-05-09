@@ -1,0 +1,50 @@
+{
+  "mode": "simulated",
+  "catalog": [
+    {
+      "id": "sq_item_honey_cake_slice",
+      "variationId": "sq_var_honey_cake_slice",
+      "name": "Honey cake slice",
+      "category": "slices",
+      "priceCents": 850,
+      "description": "Individual honey cake slice for walk-ins and quick pickup.",
+      "kitchenProductId": "honey-cake-slice"
+    },
+    {
+      "id": "sq_item_whole_honey_cake",
+      "variationId": "sq_var_whole_honey_cake",
+      "name": "Whole honey cake",
+      "category": "whole-cakes",
+      "priceCents": 5500,
+      "description": "Classic whole honey cake for family orders.",
+      "kitchenProductId": "whole-honey-cake"
+    },
+    {
+      "id": "sq_item_pistachio_roll",
+      "variationId": "sq_var_pistachio_roll",
+      "name": "Pistachio roll",
+      "category": "slices",
+      "priceCents": 950,
+      "description": "Premium pistachio roll dessert.",
+      "kitchenProductId": "pistachio-roll"
+    },
+    {
+      "id": "sq_item_custom_birthday_cake",
+      "variationId": "sq_var_custom_birthday_cake",
+      "name": "Custom birthday cake",
+      "category": "custom",
+      "priceCents": 9500,
+      "description": "Custom celebration cake with human approval required.",
+      "kitchenProductId": "custom-birthday-cake"
+    },
+    {
+      "id": "sq_item_office_dessert_box",
+      "variationId": "sq_var_office_dessert_box",
+      "name": "Office dessert box",
+      "category": "catering",
+      "priceCents": 12000,
+      "description": "Assorted dessert box for offices and events.",
+      "kitchenProductId": "office-dessert-box"
+    }
+  ]
+}

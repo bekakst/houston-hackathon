@@ -1,0 +1,16 @@
+{% extends "_base.html" %}
+
+{% block content %}
+<section class="page-head">
+  <p class="eyebrow">◆ Refunds</p>
+  <h1>How we handle issues</h1>
+</section>
+
+<section class="policy">
+  <p>{{ policies.refund.same_day }}</p>
+  <p>Refunds over ${{ "%.0f"|format(policies.refund.threshold_usd) }} are reviewed by the owner the same day. We respond on the channel you wrote in.</p>
+  <p>If something is wrong with your order, send a message with a photo. We will not blame you. We will fix it.</p>
+</section>
+
+<p class="closing">Order on the site at happycake.us or send a message on WhatsApp.</p>
+{% endblock %}

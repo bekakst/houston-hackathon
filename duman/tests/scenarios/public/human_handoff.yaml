@@ -1,0 +1,11 @@
+name: "Human handoff — talk to the owner"
+channel: whatsapp
+sender: "+15559876543"
+sender_name: customer
+thread_id: scn_wa_handoff
+turns:
+  - customer: "Can I talk to the owner please?"
+    expect:
+      intent: escalate
+      owner_approval: true
+      suggested_action_contains: human_handoff

@@ -1,0 +1,50 @@
+{% extends "_base.html" %}
+
+{% block extra_jsonld %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Which allergens does HappyCake declare?",
+      "acceptedAnswer": {"@type": "Answer", "text": "We declare gluten, dairy, egg, tree nuts, soy, and sesame. Each cake page lists its specific allergens."}
+    },
+    {
+      "@type": "Question",
+      "name": "Can HappyCake guarantee a cake is nut-free or gluten-free?",
+      "acceptedAnswer": {"@type": "Answer", "text": "Our kitchen handles flour, dairy, eggs, and tree nuts daily. We cannot guarantee zero cross-contamination. For severe allergies please speak with the team before ordering — every allergen question routes to a person."}
+    },
+    {
+      "@type": "Question",
+      "name": "Does the assistant answer allergen questions?",
+      "acceptedAnswer": {"@type": "Answer", "text": "The assistant tells you what is declared, then connects you with the team. We never commit to safety claims for severe allergies on a chat alone."}
+    }
+  ]
+}
+</script>
+{% endblock %}
+
+{% block content %}
+<section class="page-head">
+  <p class="eyebrow">◆ Allergens</p>
+  <h1>What we declare and why we are careful</h1>
+</section>
+
+<section class="policy">
+  <p>{{ policies.allergens.cross_contamination_warning }}</p>
+
+  <h2>Declared allergens</h2>
+  <ul>
+    {% for a in policies.allergens.declared %}<li>{{ a }}</li>{% endfor %}
+  </ul>
+
+  <h2>How allergen questions are handled</h2>
+  <p>{{ policies.allergens.escalation_rule }}</p>
+
+  <p><a href="/cakes">See each cake's allergen list →</a></p>
+</section>
+
+<p class="closing">Order on the site at happycake.us or send a message on WhatsApp.</p>
+{% endblock %}

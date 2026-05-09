@@ -1,0 +1,37 @@
+{% extends "_base.html" %}
+
+{% block content %}
+<section class="page-head">
+  <p class="eyebrow">◆ The cakes</p>
+  <h1>Today's bake</h1>
+  <p class="lead">Every cake on this list is on the counter today. Slice or whole. Pickup or local delivery.</p>
+</section>
+
+<ul class="cards wide">
+  {% for cake in catalog if cake.slug != 'custom' %}
+  <li class="card"
+      data-slug="{{ cake.slug }}"
+      data-price-slice-usd="{{ cake.sizes[0].price_usd }}"
+      data-price-whole-usd="{{ cake.sizes[-1].price_usd }}"
+      data-lead-time-hours="{{ cake.lead_time_hours }}"
+      data-allergens="{{ cake.allergens|join(',') }}"
+      data-serves-min="{{ cake.serves_min }}"
+      data-serves-max="{{ cake.serves_max }}"
+      data-tiers="{{ cake.tier_options|join(',') }}">
+    <a href="/cakes/{{ cake.slug }}">
+      <img src="{{ cake.photo }}" alt='{{ cake.display_name() }}' loading="lazy">
+      <h3>{{ cake.display_name() }}</h3>
+      <p class="desc">{{ cake.short_description }}</p>
+      <ul class="facts">
+        <li><strong>${{ "%.0f"|format(cake.sizes[-1].price_usd) }}</strong>, {{ cake.sizes[-1].weight_g }} g whole</li>
+        <li>${{ "%.0f"|format(cake.sizes[0].price_usd) }} per slice</li>
+        <li>Allergens: {{ cake.allergens|join(', ') or "none declared" }}</li>
+        <li>{{ cake.lead_time_hours }}h notice · serves {{ cake.serves_min }}–{{ cake.serves_max }}</li>
+      </ul>
+    </a>
+  </li>
+  {% endfor %}
+</ul>
+
+<p class="closing">Order on the site at happycake.us or send a message on WhatsApp.</p>
+{% endblock %}

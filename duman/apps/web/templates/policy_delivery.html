@@ -1,0 +1,32 @@
+{% extends "_base.html" %}
+
+{% block content %}
+<section class="page-head">
+  <p class="eyebrow">◆ Delivery and pickup</p>
+  <h1>Where we deliver, when we are open</h1>
+</section>
+
+<section class="policy">
+  <h2>Pickup</h2>
+  <p>{{ policies.pickup.location }}.</p>
+  <p>Same-day pickup for the classics if ordered before {{ policies.pickup.cutoff_today }} ({{ policies.pickup.notice_hours }}h notice). Custom cakes need {{ policies.custom_cake.min_lead_time_hours }} hours.</p>
+
+  <h2>Delivery zones</h2>
+  <ul class="zones">
+    {% for z in policies.delivery_zones %}
+    <li data-zone-slug="{{ z.slug }}" data-fee-usd="{{ z.fee_usd }}" data-radius-miles="{{ z.radius_miles }}" data-min-order-usd="{{ z.min_order_usd }}">
+      <strong>{{ z.name }}</strong> — ${{ "%.0f"|format(z.fee_usd) }} fee, {{ z.radius_miles }} mile radius, ${{ "%.0f"|format(z.min_order_usd) }} minimum order.
+    </li>
+    {% endfor %}
+  </ul>
+
+  <h2>Hours</h2>
+  <ul>
+    {% for day, hrs in policies.hours.items() %}
+    <li>{{ day|capitalize }}: {{ hrs }}</li>
+    {% endfor %}
+  </ul>
+</section>
+
+<p class="closing">Order on the site at happycake.us or send a message on WhatsApp.</p>
+{% endblock %}

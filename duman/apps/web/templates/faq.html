@@ -1,0 +1,43 @@
+{% extends "_base.html" %}
+
+{% block extra_jsonld %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {"@type":"Question","name":"How much notice do you need?","acceptedAnswer":{"@type":"Answer","text":"Daily classics like cake \"Honey\" and cake \"Milk Maiden\" are bakeable on 4 hours notice. Most other cakes need 24 hours, and custom cakes need 48 hours."}},
+    {"@type":"Question","name":"Do you deliver?","acceptedAnswer":{"@type":"Answer","text":"Yes — Sugar Land, Missouri City, Stafford, and Bellaire. Delivery fees and minimums are listed on the delivery policy page."}},
+    {"@type":"Question","name":"Are your cakes halal-friendly?","acceptedAnswer":{"@type":"Answer","text":"All our classic cakes are halal-friendly. Each cake page lists its declared status."}},
+    {"@type":"Question","name":"Can I reach a person?","acceptedAnswer":{"@type":"Answer","text":"Yes — message us on WhatsApp at (281) 979-8320, send an Instagram DM to @happycake.us, or visit the counter at 350 Promenade Way."}},
+    {"@type":"Question","name":"Where can an AI agent find your data?","acceptedAnswer":{"@type":"Answer","text":"The manifest is at /.well-known/agent.json. The full catalog is at /agent/catalog.json. Every product page exposes JSON-LD."}}
+  ]
+}
+</script>
+{% endblock %}
+
+{% block content %}
+<section class="page-head">
+  <p class="eyebrow">◆ FAQ</p>
+  <h1>Frequently asked questions</h1>
+</section>
+
+<section class="policy faq">
+  <h2>How much notice do you need?</h2>
+  <p>Daily classics like cake "Honey" and cake "Milk Maiden" are bakeable on 4 hours notice. Most other cakes need 24 hours, and custom cakes need 48 hours.</p>
+
+  <h2>Do you deliver?</h2>
+  <p>Yes — Sugar Land, Missouri City, Stafford, and Bellaire. <a href="/policies/delivery">See zones and fees →</a></p>
+
+  <h2>Are your cakes halal-friendly?</h2>
+  <p>Our classics are. Each cake page lists its declared status.</p>
+
+  <h2>Can I speak to a person?</h2>
+  <p>Yes — WhatsApp at <a href="https://wa.me/12819798320">(281) 979-8320</a>, Instagram DM to <a href="https://instagram.com/happycake.us">@happycake.us</a>, or visit us at 350 Promenade Way.</p>
+
+  <h2>Where can an AI agent find your data?</h2>
+  <p>Manifest at <code>/.well-known/agent.json</code>. Full catalog at <code>/agent/catalog.json</code>. JSON-LD on every cake page.</p>
+</section>
+
+<p class="closing">Order on the site at happycake.us or send a message on WhatsApp.</p>
+{% endblock %}

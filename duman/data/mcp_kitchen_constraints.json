@@ -1,0 +1,42 @@
+[
+  {
+    "productId": "honey-cake-slice",
+    "name": "Honey cake slice",
+    "prepMinutes": 3,
+    "leadTimeMinutes": 5,
+    "capacityUnitsPerDay": 80,
+    "requiresCustomWork": false
+  },
+  {
+    "productId": "whole-honey-cake",
+    "name": "Whole honey cake",
+    "prepMinutes": 25,
+    "leadTimeMinutes": 60,
+    "capacityUnitsPerDay": 12,
+    "requiresCustomWork": false
+  },
+  {
+    "productId": "pistachio-roll",
+    "name": "Pistachio roll",
+    "prepMinutes": 8,
+    "leadTimeMinutes": 20,
+    "capacityUnitsPerDay": 30,
+    "requiresCustomWork": false
+  },
+  {
+    "productId": "custom-birthday-cake",
+    "name": "Custom birthday cake",
+    "prepMinutes": 90,
+    "leadTimeMinutes": 1440,
+    "capacityUnitsPerDay": 4,
+    "requiresCustomWork": true
+  },
+  {
+    "productId": "office-dessert-box",
+    "name": "Office dessert box",
+    "prepMinutes": 45,
+    "leadTimeMinutes": 180,
+    "capacityUnitsPerDay": 8,
+    "requiresCustomWork": true
+  }
+]

@@ -1,0 +1,15 @@
+name: "WhatsApp birthday cake — happy path"
+channel: whatsapp
+sender: "+15551234567"
+sender_name: Maria
+thread_id: scn_wa_birthday
+turns:
+  - customer: "Hi, I need a cake for Saturday for 10 people."
+    expect:
+      # Either intake (offering a classic that serves 10) or custom (slot-fill)
+      # is acceptable — both are honest reads of the message.
+      reply_contains_any: ["Saturday", "Honey", "Milk Maiden", "Napoleon", "10", "ten", "size"]
+  - customer: "How much for cake Honey whole, pickup?"
+    expect:
+      intent: intake
+      reply_contains_any: ["55", "Honey", "whole"]

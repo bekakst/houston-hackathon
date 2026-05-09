@@ -1,0 +1,90 @@
+{% extends "_base.html" %}
+
+{% block extra_jsonld %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Product",
+  "name": {{ cake.display_name()|tojson }},
+  "image": ["https://happycake.us{{ cake.photo }}"],
+  "description": {{ cake.long_description|tojson }},
+  "brand": {"@type": "Brand", "name": "HappyCake"},
+  "category": "Cake",
+  "additionalProperty": [
+    {"@type": "PropertyValue", "name": "lead_time_hours", "value": {{ cake.lead_time_hours }}},
+    {"@type": "PropertyValue", "name": "serves_min", "value": {{ cake.serves_min }}},
+    {"@type": "PropertyValue", "name": "serves_max", "value": {{ cake.serves_max }}},
+    {"@type": "PropertyValue", "name": "halal_friendly", "value": {{ "true" if cake.halal_friendly else "false" }}},
+    {"@type": "PropertyValue", "name": "allergens", "value": {{ cake.allergens|tojson }}},
+    {"@type": "PropertyValue", "name": "tier_options", "value": {{ cake.tier_options|tojson }}},
+    {"@type": "PropertyValue", "name": "delivery_zones", "value": {{ cake.delivery_zones|tojson }}}
+  ],
+  "offers": [
+    {% for s in cake.sizes %}
+    {
+      "@type": "Offer",
+      "priceCurrency": "USD",
+      "price": "{{ "%.2f"|format(s.price_usd) }}",
+      "name": "{{ s.label }} ({{ s.weight_g }} g)",
+      "availability": "https://schema.org/{{ 'InStock' if cake.available_daily else 'PreOrder' }}",
+      "url": "https://happycake.us/cakes/{{ cake.slug }}"
+    }{% if not loop.last %},{% endif %}
+    {% endfor %}
+  ]
+}
+</script>
+{% endblock %}
+
+{% block content %}
+<article class="cake-detail">
+  <div class="hero">
+    <img src="{{ cake.photo }}" alt='{{ cake.display_name() }}'>
+    <div>
+      <p class="eyebrow">◆ HappyCake</p>
+      <h1>{{ cake.display_name() }}</h1>
+      <p class="lead">{{ cake.short_description }}</p>
+
+      <ul class="sizes">
+        {% for s in cake.sizes %}
+        <li data-size-label="{{ s.label }}" data-price-usd="{{ s.price_usd }}" data-weight-g="{{ s.weight_g }}">
+          <strong>{{ s.label|capitalize }}</strong>
+          <span>{{ s.weight_g }} g</span>
+          <span>${{ "%.0f"|format(s.price_usd) }}</span>
+        </li>
+        {% endfor %}
+      </ul>
+
+      <ul class="facts"
+          data-allergens="{{ cake.allergens|join(',') }}"
+          data-lead-time-hours="{{ cake.lead_time_hours }}"
+          data-serves-min="{{ cake.serves_min }}"
+          data-serves-max="{{ cake.serves_max }}"
+          data-tiers="{{ cake.tier_options|join(',') }}">
+        <li>{{ cake.lead_time_hours }} hours notice</li>
+        <li>Serves {{ cake.serves_min }}–{{ cake.serves_max }}</li>
+        <li>Tiers: {{ cake.tier_options|join(', ') }}</li>
+        <li>Allergens: {{ cake.allergens|join(', ') or "none declared" }}</li>
+        <li>Delivery zones: {{ cake.delivery_zones|join(', ') }}</li>
+        <li>{{ "Halal-friendly" if cake.halal_friendly else "Not halal-friendly" }}</li>
+      </ul>
+
+      <p>
+        <a class="btn primary" href="/custom?base={{ cake.slug }}">Order this cake</a>
+        <a class="btn ghost" href="/contact">Pickup at the counter</a>
+      </p>
+    </div>
+  </div>
+
+  <section class="long">
+    <h2>About {{ cake.display_name() }}</h2>
+    <p>{{ cake.long_description }}</p>
+
+    <h3>Ingredients</h3>
+    <ul class="ingredients">
+      {% for ing in cake.ingredients %}<li>{{ ing }}</li>{% endfor %}
+    </ul>
+  </section>
+</article>
+
+<p class="closing">Order on the site at happycake.us or send a message on WhatsApp.</p>
+{% endblock %}

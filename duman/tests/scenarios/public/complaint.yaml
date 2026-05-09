@@ -1,0 +1,12 @@
+name: "Damaged-on-delivery complaint"
+channel: instagram
+sender: ig_guest_003
+sender_name: Anna
+thread_id: scn_ig_complaint
+turns:
+  - customer: "The cake arrived crushed. The lid was open and the top is ruined."
+    expect:
+      intent: care
+      owner_approval: true
+      reply_contains_any: ["sorry", "fix", "right"]
+      reply_does_not_contain: ["per our policy", "you should have"]

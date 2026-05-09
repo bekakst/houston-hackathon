@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{ page_title or "HappyCake US — handmade cakes in Sugar Land" }}</title>
+<meta name="description" content="HappyCake US is a handmade cake shop in Sugar Land, Texas. Same recipes, made by hand. Order online or visit the counter at 350 Promenade Way.">
+<meta name="theme-color" content="#1B4868">
+<link rel="stylesheet" href="/static/brand.css">
+<link rel="alternate" type="application/json" title="Agent manifest" href="/.well-known/agent.json">
+<link rel="canonical" href="https://happycake.us{{ request.url.path }}">
+
+{# Bakery JSON-LD — present on every page #}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Bakery",
+  "name": "{{ policies.business.wordmark }}",
+  "alternateName": "{{ policies.business.legal_name }}",
+  "image": "https://happycake.us/static/photos/storefront.jpg",
+  "telephone": "{{ policies.business.phone }}",
+  "url": "https://happycake.us",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "350 Promenade Way, Suite 500",
+    "addressLocality": "Sugar Land",
+    "addressRegion": "TX",
+    "postalCode": "77478",
+    "addressCountry": "US"
+  },
+  "geo": {"@type": "GeoCoordinates", "latitude": 29.5852, "longitude": -95.6502},
+  "openingHoursSpecification": [
+    {"@type": "OpeningHoursSpecification", "dayOfWeek": ["Tuesday","Wednesday","Thursday","Friday","Saturday"], "opens": "11:00", "closes": "19:00"},
+    {"@type": "OpeningHoursSpecification", "dayOfWeek": "Sunday", "opens": "12:00", "closes": "18:00"}
+  ],
+  "servesCuisine": "European, Central Asian",
+  "priceRange": "$$",
+  "sameAs": ["https://www.instagram.com/happycake.us"]
+}
+</script>
+
+{% block extra_jsonld %}{% endblock %}
+</head>
+<body>
+
+<header class="site-header">
+  <div class="bar">
+    <a class="brand" href="/"><span class="word">HappyCake</span><span class="badge">Sugar Land</span></a>
+    <nav>
+      <a href="/cakes">Cakes</a>
+      <a href="/custom">Custom</a>
+      <a href="/policies/allergens">Allergens</a>
+      <a href="/policies/delivery">Delivery</a>
+      <a href="/contact">Visit</a>
+      <a href="/faq">FAQ</a>
+    </nav>
+  </div>
+</header>
+
+<main class="page">
+{% block content %}{% endblock %}
+</main>
+
+<footer class="site-footer">
+  <div class="cols">
+    <div>
+      <h4>HappyCake US</h4>
+      <p>{{ policies.business.address }}<br>
+      {{ policies.business.phone }}<br>
+      <a href="{{ 'https://instagram.com/' ~ policies.business.instagram_handle.lstrip('@') }}">{{ policies.business.instagram_handle }}</a></p>
+    </div>
+    <div>
+      <h4>Hours</h4>
+      <p>Mon — closed<br>Tue–Sat — 11:00–19:00<br>Sun — 12:00–18:00</p>
+    </div>
+    <div>
+      <h4>Order</h4>
+      <p><a href="/cakes">Browse cakes</a><br><a href="/custom">Custom cake</a><br><a href="/order-status">Order status</a></p>
+    </div>
+    <div>
+      <h4>Read</h4>
+      <p><a href="/policies/delivery">Delivery</a><br><a href="/policies/allergens">Allergens</a><br><a href="/policies/refund">Refunds</a><br><a href="/faq">FAQ</a></p>
+    </div>
+  </div>
+  <p class="micro">Order on the site at happycake.us or send a message on WhatsApp.</p>
+</footer>
+
+{% include "_assistant.html" %}
+</body>
+</html>
