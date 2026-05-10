@@ -38,6 +38,8 @@ class Settings(BaseSettings):
     claude_cli: str = Field(default="claude")
     claude_timeout_seconds: int = Field(default=45)
 
+    reveal_token_salt: SecretStr = Field(default=SecretStr("happycake-reveal-default-salt"))
+
     project_root: Path = Field(default_factory=lambda: Path(__file__).resolve().parents[2])
 
     def is_dev(self) -> bool:

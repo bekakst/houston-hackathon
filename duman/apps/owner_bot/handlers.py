@@ -48,6 +48,7 @@ from happycake.storage import (
     decision_list_pending,
     decision_set_status,
     now_iso,
+    reveal_set_state,
 )
 
 log = logging.getLogger(__name__)
@@ -544,6 +545,29 @@ async def _handle_approve(q, decision: dict) -> None:
             await q.message.reply_text(
                 f"⚠ Marketing closed loop had failures{suffix} — check /audit. "
                 f"Decision is approved either way."
+            )
+        return
+
+    if kind == "gender_reveal":
+        # Transition the reveal order from `revealed` -> `baking`. The kitchen
+        # ticket itself is owner-driven from /kitchen — adding a real
+        # kitchen_create_ticket here is out of scope and would touch MCP wiring.
+        reveal_order_id = payload.get("reveal_order_id")
+        if reveal_order_id:
+            try:
+                reveal_set_state(reveal_order_id, "baking")
+            except Exception as exc:  # noqa: BLE001
+                log.warning("reveal_set_state failed for %s: %s",
+                            reveal_order_id, exc)
+            audit_write(
+                event_id=f"rv_bake_{reveal_order_id}",
+                kind="gender_reveal_baking",
+                payload={"order_id": reveal_order_id, "by": "owner"},
+            )
+            await q.message.reply_text(
+                f"🎂 Reveal order `{reveal_order_id}` -> *baking*. "
+                "Customer received the lock-in confirmation (no colour mentioned).",
+                parse_mode=ParseMode.MARKDOWN,
             )
         return
 

@@ -32,6 +32,7 @@ class Intent(str, Enum):
     custom = "custom"
     care = "care"
     reporting = "reporting"
+    gender_reveal = "gender_reveal"
     escalate = "escalate"
 
 
@@ -249,7 +250,7 @@ class OwnerDecision(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
     decision_id: str
-    kind: Literal["intake", "custom", "care", "marketing", "reporting"]
+    kind: Literal["intake", "custom", "care", "marketing", "reporting", "gender_reveal"]
     channel: Channel
     customer_id: str
     customer_name: str
@@ -267,6 +268,67 @@ class OwnerDecision(BaseModel):
     created_at: datetime
     status: Literal["pending", "approved", "rejected", "edited", "expired"] = "pending"
     rejection_reason: str | None = None
+
+
+class RevealState(str, Enum):
+    pending_reveal = "pending_reveal"
+    revealed = "revealed"
+    baking = "baking"
+    ready = "ready"
+    delivered = "delivered"
+    cancelled = "cancelled"
+
+
+class RevealOrderCreate(BaseModel):
+    """Inbound form payload for the gender-reveal cake order."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    orderer_name: str = Field(min_length=1, max_length=120)
+    orderer_contact: str = Field(min_length=3, max_length=200)
+    party_date: str = Field(min_length=4, max_length=40)
+    pickup_or_delivery: Literal["pickup", "delivery"]
+    delivery_address: str | None = Field(default=None, max_length=300)
+    guest_count: int = Field(ge=1, le=300)
+    decorations: str | None = Field(default=None, max_length=400)
+    notes_to_baker: str | None = Field(default=None, max_length=600)
+
+
+class RevealOrdererView(BaseModel):
+    """Defense-in-depth view passed to orderer-facing templates.
+
+    The `gender` field is intentionally absent so even a future template
+    typo cannot leak the secret.
+    """
+
+    model_config = ConfigDict(extra="forbid")
+
+    order_id: str
+    orderer_name: str
+    party_date: str
+    pickup_or_delivery: Literal["pickup", "delivery"]
+    delivery_address: str | None = None
+    guest_count: int
+    cake_size_kg: float
+    decorations: str | None = None
+    notes_to_baker: str | None = None
+    state: RevealState
+    state_label: str
+    reveal_url: str | None = None  # only set on the sent-to-knower page
+    knower_has_responded: bool = False
+
+
+class RevealKnowerView(BaseModel):
+    """View passed to the knower's pick page. Carries no gender — the knower
+    is the one ABOUT to set it."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    order_id: str
+    orderer_first_name: str
+    party_date: str
+    cake_size_kg: float
+    already_locked: bool = False
 
 
 class AuditEvent(BaseModel):

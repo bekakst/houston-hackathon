@@ -146,3 +146,13 @@ async def run_reporting(envelope: dict) -> Reply:
 async def run_marketing(envelope: dict) -> Reply:
     """Marketing takes a pre-built evidence envelope (budget + history + margins)."""
     return await _run_specialist("marketing", Intent.reporting, envelope, timeout_s=60)
+
+
+async def run_gender_reveal(text: str, *, history: list[dict] | None = None) -> Reply:
+    evidence = ground_for_intent("gender_reveal", text)
+    envelope = {
+        "current_text": text,
+        "thread_history": (history or [])[-6:],
+        "evidence": evidence,
+    }
+    return await _run_specialist("gender_reveal", Intent.gender_reveal, envelope)

@@ -1,0 +1,18 @@
+{% extends "_base.html" %}
+
+{% block extra_jsonld %}
+<meta name="robots" content="noindex,nofollow">
+<link rel="stylesheet" href="/static/css/gender_reveal.css">
+{% endblock %}
+
+{% block assistant %}{% endblock %}
+
+{% block content %}
+<section class="gr-knower-page">
+  <p class="eyebrow">◆ HappyCake</p>
+  <h1>Thank you — your secret is safe.</h1>
+  <p class="lead">We have what we need. The kitchen will start baking, and {{ orderer_first_name }} will pick the cake up on {{ party_date }} without a clue.</p>
+  <p>You can close this tab. We won't show this page again.</p>
+  <p style="font-size:0.9rem; color:#666; margin-top:2rem;">Order on the site at happycake.us or send a message on WhatsApp.</p>
+</section>
+{% endblock %}

@@ -1,0 +1,121 @@
+/* Gender-reveal feature styles. Brand-faithful: cream background, dark
+   slate text, accent pink/blue reserved for the knower's two-choice page. */
+
+.gr-hero {
+  padding: 3rem 1.5rem 2rem;
+  background: linear-gradient(180deg, #FDF7EE 0%, #FAF1DD 100%);
+  border-radius: 24px;
+  text-align: center;
+}
+.gr-hero h1 {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 2.4rem;
+  margin: 0 0 0.5rem;
+  color: #1B4868;
+}
+.gr-hero p.lead {
+  font-size: 1.1rem;
+  max-width: 38rem;
+  margin: 0.5rem auto 1rem;
+}
+
+.gr-steps {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  margin: 2rem 0;
+}
+.gr-steps li {
+  list-style: none;
+  background: #fff;
+  border: 1px solid #EDE3D0;
+  border-radius: 16px;
+  padding: 1.25rem;
+}
+.gr-steps li strong {
+  display: block;
+  margin-bottom: 0.25rem;
+  color: #1B4868;
+}
+
+.gr-form { display: grid; gap: 1rem; max-width: 38rem; }
+.gr-form label { display: block; font-weight: 600; margin-bottom: 0.25rem; }
+.gr-form input, .gr-form select, .gr-form textarea {
+  width: 100%;
+  padding: 0.6rem 0.8rem;
+  border: 1px solid #C9BBA1;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-family: inherit;
+}
+.gr-form textarea { min-height: 4rem; resize: vertical; }
+
+.gr-cta {
+  background: #1B4868; color: #fff; border: 0;
+  padding: 0.8rem 1.4rem; border-radius: 12px;
+  font-size: 1.05rem; font-weight: 600; cursor: pointer;
+}
+.gr-cta:hover { filter: brightness(1.1); }
+
+.gr-share-box {
+  background: #fff;
+  border: 1px solid #EDE3D0;
+  border-radius: 16px;
+  padding: 1.25rem;
+  margin: 1.5rem 0;
+}
+.gr-share-url {
+  display: flex; gap: 0.5rem; align-items: stretch; flex-wrap: wrap;
+}
+.gr-share-url input {
+  flex: 1 1 18rem; padding: 0.6rem 0.8rem;
+  border: 1px solid #C9BBA1; border-radius: 10px;
+  font-family: ui-monospace, monospace; font-size: 0.95rem;
+}
+.gr-share-url button { white-space: nowrap; }
+.gr-share-script {
+  background: #FDF7EE; border-left: 3px solid #1B4868;
+  padding: 0.75rem 1rem; margin-top: 1rem; border-radius: 0 8px 8px 0;
+}
+
+.gr-knower-page { max-width: 32rem; margin: 0 auto; padding: 2.5rem 1.25rem; text-align: center; }
+.gr-knower-page h1 {
+  font-family: Georgia, "Times New Roman", serif;
+  color: #1B4868;
+}
+.gr-knower-buttons {
+  display: grid; gap: 1rem; margin: 2rem 0 1rem;
+  grid-template-columns: 1fr 1fr;
+}
+.gr-knower-buttons button {
+  padding: 1.5rem 1rem;
+  font-size: 1.4rem;
+  font-weight: 700;
+  border: 0;
+  border-radius: 18px;
+  color: #fff;
+  cursor: pointer;
+  font-family: inherit;
+}
+.gr-knower-buttons button.boy  { background: #2F5C8E; }
+.gr-knower-buttons button.girl { background: #C26A88; }
+.gr-knower-buttons button:hover { filter: brightness(1.08); }
+
+.gr-status-card {
+  background: #fff;
+  border: 1px solid #EDE3D0;
+  border-radius: 16px;
+  padding: 1.5rem;
+  margin: 1.5rem 0;
+}
+.gr-status-state {
+  font-size: 1.1rem;
+  color: #1B4868;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.gr-form-errors {
+  background: #FBE8E8; border: 1px solid #E8B0B0;
+  padding: 0.75rem 1rem; border-radius: 10px; margin-bottom: 1rem;
+}

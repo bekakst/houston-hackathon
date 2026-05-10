@@ -1,0 +1,30 @@
+{% extends "_base.html" %}
+
+{% block extra_jsonld %}
+<meta name="robots" content="noindex,nofollow">
+<link rel="stylesheet" href="/static/css/gender_reveal.css">
+{% endblock %}
+
+{% block assistant %}{# the knower should not be distracted by chat #}{% endblock %}
+
+{% block content %}
+<section class="gr-knower-page">
+  <p class="eyebrow">◆ HappyCake</p>
+  <h1>Tell HappyCake the secret.</h1>
+  <p class="lead">{{ knower.orderer_first_name }} ordered a reveal cake for {{ knower.party_date }}. You're the only person — outside the kitchen — who'll know. We won't tell the family. The cake will.</p>
+
+  {% if knower.already_locked %}
+  <p style="background:#FDF7EE; padding:1rem; border-radius:12px;">
+    The secret is already in. Thank you — we have what we need to start baking.
+  </p>
+  {% else %}
+  <form method="post" action="/reveal/{{ reveal_token }}" class="gr-knower-form">
+    <div class="gr-knower-buttons">
+      <button class="boy"  type="submit" name="gender" value="boy">It's a boy</button>
+      <button class="girl" type="submit" name="gender" value="girl">It's a girl</button>
+    </div>
+  </form>
+  <p style="font-size:0.9rem; color:#666; margin-top:1rem;">Once you tap, we lock the answer. There's no undo from your side — call us at 281-979-8320 if you need to correct it.</p>
+  {% endif %}
+</section>
+{% endblock %}

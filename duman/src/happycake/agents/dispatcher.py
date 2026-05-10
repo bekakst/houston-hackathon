@@ -31,6 +31,7 @@ from happycake.agents.specialists import (
     STANDARD_CLOSE,
     run_care,
     run_custom,
+    run_gender_reveal,
     run_intake,
     run_reporting,
 )
@@ -141,6 +142,8 @@ async def handle_customer_message(
         reply = await run_custom(text, history=history)
     elif intent == Intent.care:
         reply = await run_care(text, history=history, verified=False)
+    elif intent == Intent.gender_reveal:
+        reply = await run_gender_reveal(text, history=history)
     elif intent == Intent.reporting:
         # Reporting is owner-driven. If a customer triggers it, escalate.
         reply = _escalation_reply("customer_triggered_reporting", channel)
@@ -166,8 +169,9 @@ async def handle_customer_message(
             reply, channel=channel, sender=sender, sender_name=sender_name,
             thread_id=thread_id,
             kind={"intake": "intake", "custom": "custom",
-                  "care": "care"}.get(reply.intent.value if reply.intent else "intake",
-                                      "care"),
+                  "care": "care",
+                  "gender_reveal": "gender_reveal"}.get(
+                      reply.intent.value if reply.intent else "intake", "care"),
         )
 
     audit_write(

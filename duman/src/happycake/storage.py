@@ -47,6 +47,30 @@ CREATE TABLE IF NOT EXISTS audit (
 );
 
 CREATE INDEX IF NOT EXISTS idx_audit_kind ON audit(kind, at);
+
+CREATE TABLE IF NOT EXISTS reveal_orders (
+    id                 INTEGER PRIMARY KEY AUTOINCREMENT,
+    order_id           TEXT NOT NULL UNIQUE,
+    reveal_token       TEXT NOT NULL UNIQUE,
+    orderer_name       TEXT NOT NULL,
+    orderer_contact    TEXT NOT NULL,
+    party_date         TEXT NOT NULL,
+    pickup_or_delivery TEXT NOT NULL CHECK (pickup_or_delivery IN ('pickup','delivery')),
+    delivery_address   TEXT,
+    guest_count        INTEGER NOT NULL,
+    cake_size_kg       REAL NOT NULL,
+    decorations        TEXT,
+    notes_to_baker     TEXT,
+    state              TEXT NOT NULL CHECK (state IN ('pending_reveal','revealed','baking','ready','delivered','cancelled')) DEFAULT 'pending_reveal',
+    gender             TEXT CHECK (gender IN ('boy','girl')),
+    gender_set_at      TEXT,
+    knower_ip_hash     TEXT,
+    created_at         TEXT NOT NULL,
+    updated_at         TEXT NOT NULL
+);
+
+CREATE INDEX IF NOT EXISTS idx_reveal_orders_token ON reveal_orders(reveal_token);
+CREATE INDEX IF NOT EXISTS idx_reveal_orders_state ON reveal_orders(state);
 """
 
 
@@ -195,6 +219,95 @@ def audit_write(event_id: str, kind: str, payload: dict) -> None:
         conn.execute(
             "INSERT INTO audit (event_id, kind, payload, at) VALUES (?, ?, ?, ?)",
             (event_id, kind, json.dumps(payload, default=str), now_iso()),
+        )
+        conn.commit()
+
+
+def reveal_create(*, order_id: str, reveal_token: str, orderer_name: str,
+                  orderer_contact: str, party_date: str,
+                  pickup_or_delivery: str, delivery_address: str | None,
+                  guest_count: int, cake_size_kg: float,
+                  decorations: str | None, notes_to_baker: str | None) -> bool:
+    """Insert a new pending_reveal row. Returns False if order_id already existed."""
+    ts = now_iso()
+    with connect() as conn:
+        try:
+            conn.execute(
+                "INSERT INTO reveal_orders ("
+                "order_id, reveal_token, orderer_name, orderer_contact, "
+                "party_date, pickup_or_delivery, delivery_address, guest_count, "
+                "cake_size_kg, decorations, notes_to_baker, state, "
+                "created_at, updated_at) VALUES (?,?,?,?,?,?,?,?,?,?,?, "
+                "'pending_reveal', ?, ?)",
+                (order_id, reveal_token, orderer_name, orderer_contact,
+                 party_date, pickup_or_delivery, delivery_address, guest_count,
+                 cake_size_kg, decorations, notes_to_baker, ts, ts),
+            )
+            conn.commit()
+            return True
+        except sqlite3.IntegrityError:
+            return False
+
+
+def reveal_get_by_token(reveal_token: str) -> dict | None:
+    with connect() as conn:
+        row = conn.execute(
+            "SELECT * FROM reveal_orders WHERE reveal_token = ?",
+            (reveal_token,),
+        ).fetchone()
+        return dict(row) if row else None
+
+
+def reveal_get_by_order_id(order_id: str) -> dict | None:
+    with connect() as conn:
+        row = conn.execute(
+            "SELECT * FROM reveal_orders WHERE order_id = ?",
+            (order_id,),
+        ).fetchone()
+        return dict(row) if row else None
+
+
+def reveal_lock_gender(reveal_token: str, gender: str,
+                        knower_ip_hash: str | None) -> tuple[bool, dict | None]:
+    """Write-once gender lock. Returns (newly_locked, row).
+
+    If the row is already revealed (or further along), returns (False, row)
+    without mutating — idempotent for double-submits.
+    """
+    if gender not in ("boy", "girl"):
+        raise ValueError(f"invalid gender: {gender}")
+    ts = now_iso()
+    with connect() as conn:
+        row = conn.execute(
+            "SELECT * FROM reveal_orders WHERE reveal_token = ?",
+            (reveal_token,),
+        ).fetchone()
+        if not row:
+            return False, None
+        if row["state"] != "pending_reveal" or row["gender"] is not None:
+            return False, dict(row)
+        conn.execute(
+            "UPDATE reveal_orders SET gender = ?, gender_set_at = ?, "
+            "knower_ip_hash = ?, state = 'revealed', updated_at = ? "
+            "WHERE reveal_token = ? AND state = 'pending_reveal' AND gender IS NULL",
+            (gender, ts, knower_ip_hash, ts, reveal_token),
+        )
+        conn.commit()
+        row = conn.execute(
+            "SELECT * FROM reveal_orders WHERE reveal_token = ?",
+            (reveal_token,),
+        ).fetchone()
+        return True, dict(row) if row else None
+
+
+def reveal_set_state(order_id: str, state: str) -> None:
+    valid = ("pending_reveal", "revealed", "baking", "ready", "delivered", "cancelled")
+    if state not in valid:
+        raise ValueError(f"invalid state: {state}")
+    with connect() as conn:
+        conn.execute(
+            "UPDATE reveal_orders SET state = ?, updated_at = ? WHERE order_id = ?",
+            (state, now_iso(), order_id),
         )
         conn.commit()
 

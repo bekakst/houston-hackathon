@@ -1,0 +1,68 @@
+{% extends "_base.html" %}
+
+{% block extra_jsonld %}
+<link rel="stylesheet" href="/static/css/gender_reveal.css">
+{% endblock %}
+
+{% block content %}
+<section class="page-head">
+  <p class="eyebrow">◆ Reveal cake — order placed</p>
+  <h1>Send the link to your trusted person.</h1>
+  <p class="lead">We have the order. Now we need the secret. Forward the link below to the doctor's office, or to whoever has the envelope. Only they and the kitchen will see the answer.</p>
+</section>
+
+<section class="gr-share-box">
+  <p><strong>Order id:</strong> <code>{{ reveal.order_id }}</code></p>
+  <p><strong>Party date:</strong> {{ reveal.party_date }}</p>
+  <p><strong>Cake:</strong> {{ reveal.cake_size_kg }} kg ({{ reveal.guest_count }} guests, {{ reveal.pickup_or_delivery }})</p>
+
+  <h2 style="margin-top: 1.5rem;">Your share link</h2>
+  <div class="gr-share-url">
+    <input id="gr-url" type="text" readonly value="{{ reveal.reveal_url }}">
+    <button id="gr-copy" class="gr-cta" type="button">Copy link</button>
+    <a class="gr-cta" id="gr-wa" href="https://wa.me/?text={{ (share_text + ' ' + reveal.reveal_url) | urlencode }}"
+       style="text-decoration:none; display:inline-flex; align-items:center;"
+       target="_blank" rel="noopener">Share on WhatsApp</a>
+  </div>
+
+  <div class="gr-share-script">
+    <strong>Suggested message:</strong>
+    <p>{{ share_text }}</p>
+  </div>
+</section>
+
+<section>
+  <h2>What happens next</h2>
+  <ul>
+    <li>Your trusted person opens the link and picks Boy or Girl. We get an alert; you do not.</li>
+    <li>We confirm the order with you by message — without the colour inside.</li>
+    <li>You pick up your cake on {{ reveal.party_date }} and cut it with everyone watching.</li>
+  </ul>
+  <p style="margin-top: 1rem;"><a href="/order/{{ reveal.order_id }}/status">Check status anytime</a> using this same order id.</p>
+  <p style="font-size:0.9rem; color:#666;">We won't tell you the answer until the cake is in your hands. The cake will. Order on the site at happycake.us or send a message on WhatsApp.</p>
+</section>
+
+<script>
+(function () {
+  const input = document.getElementById('gr-url');
+  const btn = document.getElementById('gr-copy');
+  if (!input || !btn) return;
+  btn.addEventListener('click', async function () {
+    const url = input.value;
+    let copied = false;
+    if (navigator.clipboard && window.isSecureContext) {
+      try { await navigator.clipboard.writeText(url); copied = true; } catch (_) {}
+    }
+    if (!copied) {
+      input.removeAttribute('readonly');
+      input.focus(); input.select();
+      try { copied = document.execCommand('copy'); } catch (_) {}
+      input.setAttribute('readonly', '');
+      input.blur();
+    }
+    btn.textContent = copied ? 'Copied' : 'Press Ctrl+C';
+    setTimeout(function () { btn.textContent = 'Copy link'; }, 2000);
+  });
+})();
+</script>
+{% endblock %}

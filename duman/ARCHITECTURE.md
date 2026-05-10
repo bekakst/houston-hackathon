@@ -128,7 +128,50 @@ When the owner taps Approve:
 - Every webhook idempotency hit → log line + cached response.
 - Every `claude -p` call timing is logged at INFO; failures escalate to owner via the dispatcher fallback path.
 
-## 9 · What we deliberately did not build
+## 9 · Blind gender-reveal cake — the orderer never sees the answer
+
+A blind-orderer flow added without disturbing the four-ring dispatcher or the
+agent-readable surfaces. The orderer fills `/order/gender-reveal`, gets a
+one-time `/reveal/<token>` link, and forwards it to the knower. The knower
+picks Boy or Girl on a `noindex,nofollow` page; the kitchen sees it in the
+owner's Telegram queue; the orderer's status page is wired from a
+`RevealOrdererView` Pydantic model that does not include the `gender` field
+at all (defense-in-depth — even a future template typo cannot leak it).
+
+```
+                                   /reveal/<24c-token>
+   parent ──▶ /order/gender-reveal ──┐               ┌── doctor / knower
+   (orderer)                         │  share link   │
+                                     ▼               ▼
+                              ┌──────────────────────────┐
+                              │  reveal_orders (sqlite)   │
+                              │  state: pending_reveal    │
+                              └──────────────────────────┘
+                                          │
+                                          ▼  POST /reveal/<token>
+                                          │  (write-once gender lock)
+                              ┌──────────────────────────┐
+                              │  state: revealed          │
+                              │  gender: boy | girl       │
+                              │  knower_ip_hash (salted)  │
+                              └──────────────────────────┘
+                                          │
+                ┌─────────────────────────┴─────────────────────────┐
+                ▼                                                   ▼
+   OwnerDecision (kind="gender_reveal")                  orderer status page
+   ─ Telegram inline keyboard                            ─ "Reveal locked. Pickup
+   ─ Card body: "Interior: BLUE (boy)"                     ready by [date]"
+   ─ Approve → state: baking                             ─ NO gender column,
+   ─ Customer message: lock-in only,                       NO pink/blue word,
+     no colour, no gender                                  enforced by Pydantic
+```
+
+The `gender_reveal` intent joins the router enum, with a matching
+`agents/gender_reveal.py` specialist that holds the line in HappyCake voice
+("the surprise is the whole point — send the link to your doctor's office").
+Brand-critic still runs on every customer-visible reply.
+
+## 10 · What we deliberately did not build
 
 - ❌ Postgres / Redis — SQLite + in-memory dicts are sufficient for 24 h.
 - ❌ Docker Compose — fresh-clone bootstrap matters more than infra elegance.

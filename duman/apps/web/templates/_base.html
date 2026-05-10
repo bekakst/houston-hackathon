@@ -56,6 +56,7 @@
     <nav>
       <a href="/cakes">Cakes</a>
       <a href="/custom">Custom</a>
+      <a href="/order/gender-reveal">Reveal</a>
       <a href="/policies/allergens">Allergens</a>
       <a href="/policies/delivery">Delivery</a>
       <a href="/contact">Visit</a>
@@ -92,6 +93,6 @@
   </div>
 </footer>
 
-{% include "_assistant.html" %}
+{% block assistant %}{% include "_assistant.html" %}{% endblock %}
 </body>
 </html>

@@ -239,6 +239,43 @@ def _common_evidence() -> dict[str, Any]:
     }
 
 
+def _ground_gender_reveal(text: str) -> dict[str, Any]:
+    """Static facts about the gender-reveal SKU. The cake itself isn't in
+    catalog.yaml (it's a flow, not a SKU on the daily counter), so we surface
+    the brandbook-faithful pricing and lead-time numbers here."""
+    serves = _detect_serves(text)
+    fulfillment = _detect_fulfillment(text)
+    return {
+        "detected": {
+            "serves": serves,
+            "fulfillment": fulfillment,
+        },
+        "sku": {
+            "name": 'cake "Reveal"',
+            "external_color": "neutral cream",
+            "internal_colors": {"boy": "blue", "girl": "pink"},
+            "minimum_lead_time_hours": 72,
+            "sizes": [
+                {"label": "small",  "weight_kg": 1.0,
+                 "serves": "6–8 guests",   "price_usd": 78.0},
+                {"label": "medium", "weight_kg": 1.5,
+                 "serves": "10–15 guests", "price_usd": 98.0},
+                {"label": "large",  "weight_kg": 2.5,
+                 "serves": "20–30 guests", "price_usd": 138.0},
+            ],
+            "default_decoration": '"Boy or Girl?" topper, neutral exterior',
+            "order_form_url": "https://happycake.us/order/gender-reveal",
+        },
+        "flow_summary": (
+            "Orderer fills the form. Orderer never picks the inside colour. "
+            "The system gives them a one-time link they forward to the knower "
+            "(doctor's office or trusted friend). The knower picks Boy or "
+            "Girl on the link. The kitchen bakes the surprise; the orderer "
+            "sees only 'reveal locked, pickup on [date]'."
+        ),
+    }
+
+
 def ground_for_intent(intent: str, text: str, *,
                       partial_spec: dict | None = None,
                       verified: bool = False) -> dict[str, Any]:
@@ -250,4 +287,6 @@ def ground_for_intent(intent: str, text: str, *,
         base["custom"] = _ground_custom(text, partial_spec)
     elif intent == "care":
         base["care"] = _ground_care(text, verified=verified)
+    elif intent == "gender_reveal":
+        base["gender_reveal"] = _ground_gender_reveal(text)
     return base

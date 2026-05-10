@@ -1,0 +1,133 @@
+{% extends "_base.html" %}
+
+{% block extra_jsonld %}
+<link rel="stylesheet" href="/static/css/gender_reveal.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Product",
+  "name": "Gender-reveal cake",
+  "description": "A gender-reveal cake where the orderer never sees the gender. A trusted third party submits the secret through a one-time link; the kitchen bakes the surprise inside.",
+  "brand": {"@type": "Brand", "name": "HappyCake"},
+  "category": "Cake",
+  "additionalProperty": [
+    {"@type": "PropertyValue", "name": "lead_time_hours", "value": 72},
+    {"@type": "PropertyValue", "name": "blind_to_orderer", "value": true}
+  ],
+  "offers": [
+    {
+      "@type": "Offer",
+      "priceCurrency": "USD",
+      "price": "78.00",
+      "name": "Small (1.0 kg, ~6–8 ppl)",
+      "availability": "https://schema.org/PreOrder",
+      "url": "https://happycake.us/order/gender-reveal"
+    },
+    {
+      "@type": "Offer",
+      "priceCurrency": "USD",
+      "price": "98.00",
+      "name": "Medium (1.5 kg, ~10–15 ppl)",
+      "availability": "https://schema.org/PreOrder",
+      "url": "https://happycake.us/order/gender-reveal"
+    },
+    {
+      "@type": "Offer",
+      "priceCurrency": "USD",
+      "price": "138.00",
+      "name": "Large (2.5 kg, ~20–30 ppl)",
+      "availability": "https://schema.org/PreOrder",
+      "url": "https://happycake.us/order/gender-reveal"
+    }
+  ]
+}
+</script>
+{% endblock %}
+
+{% block content %}
+<section class="gr-hero">
+  <p class="eyebrow">◆ Gender-reveal cake</p>
+  <h1>A cake that keeps the secret with you.</h1>
+  <p class="lead">You order the cake. Your doctor's office tells us the gender. We bake the surprise — and it's still a surprise to you when you cut it.</p>
+  {# TODO: replace with /static/img/cake_reveal.webp when shot. #}
+  <img src="/static/photos/cloud.webp" alt='cake "Reveal" — neutral cream exterior'
+       style="max-width: 22rem; margin-top: 1rem; border-radius: 16px;">
+</section>
+
+<section>
+  <h2>How it works</h2>
+  <ol class="gr-steps">
+    <li><strong>1. You order.</strong> Tell us the date, the size, and any decorations. You will not pick the colour inside.</li>
+    <li><strong>2. Your trusted person tells us.</strong> We send a one-time link. The doctor's office, or a friend with the envelope, taps Boy or Girl. Only they and the kitchen will see it.</li>
+    <li><strong>3. We bake the surprise.</strong> Pink inside for a girl, blue for a boy. Neutral cream outside — clean as a fresh page until you cut it.</li>
+  </ol>
+</section>
+
+{% if form_errors %}
+<div class="gr-form-errors">
+  <strong>We couldn't accept the form yet:</strong>
+  <ul>
+    {% for err in form_errors %}
+    <li>{{ err.loc | join('.') }} — {{ err.msg }}</li>
+    {% endfor %}
+  </ul>
+</div>
+{% endif %}
+
+<section>
+  <h2>Order the reveal cake</h2>
+  <p>Lead time is at least 72 hours. Pickup at the counter at 350 Promenade Way, or delivery in our zones.</p>
+  <form class="gr-form" method="post" action="/order/gender-reveal">
+    <div>
+      <label for="orderer_name">Your name</label>
+      <input id="orderer_name" name="orderer_name" type="text" required maxlength="120"
+             value="{{ form_values.orderer_name if form_values else '' }}">
+    </div>
+    <div>
+      <label for="orderer_contact">Your contact (WhatsApp number or email)</label>
+      <input id="orderer_contact" name="orderer_contact" type="text" required maxlength="200"
+             placeholder="+1 281 ..." value="{{ form_values.orderer_contact if form_values else '' }}">
+    </div>
+    <div>
+      <label for="party_date">Party date and time</label>
+      <input id="party_date" name="party_date" type="text" required
+             placeholder="Saturday, June 14 — 4 PM"
+             value="{{ form_values.party_date if form_values else '' }}">
+    </div>
+    <div>
+      <label for="pickup_or_delivery">Pickup or delivery</label>
+      <select id="pickup_or_delivery" name="pickup_or_delivery" required>
+        <option value="pickup" {% if form_values and form_values.pickup_or_delivery == 'pickup' %}selected{% endif %}>Pickup at 350 Promenade Way</option>
+        <option value="delivery" {% if form_values and form_values.pickup_or_delivery == 'delivery' %}selected{% endif %}>Delivery (Sugar Land area)</option>
+      </select>
+    </div>
+    <div>
+      <label for="delivery_address">Delivery address (only if delivery)</label>
+      <input id="delivery_address" name="delivery_address" type="text" maxlength="300"
+             value="{{ form_values.delivery_address if form_values else '' }}">
+    </div>
+    <div>
+      <label for="guest_count">Guest count</label>
+      <input id="guest_count" name="guest_count" type="number" min="1" max="300" required
+             value="{{ form_values.guest_count if form_values else '' }}">
+      <p class="hint" style="font-size:0.9rem; color:#666;">Up to 8 guests — 1.0 kg. 9–15 — 1.5 kg. 16 and up — 2.5 kg.</p>
+    </div>
+    <div>
+      <label for="decorations">Decorations (optional)</label>
+      <input id="decorations" name="decorations" type="text" maxlength="400"
+             placeholder='"Boy or Girl?" topper, gold accents'
+             value="{{ form_values.decorations if form_values else '' }}">
+      <p class="hint" style="font-size:0.9rem; color:#666;">Neutral cream exterior is the default. Tell us anything that should sit on top.</p>
+    </div>
+    <div>
+      <label for="notes_to_baker">Notes to the baker (optional)</label>
+      <textarea id="notes_to_baker" name="notes_to_baker" maxlength="600">{{ form_values.notes_to_baker if form_values else '' }}</textarea>
+    </div>
+    <div>
+      <button class="gr-cta" type="submit">Continue — get your share link</button>
+    </div>
+    <p style="font-size:0.9rem; color:#666;">By continuing you agree we will never ask you about the colour inside. Your trusted person picks it after we send them the link.</p>
+  </form>
+</section>
+
+{% endblock %}

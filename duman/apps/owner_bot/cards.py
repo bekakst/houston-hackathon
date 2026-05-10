@@ -141,6 +141,8 @@ def build_card_text(payload: dict) -> str:
     The dispatcher already populates `summary`. This function adds margin /
     lead-time / allergen flags when available.
     """
+    if payload.get("kind") == "gender_reveal":
+        return _build_gender_reveal_card(payload)
     lines = [payload.get("summary", "(no summary)")]
 
     spec = payload.get("draft_cake_spec")
@@ -188,6 +190,42 @@ def build_card_text(payload: dict) -> str:
     if payload.get("lead_time_ok") is False:
         lines.append("⏱ Lead-time tight — kitchen ack required")
 
+    return "\n".join(lines)
+
+
+def _build_gender_reveal_card(payload: dict) -> str:
+    """Owner-only card. The gender appears here clearly so the kitchen knows
+    which interior colour to bake. This card is only ever sent to the
+    configured owner chat; never to the customer."""
+    gender = (payload.get("reveal_gender") or "").lower()
+    interior = "PINK (girl)" if gender == "girl" else (
+        "BLUE (boy)" if gender == "boy" else "(unknown)"
+    )
+    lines = [
+        f"🔒 Gender-reveal locked — {payload.get('reveal_order_id', '?')}",
+        f"Orderer: {payload.get('customer_name', '?')}",
+        f"Contact: {payload.get('customer_id', '?')}",
+        f"Party: {payload.get('reveal_party_date', '?')}",
+        f"Cake: {payload.get('reveal_cake_size_kg', '?')} kg · "
+        f"{payload.get('reveal_pickup_or_delivery', '?')}",
+        "",
+        f"Interior: {interior}",
+    ]
+    if payload.get("reveal_decorations"):
+        lines.append(f"Decorations: {payload['reveal_decorations']}")
+    if payload.get("reveal_notes_to_baker"):
+        lines.append(f"Notes: {payload['reveal_notes_to_baker']}")
+    if (payload.get("reveal_pickup_or_delivery") == "delivery"
+            and payload.get("reveal_delivery_address")):
+        lines.append(f"Address: {payload['reveal_delivery_address']}")
+    lines.extend([
+        "",
+        "Approve to confirm and queue the kitchen ticket. The customer reply",
+        "will say only that the cake is locked — no colour, no gender.",
+        "",
+        "Suggested reply to customer:",
+        payload.get("draft_reply", "(no draft)"),
+    ])
     return "\n".join(lines)
 
 

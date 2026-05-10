@@ -1,0 +1,35 @@
+{% extends "_base.html" %}
+
+{% block extra_jsonld %}
+<link rel="stylesheet" href="/static/css/gender_reveal.css">
+{% endblock %}
+
+{% block content %}
+<section class="page-head">
+  <p class="eyebrow">◆ Reveal cake — status</p>
+  <h1>Order {{ reveal.order_id }}</h1>
+</section>
+
+<section class="gr-status-card">
+  <p class="gr-status-state">{{ reveal.state_label }}</p>
+  <ul>
+    <li><strong>Party date:</strong> {{ reveal.party_date }}</li>
+    <li><strong>Cake:</strong> {{ reveal.cake_size_kg }} kg ({{ reveal.guest_count }} guests)</li>
+    <li><strong>{{ 'Pickup' if reveal.pickup_or_delivery == 'pickup' else 'Delivery' }}:</strong>
+      {% if reveal.pickup_or_delivery == 'pickup' %}
+      350 Promenade Way, Suite 500, Sugar Land
+      {% else %}
+      {{ reveal.delivery_address }}
+      {% endif %}
+    </li>
+    {% if reveal.decorations %}
+    <li><strong>Decorations:</strong> {{ reveal.decorations }}</li>
+    {% endif %}
+  </ul>
+</section>
+
+<section>
+  <p>Reveal locked. The colour inside stays with the kitchen until you cut it.</p>
+  <p style="font-size:0.9rem; color:#666;">Order on the site at happycake.us or send a message on WhatsApp.</p>
+</section>
+{% endblock %}

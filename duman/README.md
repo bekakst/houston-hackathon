@@ -128,6 +128,7 @@ Every customer message — web, WhatsApp, Instagram — converges into one entry
 - **Single source of truth for all numbers.** This README is rendered from `README.md.tmpl` against `analysis/_metrics.json`. The prior 43/100 build had a $5K vs $843 contradiction; this one cannot.
 - **`/replay <thread_id>` Telegram command.** Shows the agent's reasoning trace and tool calls so the owner can build trust week by week.
 - **One bot, four flows.** A non-technical operator does not want to juggle four bots; the four agent flows surface as four inline-keyboard `/commands` instead.
+- **Blind gender-reveal cake order.** A new order flow at `/order/gender-reveal` where the parent never sees the gender: they fill in the form, the system mints a one-time `/reveal/<24-char-token>` link, and a trusted third party (the doctor's office or a friend with the envelope) taps Boy or Girl on that page. The kitchen sees the answer in the owner's Telegram queue (`Interior: PINK (girl)` or `BLUE (boy)`); the orderer's status page literally cannot leak it because the orderer-facing template is built from a `RevealOrdererView` Pydantic model that has no `gender` field. The lock is write-once and idempotent — a knower who taps Submit twice does not change the answer or duplicate the order. The dispatcher gains a new `gender_reveal` intent + specialist (`agents/gender_reveal.py`) so the on-site assistant and WhatsApp/Instagram still pass through `safety → router → specialist → brand_critic`.
 
 ## Repository layout
 
