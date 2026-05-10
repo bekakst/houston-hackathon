@@ -1,0 +1,255 @@
+{
+  "brand": "Happy Cake",
+  "status": "private-prelaunch",
+  "launchGate": "May 9, 10:00 CT",
+  "storage": "private/hackathon/happy-cake/asset-pack; not served by Next.js public assets",
+  "sourceInventory": {
+    "imageCount": 562,
+    "jpgCount": 561,
+    "pngCount": 1,
+    "zipCount": 2,
+    "rawSourceBytes": 8272304203
+  },
+  "logo": {
+    "sourceDescription": "official Happy Cake wordmark, optimized from local source inventory",
+    "files": [
+      {
+        "path": "logo/happy-cake-logo-1024.png",
+        "role": "logo-1024",
+        "width": 1024,
+        "height": 1024,
+        "format": "png"
+      },
+      {
+        "path": "logo/happy-cake-logo-512.png",
+        "role": "logo-512",
+        "width": 512,
+        "height": 512,
+        "format": "png"
+      },
+      {
+        "path": "logo/happy-cake-logo-256.png",
+        "role": "logo-256",
+        "width": 256,
+        "height": 256,
+        "format": "png"
+      }
+    ]
+  },
+  "palette": [
+    {
+      "name": "Happy Sky Blue",
+      "hex": "#00AEEA",
+      "usage": "primary wordmark accent, joyful CTAs"
+    },
+    {
+      "name": "Chocolate Brown",
+      "hex": "#6B3A1E",
+      "usage": "Cake wordmark, warmth, dessert cues"
+    },
+    {
+      "name": "Vanilla Cream",
+      "hex": "#FFF7EA",
+      "usage": "backgrounds, cards, softer sections"
+    },
+    {
+      "name": "Bakery White",
+      "hex": "#FFFFFF",
+      "usage": "logo safe space, clean product surfaces"
+    },
+    {
+      "name": "Berry Accent",
+      "hex": "#E94B7B",
+      "usage": "sparingly for promos, stickers, social accents"
+    }
+  ],
+  "categories": [
+    "logo",
+    "product-photos",
+    "hero-images",
+    "social-crops"
+  ],
+  "curatedFiles": [
+    {
+      "path": "hero/happy-cake-hero-01.webp",
+      "role": "hero-image",
+      "sourceId": "1V8A9769.jpg",
+      "width": 1600,
+      "height": 1000,
+      "format": "webp"
+    },
+    {
+      "path": "hero/happy-cake-hero-02.webp",
+      "role": "hero-image",
+      "sourceId": "1V8A9685.jpg",
+      "width": 1600,
+      "height": 1000,
+      "format": "webp"
+    },
+    {
+      "path": "hero/happy-cake-hero-03.webp",
+      "role": "hero-image",
+      "sourceId": "1V8A9683.jpg",
+      "width": 1600,
+      "height": 1000,
+      "format": "webp"
+    },
+    {
+      "path": "hero/happy-cake-hero-04.webp",
+      "role": "hero-image",
+      "sourceId": "1V8A9684.jpg",
+      "width": 1600,
+      "height": 1000,
+      "format": "webp"
+    },
+    {
+      "path": "products/happy-cake-product-01.webp",
+      "role": "product-photo",
+      "sourceId": "1V8A9531.jpg",
+      "width": 1200,
+      "height": 1200,
+      "format": "webp"
+    },
+    {
+      "path": "products/happy-cake-product-02.webp",
+      "role": "product-photo",
+      "sourceId": "1V8A9532.jpg",
+      "width": 1200,
+      "height": 1200,
+      "format": "webp"
+    },
+    {
+      "path": "products/happy-cake-product-03.webp",
+      "role": "product-photo",
+      "sourceId": "1V8A9679.jpg",
+      "width": 1200,
+      "height": 1200,
+      "format": "webp"
+    },
+    {
+      "path": "products/happy-cake-product-04.webp",
+      "role": "product-photo",
+      "sourceId": "1V8A9702.jpg",
+      "width": 1200,
+      "height": 1200,
+      "format": "webp"
+    },
+    {
+      "path": "products/happy-cake-product-05.webp",
+      "role": "product-photo",
+      "sourceId": "1V8A9576.jpg",
+      "width": 1200,
+      "height": 1200,
+      "format": "webp"
+    },
+    {
+      "path": "products/happy-cake-product-06.webp",
+      "role": "product-photo",
+      "sourceId": "1V8A9577.jpg",
+      "width": 1200,
+      "height": 1200,
+      "format": "webp"
+    },
+    {
+      "path": "products/happy-cake-product-07.webp",
+      "role": "product-photo",
+      "sourceId": "1V8A9533.jpg",
+      "width": 1200,
+      "height": 1200,
+      "format": "webp"
+    },
+    {
+      "path": "products/happy-cake-product-08.webp",
+      "role": "product-photo",
+      "sourceId": "1V8A9622.jpg",
+      "width": 1200,
+      "height": 1200,
+      "format": "webp"
+    },
+    {
+      "path": "products/happy-cake-product-09.webp",
+      "role": "product-photo",
+      "sourceId": "1V8A9732.jpg",
+      "width": 1200,
+      "height": 1200,
+      "format": "webp"
+    },
+    {
+      "path": "products/happy-cake-product-10.webp",
+      "role": "product-photo",
+      "sourceId": "1V8A9738.jpg",
+      "width": 1200,
+      "height": 1200,
+      "format": "webp"
+    },
+    {
+      "path": "social/happy-cake-social-01.webp",
+      "role": "social-crop",
+      "sourceId": "1V8A9907.jpg",
+      "width": 1080,
+      "height": 1080,
+      "format": "webp"
+    },
+    {
+      "path": "social/happy-cake-social-02.webp",
+      "role": "social-crop",
+      "sourceId": "1V8A9906.jpg",
+      "width": 1080,
+      "height": 1080,
+      "format": "webp"
+    },
+    {
+      "path": "social/happy-cake-social-03.webp",
+      "role": "social-crop",
+      "sourceId": "1V8A9568.jpg",
+      "width": 1080,
+      "height": 1080,
+      "format": "webp"
+    },
+    {
+      "path": "social/happy-cake-social-04.webp",
+      "role": "social-crop",
+      "sourceId": "1V8A9680.jpg",
+      "width": 1080,
+      "height": 1080,
+      "format": "webp"
+    },
+    {
+      "path": "social/happy-cake-social-05.webp",
+      "role": "social-crop",
+      "sourceId": "1V8A9740.jpg",
+      "width": 1080,
+      "height": 1080,
+      "format": "webp"
+    },
+    {
+      "path": "social/happy-cake-social-06.webp",
+      "role": "social-crop",
+      "sourceId": "1V8A9865.jpg",
+      "width": 1080,
+      "height": 1080,
+      "format": "webp"
+    },
+    {
+      "path": "social/happy-cake-social-07.webp",
+      "role": "social-crop",
+      "sourceId": "1V8A9754.jpg",
+      "width": 1080,
+      "height": 1080,
+      "format": "webp"
+    },
+    {
+      "path": "social/happy-cake-social-08.webp",
+      "role": "social-crop",
+      "sourceId": "1V8A9731.jpg",
+      "width": 1080,
+      "height": 1080,
+      "format": "webp"
+    }
+  ],
+  "rules": [
+    "raw originals are not copied into the app repo public folder",
+    "do not expose local filesystem paths",
+    "publish only after launch approval"
+  ]
+}

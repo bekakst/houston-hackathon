@@ -16,7 +16,7 @@ cakes:
     allergens: [gluten, dairy, egg, tree-nut]
     halal_friendly: true
     vegan: false
-    photo: /static/photos/honey.jpg
+    photo: /static/photos/honey.webp
     sizes:
       # Prices align with MCP square_list_catalog and marketing_get_margin_by_product.
       - {label: slice, weight_g: 130, price_usd: 8.50, mcp_product_id: honey-cake-slice}
@@ -38,7 +38,7 @@ cakes:
     allergens: [gluten, dairy, egg]
     halal_friendly: true
     vegan: false
-    photo: /static/photos/napoleon.jpg
+    photo: /static/photos/napoleon.webp
     sizes:
       - {label: slice, weight_g: 140, price_usd: 8}
       - {label: whole, weight_g: 1200, price_usd: 42}
@@ -59,7 +59,7 @@ cakes:
     allergens: [gluten, dairy, egg]
     halal_friendly: true
     vegan: false
-    photo: /static/photos/milk-maiden.jpg
+    photo: /static/photos/milk-maiden.webp
     sizes:
       - {label: slice, weight_g: 130, price_usd: 8}
       - {label: whole, weight_g: 1200, price_usd: 38}
@@ -80,7 +80,7 @@ cakes:
     allergens: [gluten, dairy, egg, tree-nut]
     halal_friendly: true
     vegan: false
-    photo: /static/photos/pistachio-roll.jpg
+    photo: /static/photos/pistachio-roll.webp
     sizes:
       - {label: slice, weight_g: 120, price_usd: 9.50, mcp_product_id: pistachio-roll}
       - {label: whole, weight_g: 1000, price_usd: 60.00, mcp_product_id: pistachio-roll}
@@ -101,7 +101,7 @@ cakes:
     allergens: [gluten, dairy, egg]
     halal_friendly: true
     vegan: false
-    photo: /static/photos/tiramisu.jpg
+    photo: /static/photos/tiramisu.webp
     sizes:
       - {label: slice, weight_g: 130, price_usd: 9}
       - {label: whole, weight_g: 1000, price_usd: 44}
@@ -122,7 +122,7 @@ cakes:
     allergens: [gluten, dairy, egg]
     halal_friendly: true
     vegan: false
-    photo: /static/photos/cloud.jpg
+    photo: /static/photos/cloud.webp
     sizes:
       - {label: slice, weight_g: 110, price_usd: 9}
       - {label: whole, weight_g: 1100, price_usd: 42}
@@ -143,7 +143,7 @@ cakes:
     allergens: [gluten, dairy, egg, tree-nut]
     halal_friendly: true
     vegan: false
-    photo: /static/photos/carrot.jpg
+    photo: /static/photos/carrot.webp
     sizes:
       - {label: slice, weight_g: 140, price_usd: 8}
       - {label: whole, weight_g: 1200, price_usd: 40}
@@ -164,7 +164,7 @@ cakes:
     allergens: [gluten, dairy, egg]
     halal_friendly: true
     vegan: false
-    photo: /static/photos/red-velvet.jpg
+    photo: /static/photos/red-velvet.webp
     sizes:
       - {label: slice, weight_g: 130, price_usd: 8}
       - {label: whole, weight_g: 1200, price_usd: 40}
@@ -187,7 +187,7 @@ cakes:
     allergens: []
     halal_friendly: true
     vegan: false
-    photo: /static/photos/custom.jpg
+    photo: /static/photos/custom.webp
     sizes:
       # Aligned with MCP custom-birthday-cake ($95, 24h lead, 4/day cap).
       - {label: small, weight_g: 1000, price_usd: 95.00, mcp_product_id: custom-birthday-cake}

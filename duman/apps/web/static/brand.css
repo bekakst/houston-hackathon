@@ -44,6 +44,7 @@ h4 { font-size: 16px; font-family: 'Inter', sans-serif; font-weight: 600; letter
 .site-header { background: var(--happy-blue-900); color: var(--on-blue); padding: 12px 0; position: sticky; top: 0; z-index: 50; }
 .site-header .bar { max-width: 1200px; margin: 0 auto; padding: 0 24px; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
 .site-header .brand { color: var(--cream-50); font-family: 'Cormorant Garamond', serif; font-size: 26px; font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; gap: 10px; }
+.site-header .brand .logo { width: 40px; height: 40px; border-radius: 8px; background: var(--cream-50); padding: 4px; box-sizing: border-box; }
 .site-header .badge { font-family: 'Inter', sans-serif; font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--happy-blue-200); border: 1px solid var(--happy-blue-200); padding: 2px 8px; border-radius: 999px; }
 .site-header nav { display: flex; gap: 22px; flex-wrap: wrap; }
 .site-header nav a { color: var(--on-blue); font-size: 15px; }

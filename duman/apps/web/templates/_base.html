@@ -7,6 +7,8 @@
 <meta name="description" content="HappyCake US is a handmade cake shop in Sugar Land, Texas. Same recipes, made by hand. Order online or visit the counter at 350 Promenade Way.">
 <meta name="theme-color" content="#1B4868">
 <link rel="stylesheet" href="/static/brand.css">
+<link rel="icon" type="image/png" href="/static/logo/happy-cake-logo-1024.png">
+<link rel="apple-touch-icon" href="/static/logo/happy-cake-logo-1024.png">
 <link rel="alternate" type="application/json" title="Agent manifest" href="/.well-known/agent.json">
 <link rel="canonical" href="https://happycake.us{{ request.url.path }}">
 
@@ -17,7 +19,7 @@
   "@type": "Bakery",
   "name": "{{ policies.business.wordmark }}",
   "alternateName": "{{ policies.business.legal_name }}",
-  "image": "https://happycake.us/static/photos/storefront.jpg",
+  "image": "https://happycake.us/static/photos/storefront.webp",
   "telephone": "{{ policies.business.phone }}",
   "url": "https://happycake.us",
   "address": {
@@ -45,7 +47,10 @@
 
 <header class="site-header">
   <div class="bar">
-    <a class="brand" href="/"><span class="word">HappyCake</span><span class="badge">Sugar Land</span></a>
+    <a class="brand" href="/">
+      <img class="logo" src="/static/logo/happy-cake-logo-1024.png" alt="HappyCake" width="40" height="40">
+      <span class="word">HappyCake</span><span class="badge">Sugar Land</span>
+    </a>
     <nav>
       <a href="/cakes">Cakes</a>
       <a href="/custom">Custom</a>
