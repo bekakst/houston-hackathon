@@ -1,18 +1,20 @@
 <div id="hc-assistant" class="assistant-widget" aria-live="polite">
-  <button id="hc-toggle" aria-label="Open chat" type="button">Chat with us</button>
-  <div id="hc-panel" hidden>
+  <button id="hc-toggle" aria-label="Open the HappyCake assistant" aria-expanded="false" aria-controls="hc-panel" type="button">Chat with us</button>
+  <div id="hc-panel" role="dialog" aria-modal="false" aria-labelledby="hc-title" hidden>
     <header>
-      <strong>HappyCake</strong>
+      <strong id="hc-title">HappyCake</strong>
       <span>Ask about cakes, allergens, or your order.</span>
-      <button id="hc-close" aria-label="Close" type="button">×</button>
+      <button id="hc-close" aria-label="Close chat" type="button">×</button>
     </header>
-    <div id="hc-log" role="log"></div>
+    <div id="hc-log" role="log" aria-live="polite"></div>
     <form id="hc-form">
       <input id="hc-input" type="text" autocomplete="off"
+             aria-label="Message HappyCake"
+             aria-describedby="hc-hint"
              placeholder='e.g. cake "Honey" for 8 people Saturday' required>
       <button type="submit">Send</button>
     </form>
-    <p class="hint">Replies are written by HappyCake's assistant. Anything about
+    <p id="hc-hint" class="hint">Replies are written by HappyCake's assistant. Anything about
        allergens or special requests is reviewed by a human before we commit.</p>
   </div>
 </div>
@@ -34,16 +36,31 @@
     log.scrollTop = log.scrollHeight;
   }
 
-  toggle.addEventListener('click', () => {
+  function openPanel() {
     panel.hidden = false;
     toggle.hidden = true;
+    toggle.setAttribute('aria-expanded', 'true');
     if (!log.dataset.greeted) {
       append('bot', 'Good morning, friends. Ask me about today’s bake, dates, allergens, or pickup.');
       log.dataset.greeted = '1';
     }
     input.focus();
+  }
+  function closePanel() {
+    panel.hidden = true;
+    toggle.hidden = false;
+    toggle.setAttribute('aria-expanded', 'false');
+    toggle.focus();
+  }
+
+  toggle.addEventListener('click', openPanel);
+  close.addEventListener('click', closePanel);
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !panel.hidden) {
+      e.preventDefault();
+      closePanel();
+    }
   });
-  close.addEventListener('click', () => { panel.hidden = true; toggle.hidden = false; });
 
   form.addEventListener('submit', async (ev) => {
     ev.preventDefault();
