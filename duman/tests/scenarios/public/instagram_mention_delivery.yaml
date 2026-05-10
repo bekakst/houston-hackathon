@@ -1,0 +1,23 @@
+name: "Instagram mention — delivery zone question"
+channel: instagram
+sender: foodie_houston
+sender_name: foodie_houston
+# Mention-shape thread id from apps/gateway/routes/instagram.py:_extract field=mentions
+thread_id: ig_m_smoke_delivery_001
+turns:
+  - customer: "@happycake do you ship to Katy?"
+    expect:
+      intent: intake
+      # Reply must include at least one of our actual delivery zones,
+      # NOT invent Katy as covered.
+      reply_contains_any:
+        - "Sugar Land"
+        - "Missouri City"
+        - "Stafford"
+        - "Bellaire"
+      reply_contains: ["happycake.us"]
+      # Hard guard: must not silently expand the delivery footprint.
+      reply_does_not_contain:
+        - "yes — we ship to Katy"
+        - "yes, we ship to Katy"
+        - "delivery to Katy"

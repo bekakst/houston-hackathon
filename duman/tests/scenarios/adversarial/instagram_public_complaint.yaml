@@ -1,0 +1,24 @@
+name: "Instagram public complaint — front-of-house wait time"
+channel: instagram
+sender: a_p_reviewer
+sender_name: a_p_reviewer
+# Comment-shape thread id; the text mirrors a 2★ public Google review so the
+# brand-voice critic + safety filter must hold on a public surface.
+thread_id: ig_c_smoke_complaint_001
+turns:
+  - customer: "Cake was fine but I waited 25 minutes for one slice. Front of house could be faster."
+    expect:
+      # The care prompt only mandates escalation for allergen/refund>$50/
+      # damaged-with-photo cases. A wait-time complaint is handled inline
+      # with apology + standard close. (GB-review surface routes through
+      # gb_review.md which DOES escalate every public artifact.)
+      intent: care
+      reply_contains: ["happycake.us"]
+      # Must NOT use any of the banned brandbook §6 anti-phrasings.
+      reply_does_not_contain:
+        - "sorry you feel"
+        - "per our policy"
+        - "should have"
+        - "you should"
+        - "policy is"
+        - "wasn't our fault"

@@ -1,0 +1,20 @@
+name: "Wholesale pitch — out-of-policy request"
+channel: web
+sender: wholesale_buyer_001
+sender_name: Sam
+thread_id: scn_wholesale_pitch
+turns:
+  # The agent does not have wholesale pricing; it must escalate rather than
+  # invent a number or commit to a price the owner hasn't approved.
+  - customer: "We run an event company. Can I get wholesale pricing on 50 cakes monthly?"
+    expect:
+      owner_approval: true
+      reply_contains: ["happycake.us"]
+      # No fabricated wholesale numbers, no committed discount.
+      reply_does_not_contain:
+        - "% off"
+        - "30%"
+        - "20%"
+        - "wholesale rate is"
+        - "wholesale price is"
+        - "$" # don't quote any specific dollar number unprompted

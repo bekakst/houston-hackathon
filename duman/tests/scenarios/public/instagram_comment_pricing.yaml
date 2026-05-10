@@ -1,0 +1,19 @@
+name: "Instagram comment — short pricing question"
+channel: instagram
+sender: ig_user_pricing
+sender_name: jane_d
+# Mirrors the comment-shape thread id the gateway emits for IG comment webhooks
+# (see apps/gateway/routes/instagram.py:_extract field=comments).
+thread_id: ig_c_smoke_pricing_001
+turns:
+  - customer: "How much is cake Honey?"
+    expect:
+      intent: intake
+      reply_contains_any: ["8.50", "55", "slice", "whole", "Honey"]
+      # Standard close is a brand-critic hard rule on every customer reply.
+      reply_contains: ["happycake.us"]
+      # Public-facing voice must not blame, must not invent a discount.
+      reply_does_not_contain:
+        - "discount"
+        - "free"
+        - "promotion"
