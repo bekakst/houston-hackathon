@@ -44,4 +44,4 @@ echo "   second call (should be replay=true):"
 curl -s -X POST "$GW/whatsapp" -H "Content-Type: application/json" -d "$PAYLOAD" \
   | python -c "import sys, json; d=json.load(sys.stdin); print('  external_id:', d.get('external_id'), 'replay:', d.get('replay', False))"
 
-say "Demo complete. Open Telegram, message @duman_hackathon_bot /start, then /orders to see queued decisions."
+say "Demo complete. Open Telegram, message @HappyCakeOwnerTest_bot /start, then /orders to see queued decisions."
