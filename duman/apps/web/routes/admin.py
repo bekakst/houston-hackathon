@@ -190,6 +190,24 @@ async def _square_recent_orders_safe(limit: int = 25) -> list[dict]:
     return result or []
 
 
+def _recent_audit_safe(kind: str, limit: int = 20) -> list[dict]:
+    """Read recent audit events of one kind. Returns [] on any failure."""
+    try:
+        return audit_recent(kind=kind, limit=limit)
+    except (sqlite3.DatabaseError, KeyError, ValueError) as exc:
+        log.info("audit_recent(%s) unavailable: %s", kind, exc)
+        return []
+
+
+def _pending_marketing_drafts_safe() -> list[dict]:
+    """Drafts from /plan_marketing waiting for owner Approve in Telegram."""
+    try:
+        return decision_list_pending(kind="marketing", limit=10)
+    except (sqlite3.DatabaseError, KeyError, ValueError) as exc:
+        log.info("decision_list_pending(marketing) unavailable: %s", exc)
+        return []
+
+
 async def _marketing_sales_history_safe() -> list[dict]:
     h = hosted_mcp()
     if not h.is_configured():
@@ -513,6 +531,13 @@ async def admin_marketing(request: Request) -> HTMLResponse:
                 campaigns = res
         except MCPError as exc:
             log.info("marketing_get_campaign_metrics unavailable: %s", exc)
+
+    # Closed-loop activity surfaced from the local audit table. Empty
+    # gracefully when the loop hasn't run yet.
+    recent_routes = _recent_audit_safe("marketing_lead_routed", limit=20)
+    recent_adjustments = _recent_audit_safe("marketing_campaign_adjusted", limit=10)
+    pending_drafts = _pending_marketing_drafts_safe()
+
     return TEMPLATES.TemplateResponse(
         request,
         "admin/marketing.html",
@@ -522,6 +547,9 @@ async def admin_marketing(request: Request) -> HTMLResponse:
             plan=plan,
             total_plan_usd=sum(p["budget_usd"] for p in plan),
             campaigns=campaigns,
+            recent_routes=recent_routes,
+            recent_adjustments=recent_adjustments,
+            pending_drafts=pending_drafts,
             mcp_configured=h.is_configured(),
             page_title="Admin — marketing",
         ),

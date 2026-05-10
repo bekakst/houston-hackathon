@@ -64,4 +64,77 @@
   {% endif %}
 </section>
 
+<section class="card" style="margin-top: 22px;">
+  <h2>Drafts pending owner approval <span class="muted" style="font-weight: 400; font-size: 13px;">(Telegram <code>/marketing</code>)</span></h2>
+  {% if pending_drafts %}
+    <table class="t">
+      <thead><tr><th>Decision</th><th>Channels</th><th>Total budget</th><th>Drafted at</th></tr></thead>
+      <tbody>
+      {% for d in pending_drafts %}
+        {% set p = d.payload %}
+        {% set mp = p.marketing_plan or {} %}
+        {% set chs = mp.channels or [] %}
+        {% set total = chs|sum(attribute='budget_usd') %}
+        <tr>
+          <td><code>{{ p.decision_id }}</code></td>
+          <td>{{ chs|length }}</td>
+          <td>${{ "%.0f"|format(total | float) }}</td>
+          <td style="font-size: 12px;">{{ p.created_at[:19] if p.created_at else '—' }}</td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+    <p class="muted" style="margin-top: 10px; font-size: 12px;">Approve in Telegram via <code>/marketing</code>. On Approve, the closed loop runs: campaigns launched, leads generated &amp; routed, metrics pulled, underperformers adjusted, IG posts published.</p>
+  {% else %}
+    <div class="empty"><div class="icon">✅</div>No drafts in the approval queue. Type <code>/plan_marketing</code> in Telegram to draft a fresh plan.</div>
+  {% endif %}
+</section>
+
+<section class="card" style="margin-top: 22px;">
+  <h2>Recent loop activity <span class="muted" style="font-weight: 400; font-size: 13px;">(local audit)</span></h2>
+  <div class="grid grid-2" style="gap: 18px;">
+    <div>
+      <h3 style="font-size: 14px; margin: 0 0 8px;">Lead routes <span class="muted" style="font-weight: 400;">(last {{ recent_routes|length }})</span></h3>
+      {% if recent_routes %}
+        <table class="t" style="font-size: 12.5px;">
+          <thead><tr><th>Lead</th><th>→</th><th>Value</th><th>Reason</th></tr></thead>
+          <tbody>
+          {% for r in recent_routes %}
+            {% set p = r.payload %}
+            <tr>
+              <td><code style="font-size: 11px;">{{ p.lead_id }}</code></td>
+              <td><span class="badge channel">{{ p.route_to or '—' }}</span></td>
+              <td>{% if p.estimated_value_usd %}${{ "%.0f"|format(p.estimated_value_usd | float) }}{% else %}—{% endif %}</td>
+              <td style="font-size: 11.5px; color: #666;">{{ (p.reason or '')[:80] }}{% if (p.reason or '')|length > 80 %}…{% endif %}</td>
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      {% else %}
+        <div class="empty" style="padding: 20px;"><div class="icon">📭</div>No routes yet. Approve a marketing plan to generate &amp; route leads.</div>
+      {% endif %}
+    </div>
+    <div>
+      <h3 style="font-size: 14px; margin: 0 0 8px;">Campaign adjustments <span class="muted" style="font-weight: 400;">(last {{ recent_adjustments|length }})</span></h3>
+      {% if recent_adjustments %}
+        <table class="t" style="font-size: 12.5px;">
+          <thead><tr><th>Campaign</th><th>Adjustment</th><th>Expected</th></tr></thead>
+          <tbody>
+          {% for r in recent_adjustments %}
+            {% set p = r.payload %}
+            <tr>
+              <td><code style="font-size: 11px;">{{ (p.campaign_id or '')[:18] }}</code></td>
+              <td style="font-size: 11.5px;">{{ (p.adjustment or '')[:120] }}{% if (p.adjustment or '')|length > 120 %}…{% endif %}</td>
+              <td style="font-size: 11.5px; color: #666;">{{ (p.expected_impact or '')[:60] }}</td>
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      {% else %}
+        <div class="empty" style="padding: 20px;"><div class="icon">📊</div>No adjustments yet. Triggers when a campaign's close-rate or ROAS dips below threshold.</div>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
 {% endblock %}
