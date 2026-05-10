@@ -68,30 +68,19 @@ async def _catalog_index() -> dict[str, dict]:
     return index
 
 
-async def _items_from_spec(spec: dict | None, channel: str) -> list[dict] | None:
-    """Translate a draft_cake_spec dict into Square `items` list.
-
-    Looks up the simulator's `variationId` for the cake's kitchenProductId so
-    `square_create_order` finds the variation; falls back to a synthetic id
-    only when the live catalog can't be reached.
-    """
-    if not spec:
-        return None
-    slug = spec.get("base_cake_slug")
-    if not slug:
-        return None
+async def _line_from_cake(slug: str, size_label: str | None, quantity: int = 1) -> dict | None:
+    """Build one Square line item from (cake_slug, size_label, quantity)."""
     cake = get_cake(slug)
     if not cake:
         return None
-    size_label = spec.get("size_label") or cake.sizes[-1].label
-    size = next((s for s in cake.sizes if s.label == size_label), cake.sizes[-1])
+    label = size_label or cake.sizes[-1].label
+    size = next((s for s in cake.sizes if s.label == label), cake.sizes[-1])
     index = await _catalog_index()
     kitchen_product_id = size.mcp_product_id or f"{cake.slug}-{size.label}"
     entry = index.get(kitchen_product_id) or {}
 
     # Fallback: when the cake's mcp_product_id isn't a real simulator SKU
-    # (only 5 exist: honey slice/whole, pistachio-roll, custom-birthday-cake,
-    # office-dessert-box), pick the closest known SKU by size so
+    # (only 5 exist), pick the closest known SKU by size so
     # square_create_order accepts the items shape. The kitchenProductId we
     # forward stays our slug — kitchen accepts arbitrary product ids.
     if not entry.get("variationId") and index:
@@ -110,13 +99,42 @@ async def _items_from_spec(spec: dict | None, channel: str) -> list[dict] | None
             kitchen_product_id = next(iter(index.keys()))
 
     variation_id = entry.get("variationId") or f"sq_var_{kitchen_product_id.replace('-', '_')}"
-    return [{
+    return {
         "variationId": variation_id,
         "kitchenProductId": kitchen_product_id,
         "name": f"{cake.display_name()} ({size.label})",
-        "quantity": 1,
+        "quantity": int(quantity),
         "priceUsd": float(size.price_usd),
-    }]
+    }
+
+
+async def _items_from_spec(spec: dict | None, channel: str) -> list[dict] | None:
+    """Translate a draft_cake_spec dict into Square `items` list.
+
+    Prefers the new `items` array; falls back to the legacy single-cake
+    fields (`base_cake_slug` + `size_label`) for the custom-cake flow and
+    older decisions.
+    """
+    if not spec:
+        return None
+    multi = spec.get("items") or []
+    out: list[dict] = []
+    if multi:
+        for it in multi:
+            line = await _line_from_cake(
+                it.get("cake_slug"),
+                it.get("size_label"),
+                int(it.get("quantity") or 1),
+            )
+            if line:
+                out.append(line)
+        return out or None
+
+    slug = spec.get("base_cake_slug")
+    if not slug:
+        return None
+    line = await _line_from_cake(slug, spec.get("size_label"), 1)
+    return [line] if line else None
 
 
 async def fulfill_approved(payload: dict) -> dict[str, Any]:
@@ -156,9 +174,18 @@ async def fulfill_approved(payload: dict) -> dict[str, Any]:
     steps: list[dict] = []
     summary: dict[str, Any] = {"ok": True, "decision_id": decision_id, "steps": steps}
 
-    customer_name = payload.get("customer_name") or payload.get("customer_id") or "guest"
+    spec = payload.get("draft_cake_spec") or {}
+    # Prefer the name/phone the agent slot-filled into the spec; fall back to
+    # whatever the dispatcher put on the decision payload.
+    customer_name = (
+        spec.get("customer_name")
+        or payload.get("customer_name")
+        or payload.get("customer_id")
+        or "guest"
+    )
+    customer_phone = spec.get("customer_phone") or payload.get("customer_phone")
     source = payload.get("channel") or "agent"
-    deadline = (payload.get("draft_cake_spec") or {}).get("deadline")
+    deadline = spec.get("deadline")
 
     # Kitchen tickets want a smaller, productId-keyed item shape than Square.
     kitchen_items = [
@@ -195,6 +222,14 @@ async def fulfill_approved(payload: dict) -> dict[str, Any]:
 
     # Step 1 — square_create_order
     order_id: str | None = None
+    note_parts: list[str] = []
+    if customer_phone:
+        note_parts.append(f"phone:{customer_phone}")
+    if spec.get("delivery_address"):
+        note_parts.append(f"address:{spec['delivery_address'][:120]}")
+    note_parts.append((payload.get("draft_reply") or "")[:200])
+    customer_note = " | ".join(p for p in note_parts if p)[:280]
+
     try:
         result = await h.call_tool(
             "square_create_order",
@@ -202,7 +237,7 @@ async def fulfill_approved(payload: dict) -> dict[str, Any]:
                 "items": items,
                 "source": source,
                 "customerName": customer_name,
-                "customerNote": payload.get("draft_reply", "")[:280],
+                "customerNote": customer_note,
             },
         )
         order_id = _extract_order_id(result)

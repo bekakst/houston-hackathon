@@ -27,12 +27,23 @@
     </table>
 
     {% if payload.draft_cake_spec %}
-    <h3>Draft cake spec</h3>
+    {% set spec = payload.draft_cake_spec %}
+    <h3>Draft order</h3>
     <table class="t">
       <tbody>
-      {% for k, v in payload.draft_cake_spec.items() %}
+      {% if spec.get('items') %}
+        <tr><th>Items</th><td>
+          {% for it in spec['items'] %}
+            {{ it.quantity }}× <strong>{{ it.cake_slug }}</strong> ({{ it.size_label }}){% if not loop.last %}<br>{% endif %}
+          {% endfor %}
+        </td></tr>
+      {% elif spec.get('base_cake_slug') %}
+        <tr><th>Item</th><td>1× <strong>{{ spec.base_cake_slug }}</strong> ({{ spec.get('size_label', '?') }})</td></tr>
+      {% endif %}
+      {% for k in ('fulfillment', 'deadline', 'delivery_address', 'delivery_zone', 'customer_name', 'customer_phone', 'flavor', 'filling', 'decoration', 'inscription', 'notes') %}
+        {% set v = spec.get(k) %}
         {% if v not in (none, '', [], {}) %}
-        <tr><th>{{ k }}</th><td>{{ v }}</td></tr>
+        <tr><th>{{ k.replace('_', ' ') }}</th><td>{{ v }}</td></tr>
         {% endif %}
       {% endfor %}
       </tbody>

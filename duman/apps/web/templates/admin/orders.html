@@ -44,13 +44,25 @@
         <tr>
           <td><code>{{ d.created_at[5:16].replace('T', ' ') }}</code></td>
           <td><span class="badge {{ d.kind }}">{{ d.kind }}</span></td>
-          <td>{{ p.customer_name or d.customer_id }}</td>
+          <td>
+            {{ spec.get('customer_name') or p.customer_name or d.customer_id }}
+            {% if spec.get('customer_phone') %}
+              <div class="muted" style="font-size: 11px;">{{ spec.customer_phone }}</div>
+            {% endif %}
+          </td>
           <td><span class="badge channel">{{ d.channel }}</span></td>
           <td>
-            {% if spec.base_cake_slug %}
-              {{ spec.base_cake_slug }}{% if spec.size_label %} · {{ spec.size_label }}{% endif %}
+            {% if spec.get('items') %}
+              {% for it in spec['items'] %}
+                {{ it.quantity }}× {{ it.cake_slug }} ({{ it.size_label }}){% if not loop.last %}<br>{% endif %}
+              {% endfor %}
+            {% elif spec.get('base_cake_slug') %}
+              {{ spec.base_cake_slug }}{% if spec.get('size_label') %} · {{ spec.size_label }}{% endif %}
             {% else %}
               <span class="muted">—</span>
+            {% endif %}
+            {% if spec.get('fulfillment') %}
+              <div class="muted" style="font-size: 11px;">{{ spec.fulfillment }}{% if spec.get('deadline') %} · {{ spec.deadline[:16].replace('T', ' ') }}{% endif %}</div>
             {% endif %}
           </td>
           <td style="font-size: 12px;">

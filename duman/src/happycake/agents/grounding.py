@@ -11,7 +11,7 @@ from __future__ import annotations
 
 import logging
 import re
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from typing import Any
 
 from happycake.mcp import catalog as catalog_mcp
@@ -62,6 +62,31 @@ def _detect_cake_slug(text: str) -> str | None:
     return None
 
 
+def _detect_cake_slugs_all(text: str) -> list[str]:
+    """All catalog cakes mentioned, in catalog order (deduped)."""
+    lower = text.lower()
+    found: list[str] = []
+    for slug, aliases in _CAKE_ALIASES.items():
+        if slug == "custom":
+            continue
+        for a in aliases:
+            if a in lower and slug not in found:
+                found.append(slug)
+                break
+    return found
+
+
+_PHONE_RE = re.compile(r"\+?\d[\d\s\-().]{7,}\d")
+
+
+def _detect_phone(text: str) -> str | None:
+    m = _PHONE_RE.search(text)
+    if not m:
+        return None
+    digits = re.sub(r"\D", "", m.group(0))
+    return digits if len(digits) >= 7 else None
+
+
 def _detect_size(text: str) -> str | None:
     lower = text.lower()
     for token, label in _SIZE_TOKENS.items():
@@ -100,16 +125,35 @@ def _detect_order_id(text: str) -> str | None:
 def _ground_intake(text: str) -> dict[str, Any]:
     out: dict[str, Any] = {"detected": {}}
     slug = _detect_cake_slug(text)
+    all_slugs = _detect_cake_slugs_all(text)
     size = _detect_size(text)
     fulfillment = _detect_fulfillment(text)
     serves = _detect_serves(text)
+    phone = _detect_phone(text)
 
     out["detected"] = {
         "cake_slug": slug,
+        "cake_slugs_all": all_slugs,
         "size_label": size,
         "fulfillment": fulfillment,
         "serves": serves,
+        "phone_hint": phone,
     }
+
+    # Earliest ready timestamp for whatever cakes were detected. Baking is
+    # parallel, so it's max(lead_time) — not sum. Surface as both hours and
+    # an absolute UTC ISO string so the agent can quote a real time.
+    lead_basis = all_slugs or ([slug] if slug else [])
+    if lead_basis:
+        lead_h = catalog_mcp.min_lead_time_hours(lead_basis)
+        now_utc = datetime.now(tz=timezone.utc)
+        earliest = now_utc + timedelta(hours=lead_h)
+        out["lead_time"] = {
+            "min_hours": lead_h,
+            "earliest_ready_at_utc": earliest.isoformat(),
+            "now_utc": now_utc.isoformat(),
+            "note": "Parallel baking: time = max lead-time across items, not sum.",
+        }
 
     if slug:
         cake = catalog_mcp.get(slug)

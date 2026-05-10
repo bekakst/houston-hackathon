@@ -33,6 +33,22 @@ def search_by_allergen_safe(allergen: str) -> list[Cake]:
     return [c for c in load_catalog() if a not in c.allergens]
 
 
+def min_lead_time_hours(cake_slugs: list[str]) -> int:
+    """Earliest possible ready time = max lead-time across requested cakes.
+
+    Baking happens in parallel, so two cakes that each take 4 hours still ready
+    in 4 hours, not 8. The slowest cake sets the minimum.
+    """
+    if not cake_slugs:
+        return 0
+    leads = []
+    for slug in cake_slugs:
+        cake = cake_by_slug(slug)
+        if cake:
+            leads.append(cake.lead_time_hours)
+    return max(leads) if leads else 0
+
+
 def ingredient_ledger(slug: str) -> dict:
     """All facts about a single cake, structured for LLM grounding."""
     cake = cake_by_slug(slug)

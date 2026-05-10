@@ -13,14 +13,9 @@
 
 <section class="grid grid-4" style="margin-bottom: 22px;">
   <div class="kpi">
-    <span class="label">Today inbound</span>
-    <span class="num">{{ kpis.today_inbound }}</span>
-    <span class="sub">customer messages</span>
-  </div>
-  <div class="kpi">
-    <span class="label">Today outbound</span>
-    <span class="num">{{ kpis.today_outbound }}</span>
-    <span class="sub">replies sent</span>
+    <span class="label">Today's customers</span>
+    <span class="num">{{ kpis.today_threads }}</span>
+    <span class="sub">{{ kpis.today_inbound }} message{{ '' if kpis.today_inbound == 1 else 's' }} inbound · {{ kpis.today_outbound }} repl{{ 'y' if kpis.today_outbound == 1 else 'ies' }} sent</span>
   </div>
   <div class="kpi">
     <span class="label">Pending decisions</span>
@@ -29,6 +24,11 @@
       {% for k, v in kpis.pending_by_kind.items() %}{{ k }}:{{ v }}{% if not loop.last %} · {% endif %}{% endfor %}
       {% if not kpis.pending_by_kind %}—{% endif %}
     </span>
+  </div>
+  <div class="kpi">
+    <span class="label">Today approved</span>
+    <span class="num">{{ kpis.today_approved }}</span>
+    <span class="sub">decisions sent to customer</span>
   </div>
   <div class="kpi">
     <span class="label">POS chains run</span>

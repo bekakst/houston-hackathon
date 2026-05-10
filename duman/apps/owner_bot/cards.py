@@ -145,13 +145,33 @@ def build_card_text(payload: dict) -> str:
 
     spec = payload.get("draft_cake_spec")
     if spec:
-        spec_lines = []
-        for key in ("base_cake_slug", "size_label", "tiers", "deadline",
-                    "fulfillment", "delivery_zone"):
-            if spec.get(key) not in (None, "", []):
-                spec_lines.append(f"  • {key}: {spec[key]}")
-        if spec_lines:
-            lines.extend(["", "Cake spec:", *spec_lines])
+        items = spec.get("items") or []
+        if items:
+            lines.extend(["", "Items:"])
+            for it in items:
+                qty = it.get("quantity", 1)
+                lines.append(f"  • {qty}× {it.get('cake_slug')} ({it.get('size_label')})")
+        elif spec.get("base_cake_slug"):
+            lines.extend([
+                "",
+                f"Item: 1× {spec['base_cake_slug']} ({spec.get('size_label', '?')})",
+            ])
+
+        meta_lines = []
+        if spec.get("fulfillment"):
+            meta_lines.append(f"  • fulfillment: {spec['fulfillment']}")
+        if spec.get("deadline"):
+            meta_lines.append(f"  • deadline: {spec['deadline']}")
+        if spec.get("delivery_address"):
+            meta_lines.append(f"  • address: {spec['delivery_address']}")
+        elif spec.get("delivery_zone"):
+            meta_lines.append(f"  • zone: {spec['delivery_zone']}")
+        if spec.get("customer_name"):
+            meta_lines.append(f"  • name: {spec['customer_name']}")
+        if spec.get("customer_phone"):
+            meta_lines.append(f"  • phone: {spec['customer_phone']}")
+        if meta_lines:
+            lines.extend(["", *meta_lines])
 
     flags = payload.get("allergen_flags") or []
     if flags:

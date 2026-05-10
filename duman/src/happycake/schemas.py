@@ -85,11 +85,32 @@ class Cake(BaseModel):
 # ── Custom cake spec (the contract used across all four channels) ────────────
 
 
-class CakeSpec(BaseModel):
-    """Canonical custom-cake spec. Same JSON across web/WhatsApp/IG/Telegram."""
+class OrderItem(BaseModel):
+    """One line item on a multi-item order."""
 
     model_config = ConfigDict(extra="forbid")
 
+    cake_slug: str
+    size_label: str
+    quantity: int = Field(default=1, ge=1, le=20)
+
+
+class CakeSpec(BaseModel):
+    """Canonical order spec. Same JSON across web/WhatsApp/IG/Telegram.
+
+    Supports both single-cake (legacy `base_cake_slug` + `size_label`) and
+    multi-item orders (`items`). The intake agent populates `items` for any
+    new order. Custom cakes still use the single-cake fields + `tiers`,
+    `flavor`, etc.
+    """
+
+    model_config = ConfigDict(extra="forbid")
+
+    # Multi-item line list (preferred for new intake orders).
+    items: list[OrderItem] = Field(default_factory=list)
+
+    # Single-cake fields — used by custom-cake flow and as a fallback when
+    # `items` has exactly one entry. New code should read `items` first.
     base_cake_slug: str | None = None
     size_label: str | None = None
     weight_g: int | None = None
@@ -98,6 +119,7 @@ class CakeSpec(BaseModel):
     filling: str | None = None
     decoration: str | None = None
     inscription: str | None = None
+
     deadline: datetime | None = None
     fulfillment: Literal["pickup", "delivery"] | None = None
     delivery_zone: str | None = None
@@ -105,11 +127,38 @@ class CakeSpec(BaseModel):
     allergen_constraints: list[str] = Field(default_factory=list)
     notes: str | None = None
 
+    # Customer contact — required for owner WhatsApp follow-up.
+    customer_name: str | None = None
+    customer_phone: str | None = None
+
+    def line_items(self) -> list[OrderItem]:
+        """Normalised items list. Falls back to single-cake fields if items=[]."""
+        if self.items:
+            return self.items
+        if self.base_cake_slug and self.size_label:
+            return [OrderItem(
+                cake_slug=self.base_cake_slug,
+                size_label=self.size_label,
+                quantity=1,
+            )]
+        return []
+
     def missing_slots(self) -> list[str]:
-        required = ["size_label", "flavor", "deadline", "fulfillment"]
+        required: list[str] = []
+        if not self.line_items():
+            required.append("items")
+        if not self.fulfillment:
+            required.append("fulfillment")
+        if not self.deadline:
+            required.append("deadline")
         if self.fulfillment == "delivery":
-            required.extend(["delivery_zone", "delivery_address"])
-        return [f for f in required if getattr(self, f) in (None, "", [])]
+            if not self.delivery_address:
+                required.append("delivery_address")
+        if not self.customer_name:
+            required.append("customer_name")
+        if not self.customer_phone:
+            required.append("customer_phone")
+        return required
 
     def is_complete(self) -> bool:
         return not self.missing_slots()

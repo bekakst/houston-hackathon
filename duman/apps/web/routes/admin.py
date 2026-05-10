@@ -123,10 +123,16 @@ def _kpis() -> dict[str, Any]:
     )
     audits = audit_recent(limit=500)
     today_iso = date.today().isoformat()
-    today_inbound = sum(
-        1 for e in audits
+    today_inbound_events = [
+        e for e in audits
         if e["kind"] == "message_inbound" and e["at"][:10] == today_iso
-    )
+    ]
+    today_inbound = len(today_inbound_events)
+    today_threads = len({
+        (e.get("payload") or {}).get("thread_id")
+        for e in today_inbound_events
+        if (e.get("payload") or {}).get("thread_id")
+    })
     today_outbound = sum(
         1 for e in audits
         if e["kind"] == "message_outbound" and e["at"][:10] == today_iso
@@ -142,6 +148,7 @@ def _kpis() -> dict[str, Any]:
         "decisions_by_status": dict(by_status),
         "pending_by_kind": dict(by_kind_pending),
         "today_inbound": today_inbound,
+        "today_threads": today_threads,
         "today_outbound": today_outbound,
         "today_approved": today_approved,
         "pos_orders_total": pos_orders,
