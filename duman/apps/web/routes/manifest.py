@@ -62,6 +62,18 @@ def _build_manifest() -> dict:
                     "Phone-last-4 will be requested before disclosure."
                 ),
             },
+            "campaign_landing": {
+                "method": "GET",
+                "url_template": "/lp/{campaign_slug}",
+                "json_url_template": "/lp/{campaign_slug}.json",
+                "known_campaigns": ["mothers-day", "birthday", "halal"],
+                "utm_capture": ["utm_source", "utm_medium", "utm_campaign",
+                                "utm_content", "utm_term"],
+                "instructions": (
+                    "Marketing-Simulator traffic should land on /lp/<campaign_slug> "
+                    "with utm_* parameters. Each visit is logged with attribution."
+                ),
+            },
         },
         "rate_limit_hint": {"requests_per_minute": 10},
         "agent_friendliness": {

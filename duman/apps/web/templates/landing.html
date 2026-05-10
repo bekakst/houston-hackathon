@@ -1,0 +1,57 @@
+{% extends "_base.html" %}
+
+{% block content %}
+<section class="page-head">
+  <p class="eyebrow">◆ {{ campaign.eyebrow }}</p>
+  <h1>{{ campaign.headline }}</h1>
+  <p class="lead">{{ campaign.lead }}</p>
+  {% if attribution.utm_source %}
+  <p class="micro" data-utm-source="{{ attribution.utm_source }}"
+                   data-utm-medium="{{ attribution.utm_medium or '' }}"
+                   data-utm-campaign="{{ attribution.utm_campaign or '' }}">
+    Welcome from {{ attribution.utm_source }}{% if attribution.utm_medium %} · {{ attribution.utm_medium }}{% endif %}.
+  </p>
+  {% endif %}
+</section>
+
+<section class="hero">
+  <div>
+    <h2>{{ campaign.body_title }}</h2>
+    <p>{{ campaign.body }}</p>
+    <p class="ctas">
+      <a class="btn primary" href="{{ campaign.cta_href }}">{{ campaign.cta_label }}</a>
+      <a class="btn ghost" href="https://wa.me/12819798320">Message on WhatsApp</a>
+    </p>
+  </div>
+  <aside class="visit">
+    <h3>{{ campaign.aside_title }}</h3>
+    <p>{{ campaign.aside_body|safe }}</p>
+  </aside>
+</section>
+
+{% if featured %}
+<section class="grid">
+  <h2>{{ campaign.featured_title }}</h2>
+  <ul class="cards">
+    {% for cake in featured %}
+    <li class="card"
+        data-slug="{{ cake.slug }}"
+        data-price-whole-usd="{{ cake.sizes[-1].price_usd }}"
+        data-lead-time-hours="{{ cake.lead_time_hours }}">
+      <a href="/cakes/{{ cake.slug }}{{ tracking_qs }}">
+        <img src="{{ cake.photo }}" alt='{{ cake.display_name() }}' loading="lazy">
+        <h3>{{ cake.display_name() }}</h3>
+        <p class="desc">{{ cake.short_description }}</p>
+        <p class="meta">
+          <span>${{ "%.0f"|format(cake.sizes[-1].price_usd) }}</span>
+          <span>· {{ cake.lead_time_hours }}h notice</span>
+        </p>
+      </a>
+    </li>
+    {% endfor %}
+  </ul>
+</section>
+{% endif %}
+
+<p class="closing">Order on the site at happycake.us or send a message on WhatsApp.</p>
+{% endblock %}

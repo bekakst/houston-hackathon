@@ -32,6 +32,9 @@ from apps.owner_bot.cards import (
 )
 from apps.owner_bot.outbound import send_to_customer
 from happycake.mcp import orders as orders_mcp
+from happycake.mcp.fulfillment import fulfill_approved
+from happycake.mcp.marketing_loop import launch_marketing_plan, plan_and_queue
+from happycake.settings import settings
 from happycake.storage import (
     audit_recent,
     audit_write,
@@ -42,6 +45,40 @@ from happycake.storage import (
 )
 
 log = logging.getLogger(__name__)
+
+
+def _owner_chat_id() -> int | None:
+    raw = settings.telegram_owner_chat_id
+    try:
+        cid = int(raw)
+    except (TypeError, ValueError):
+        return None
+    return cid if cid > 0 else None
+
+
+def _is_owner(update: Update) -> bool:
+    """True if the message comes from the configured owner chat.
+
+    Returns True when TELEGRAM_OWNER_CHAT_ID is unset/0 so dev setups still
+    work — the operator uses /whoami first to learn their id, then sets it.
+    """
+    expected = _owner_chat_id()
+    if expected is None:
+        return True
+    chat = update.effective_chat
+    return chat is not None and chat.id == expected
+
+
+async def _reject_non_owner(update: Update) -> None:
+    if update.message:
+        await update.message.reply_text(
+            "This bot only answers the configured HappyCake owner. "
+            "Use /whoami to share your chat id with the team."
+        )
+    elif update.callback_query:
+        await update.callback_query.answer(
+            "Only the owner can approve decisions.", show_alert=True,
+        )
 
 
 def _format_pending_count(decisions: list[dict]) -> str:
@@ -58,6 +95,9 @@ def _format_pending_count(decisions: list[dict]) -> str:
 
 
 async def cmd_start(update: Update, _ctx: ContextTypes.DEFAULT_TYPE) -> None:
+    if not _is_owner(update):
+        await _reject_non_owner(update)
+        return
     user = update.effective_user
     text = (
         "Good morning, friends.\n\n"
@@ -71,6 +111,9 @@ async def cmd_start(update: Update, _ctx: ContextTypes.DEFAULT_TYPE) -> None:
 
 
 async def cmd_help(update: Update, _ctx: ContextTypes.DEFAULT_TYPE) -> None:
+    if not _is_owner(update):
+        await _reject_non_owner(update)
+        return
     text = (
         "*HappyCake owner bot — quick reference*\n\n"
         "/orders — pending standard orders\n"
@@ -78,6 +121,7 @@ async def cmd_help(update: Update, _ctx: ContextTypes.DEFAULT_TYPE) -> None:
         "/care — open complaints / status / refunds\n"
         "/reports — today / 7-day / 30-day summary\n"
         "/marketing — review and approve marketing drafts\n"
+        "/plan_marketing — draft next month's $500 plan and queue for approval\n"
         "/status `<order_id>` — quick lookup\n"
         "/replay `<thread_id>` — see the agent's reasoning trace\n"
         "/audit — last 20 audit events\n"
@@ -99,6 +143,9 @@ async def cmd_whoami(update: Update, _ctx: ContextTypes.DEFAULT_TYPE) -> None:
 
 
 async def _send_decision_cards(update: Update, kind: str | None) -> None:
+    if not _is_owner(update):
+        await _reject_non_owner(update)
+        return
     pending = decision_list_pending(kind=kind, limit=10)
     if not pending:
         msg = (f"No pending {kind or ''} decisions. "
@@ -133,7 +180,33 @@ async def cmd_marketing(update: Update, _ctx: ContextTypes.DEFAULT_TYPE) -> None
     await _send_decision_cards(update, "marketing")
 
 
+async def cmd_plan_marketing(update: Update, _ctx: ContextTypes.DEFAULT_TYPE) -> None:
+    if not _is_owner(update):
+        await _reject_non_owner(update)
+        return
+    await update.message.reply_text(
+        "Drafting next month's $500 plan. This calls the marketing agent and "
+        "may take 30–60s…"
+    )
+    result = await plan_and_queue()
+    if not result.get("ok"):
+        await update.message.reply_text(
+            f"⚠ Marketing plan failed: {result.get('error', 'unknown error')}."
+        )
+        return
+    await update.message.reply_text(
+        f"📣 Plan queued. Decision id `{result['decision_id']}`. "
+        f"Allocates ${result['total_budget_usd']:.0f} across "
+        f"{result['channel_count']} channels.\n\n"
+        f"Run /marketing to review and Approve.",
+        parse_mode=ParseMode.MARKDOWN,
+    )
+
+
 async def cmd_reports(update: Update, _ctx: ContextTypes.DEFAULT_TYPE) -> None:
+    if not _is_owner(update):
+        await _reject_non_owner(update)
+        return
     pending = decision_list_pending(limit=50)
     overview = _format_pending_count(pending)
     await update.message.reply_text(
@@ -143,6 +216,9 @@ async def cmd_reports(update: Update, _ctx: ContextTypes.DEFAULT_TYPE) -> None:
 
 
 async def cmd_status(update: Update, ctx: ContextTypes.DEFAULT_TYPE) -> None:
+    if not _is_owner(update):
+        await _reject_non_owner(update)
+        return
     args = ctx.args or []
     if not args:
         await update.message.reply_text(
@@ -165,6 +241,9 @@ async def cmd_status(update: Update, ctx: ContextTypes.DEFAULT_TYPE) -> None:
 
 
 async def cmd_replay(update: Update, ctx: ContextTypes.DEFAULT_TYPE) -> None:
+    if not _is_owner(update):
+        await _reject_non_owner(update)
+        return
     args = ctx.args or []
     if not args:
         await update.message.reply_text(
@@ -192,6 +271,9 @@ async def cmd_replay(update: Update, ctx: ContextTypes.DEFAULT_TYPE) -> None:
 
 
 async def cmd_audit(update: Update, _ctx: ContextTypes.DEFAULT_TYPE) -> None:
+    if not _is_owner(update):
+        await _reject_non_owner(update)
+        return
     events = audit_recent(limit=20)
     if not events:
         await update.message.reply_text("No audit events yet.")
@@ -208,6 +290,9 @@ async def cmd_audit(update: Update, _ctx: ContextTypes.DEFAULT_TYPE) -> None:
 async def on_callback(update: Update, _ctx: ContextTypes.DEFAULT_TYPE) -> None:
     q = update.callback_query
     if not q or not q.data:
+        return
+    if not _is_owner(update):
+        await q.answer("Only the owner can approve decisions.", show_alert=True)
         return
     await q.answer()
     parts = q.data.split(":", 2)
@@ -308,6 +393,52 @@ async def _handle_approve(q, decision: dict) -> None:
             f"Decision is approved in the audit log."
         )
 
+    # Post-approval chains by decision kind.
+    kind = payload.get("kind")
+    if kind == "marketing":
+        loop = await launch_marketing_plan(payload)
+        if loop.get("skipped"):
+            return
+        if loop.get("ok"):
+            campaigns_run = sum(
+                1 for c in (loop.get("campaigns") or [])
+                if c.get("create", {}).get("ok")
+            )
+            await q.message.reply_text(
+                f"📣 Closed loop ran: {campaigns_run} campaign(s) launched, "
+                f"leads generated, owner report logged. See /audit.",
+            )
+        else:
+            await q.message.reply_text(
+                f"⚠ Marketing closed loop had failures — check /audit. "
+                f"Decision is approved either way."
+            )
+        return
+
+    # POS + kitchen handoff for intake/custom decisions.
+    fulfill = await fulfill_approved(payload)
+    if fulfill.get("skipped"):
+        return
+    order_id = fulfill.get("order_id")
+    ticket_id = fulfill.get("ticket_id")
+    if fulfill.get("ok") and order_id:
+        msg = f"📦 POS order `{order_id}` confirmed"
+        if ticket_id:
+            msg += f", kitchen ticket `{ticket_id}` queued."
+        else:
+            msg += " (kitchen ticket failed — check /audit)."
+        await q.message.reply_text(msg, parse_mode=ParseMode.MARKDOWN)
+    elif not fulfill.get("ok"):
+        steps = fulfill.get("steps") or []
+        failures = [s for s in steps if not s.get("ok")]
+        first = failures[0] if failures else {}
+        await q.message.reply_text(
+            f"⚠ POS/kitchen chain partially failed at "
+            f"`{first.get('step', '?')}`: {first.get('error', 'unknown')}. "
+            f"See /audit.",
+            parse_mode=ParseMode.MARKDOWN,
+        )
+
 
 async def _handle_reject_with_reason(q, decision: dict, *, reason_code: str) -> None:
     payload = decision["payload"]
@@ -343,6 +474,7 @@ def register_handlers(app: Application) -> None:
     app.add_handler(CommandHandler("custom", cmd_custom))
     app.add_handler(CommandHandler("care", cmd_care))
     app.add_handler(CommandHandler("marketing", cmd_marketing))
+    app.add_handler(CommandHandler("plan_marketing", cmd_plan_marketing))
     app.add_handler(CommandHandler("reports", cmd_reports))
     app.add_handler(CommandHandler("status", cmd_status))
     app.add_handler(CommandHandler("replay", cmd_replay))
@@ -353,6 +485,9 @@ def register_handlers(app: Application) -> None:
 
 
 async def _on_text(update: Update, _ctx: ContextTypes.DEFAULT_TYPE) -> None:
+    if not _is_owner(update):
+        await _reject_non_owner(update)
+        return
     await update.message.reply_text(
         "I work via tap-only buttons. Try /help to see what I can do.",
         reply_markup=main_menu_keyboard(),

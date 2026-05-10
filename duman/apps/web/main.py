@@ -12,7 +12,7 @@ from pathlib import Path
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 
-from apps.web.routes import assistant, manifest, pages
+from apps.web.routes import assistant, campaigns, manifest, pages
 from happycake.storage import init_db
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -30,6 +30,7 @@ def create_app() -> FastAPI:
     app.include_router(pages.router)
     app.include_router(assistant.router)
     app.include_router(manifest.router)
+    app.include_router(campaigns.router)
     return app
 
 
