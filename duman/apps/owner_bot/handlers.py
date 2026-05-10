@@ -470,18 +470,27 @@ async def _handle_approve(q, decision: dict) -> None:
         loop = await launch_marketing_plan(payload)
         if loop.get("skipped"):
             return
+        campaigns_run = sum(
+            1 for c in (loop.get("campaigns") or [])
+            if c.get("create", {}).get("ok")
+        )
+        posts = loop.get("instagram_posts") or []
+        posts_published = sum(
+            1 for p in posts if p.get("publish", {}).get("ok")
+        )
+        suffix = ""
+        if posts:
+            suffix = (f", {posts_published}/{len(posts)} IG post(s) published"
+                      if posts_published else
+                      ", IG posts queued but did not publish — see /audit")
         if loop.get("ok"):
-            campaigns_run = sum(
-                1 for c in (loop.get("campaigns") or [])
-                if c.get("create", {}).get("ok")
-            )
             await q.message.reply_text(
                 f"📣 Closed loop ran: {campaigns_run} campaign(s) launched, "
-                f"leads generated, owner report logged. See /audit.",
+                f"leads generated, owner report logged{suffix}. See /audit.",
             )
         else:
             await q.message.reply_text(
-                f"⚠ Marketing closed loop had failures — check /audit. "
+                f"⚠ Marketing closed loop had failures{suffix} — check /audit. "
                 f"Decision is approved either way."
             )
         return

@@ -28,6 +28,7 @@ from typing import Any
 from happycake.agents.cli import CLIError, run_json
 from happycake.agents.prompts import load_prompt
 from happycake.mcp.hosted import MCPError, hosted_mcp
+from happycake.mcp.instagram_posts import publish_creative_drafts
 from happycake.mcp.marketing import channel_defaults
 from happycake.settings import settings
 from happycake.storage import audit_write, decision_insert, now_iso
@@ -216,6 +217,12 @@ async def launch_marketing_plan(payload: dict) -> dict[str, Any]:
         summary["report"] = {"ok": False, "error": str(exc)}
         summary["ok"] = False
         log.warning("marketing_report_to_owner failed: %s", exc)
+
+    # 5. instagram_schedule_post → instagram_approve_post → instagram_publish_post
+    posts = await publish_creative_drafts(plan, decision_id)
+    summary["instagram_posts"] = posts
+    if any(not p.get("publish", {}).get("ok") for p in posts if "publish" in p):
+        summary["ok"] = False
 
     return summary
 

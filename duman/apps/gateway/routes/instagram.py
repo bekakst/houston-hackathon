@@ -76,8 +76,14 @@ async def receive(req: Request,
 def _extract(payload: dict) -> tuple[str, str, str, str]:
     """Sandbox shape:
         {"threadId": "...", "from": "...", "message": "...", "ts": "..."}
-    Meta IG webhook shape (entry/messaging):
+    Meta IG webhook DM shape:
         {"entry":[{"messaging":[{"sender":{"id":"..."},"message":{"text":"..."},"timestamp":...}]}]}
+    Meta IG webhook comments/mentions shape:
+        {"entry":[{"changes":[{"field":"comments","value":{"id":"...","text":"...","from":{"id":"...","username":"..."},"media":{"id":"..."}}}]}]}
+        {"entry":[{"changes":[{"field":"mentions","value":{"comment_id":"...","media_id":"..."}}]}]}
+    Mentions arrive without text — Meta expects a follow-up Graph API fetch on
+    comment_id/media_id. We surface them as text-less so the receiver responds
+    with a clear skip rather than 500-ing or silently dropping.
     """
     if "from" in payload and ("message" in payload or "text" in payload):
         thread_id = str(payload.get("threadId") or payload.get("thread_id") or "")
@@ -87,11 +93,45 @@ def _extract(payload: dict) -> tuple[str, str, str, str]:
         return thread_id, sender, text, ts
 
     try:
-        m = payload["entry"][0]["messaging"][0]
-        sender = str(m["sender"]["id"])
-        text = (m.get("message") or {}).get("text", "")
-        ts = str(m.get("timestamp")
-                 or datetime.now(tz=timezone.utc).isoformat())
-        return f"ig_{sender}", sender, text, ts
+        entry = payload["entry"][0]
     except (KeyError, IndexError, TypeError):
         return "", "unknown", "", datetime.now(tz=timezone.utc).isoformat()
+
+    entry_ts = str(entry.get("time") or datetime.now(tz=timezone.utc).isoformat())
+
+    if entry.get("messaging"):
+        try:
+            m = entry["messaging"][0]
+            sender = str(m["sender"]["id"])
+            text = (m.get("message") or {}).get("text", "")
+            ts = str(m.get("timestamp") or entry_ts)
+            return f"ig_{sender}", sender, text, ts
+        except (KeyError, IndexError, TypeError):
+            return "", "unknown", "", entry_ts
+
+    if entry.get("changes"):
+        try:
+            change = entry["changes"][0]
+        except (IndexError, TypeError):
+            return "", "unknown", "", entry_ts
+        field = str(change.get("field") or "")
+        value = change.get("value") or {}
+        if field == "comments":
+            comment_id = str(value.get("id") or "")
+            frm = value.get("from") or {}
+            sender = str(frm.get("username") or frm.get("id") or "unknown")
+            text = str(value.get("text") or "")
+            thread_id = f"ig_c_{comment_id}" if comment_id else f"ig_c_{sender}"
+            ts = str(value.get("created_time") or value.get("timestamp") or entry_ts)
+            return thread_id, sender, text, ts
+        if field == "mentions":
+            comment_id = str(value.get("comment_id") or value.get("id") or "")
+            media_id = str(value.get("media_id") or "")
+            sender = str(value.get("username") or comment_id or media_id or "unknown")
+            text = str(value.get("text") or "")
+            thread_id = (f"ig_m_{comment_id}" if comment_id
+                         else f"ig_m_{media_id}" if media_id
+                         else f"ig_m_{sender}")
+            return thread_id, sender, text, entry_ts
+
+    return "", "unknown", "", entry_ts

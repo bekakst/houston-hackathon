@@ -16,6 +16,17 @@ from happycake.storage import audit_write, now_iso
 log = logging.getLogger(__name__)
 
 
+def _comment_id_from_thread(thread_id: str) -> str | None:
+    """IG comment/mention thread ids are encoded as ig_c_<id> / ig_m_<id> by
+    the inbound webhook. Both surfaces reply via instagram_reply_to_comment.
+    """
+    for prefix in ("ig_c_", "ig_m_"):
+        if thread_id.startswith(prefix):
+            cid = thread_id[len(prefix):]
+            return cid or None
+    return None
+
+
 async def send_to_customer(*, channel: str, customer_id: str, text: str,
                            thread_id: str | None = None) -> dict[str, Any]:
     """Post the reply on the customer-facing channel.
@@ -31,10 +42,21 @@ async def send_to_customer(*, channel: str, customer_id: str, text: str,
                               {"to": customer_id, "message": text})
             result["ok"] = True
         elif channel == "instagram":
-            await h.call_tool(
-                "instagram_send_dm",
-                {"threadId": thread_id or customer_id, "message": text},
-            )
+            tid = thread_id or customer_id
+            comment_id = _comment_id_from_thread(tid)
+            if comment_id:
+                await h.call_tool(
+                    "instagram_reply_to_comment",
+                    {"commentId": comment_id, "message": text},
+                )
+                result["surface"] = "comment"
+                result["comment_id"] = comment_id
+            else:
+                await h.call_tool(
+                    "instagram_send_dm",
+                    {"threadId": tid, "message": text},
+                )
+                result["surface"] = "dm"
             result["ok"] = True
         elif channel == "web":
             # Web replies surface in the chat widget via the assistant API
