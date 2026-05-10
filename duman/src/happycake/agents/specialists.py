@@ -13,6 +13,7 @@ fabrication.
 from __future__ import annotations
 
 import logging
+import re
 from typing import Literal
 
 from happycake.agents.cli import CLIError, run_json
@@ -126,9 +127,33 @@ async def run_custom(text: str, *, history: list[dict] | None = None,
     return _ensure_spec_from_grounding(reply, evidence, key="custom")
 
 
+_PHONE_LAST4_RE = re.compile(r"\b(\d{4})\b")
+
+
 async def run_care(text: str, *, history: list[dict] | None = None,
                    verified: bool = False) -> Reply:
     evidence = ground_for_intent("care", text, verified=verified)
+
+    # Pull the simulator's recent orders whenever the customer is asking about
+    # an order, so the prompt can ground its answer in fresh POS state.
+    # Triggers: detected order_id, or a 4-digit string typical of the
+    # phone-last-4 verification challenge.
+    detected = (evidence.get("care") or {}).get("detected") or {}
+    order_id = detected.get("order_id")
+    last4 = None
+    if not order_id:
+        m = _PHONE_LAST4_RE.search(text)
+        if m:
+            last4 = m.group(1)
+    if order_id or last4:
+        from happycake.mcp.orders import fetch_recent_from_square
+        sq = await fetch_recent_from_square(
+            limit=20,
+            match_order_id=order_id,
+            match_phone_last4=last4,
+        )
+        evidence.setdefault("care", {})["square_orders"] = sq
+
     envelope = {
         "current_text": text,
         "thread_history": (history or [])[-6:],
