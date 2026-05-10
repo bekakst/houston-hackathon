@@ -37,6 +37,7 @@ from apps.owner_bot.cards import (
 from apps.owner_bot.outbound import send_to_customer
 from happycake.mcp import orders as orders_mcp
 from happycake.mcp.fulfillment import fulfill_approved
+from happycake.mcp.gb_reviews import fetch_and_queue_reviews
 from happycake.mcp.hosted import MCPError, hosted_mcp
 from happycake.mcp.marketing_loop import launch_marketing_plan, plan_and_queue
 from happycake.settings import settings
@@ -127,6 +128,7 @@ async def cmd_help(update: Update, _ctx: ContextTypes.DEFAULT_TYPE) -> None:
         "/reports — today / 7-day / 30-day summary\n"
         "/marketing — review and approve marketing drafts\n"
         "/plan_marketing — draft next month's $500 plan and queue for approval\n"
+        "/reviews — pull Google Business reviews, draft replies for approval\n"
         "/status `<order_id>` — quick lookup\n"
         "/replay `<thread_id>` — see the agent's reasoning trace\n"
         "/audit — last 20 audit events\n"
@@ -185,6 +187,43 @@ async def cmd_care(update: Update, _ctx: ContextTypes.DEFAULT_TYPE) -> None:
 
 async def cmd_marketing(update: Update, _ctx: ContextTypes.DEFAULT_TYPE) -> None:
     await _send_decision_cards(update, "marketing")
+
+
+async def cmd_reviews(update: Update, _ctx: ContextTypes.DEFAULT_TYPE) -> None:
+    """Pull GB reviews, draft brand-vetted replies, surface them as cards."""
+    if not _is_owner(update):
+        await _reject_non_owner(update)
+        return
+    await update.message.reply_text(
+        "Pulling Google Business reviews and drafting replies. May take 30–60s…"
+    )
+    result = await fetch_and_queue_reviews(limit=10)
+    if not result.get("ok"):
+        await update.message.reply_text(
+            f"⚠ Reviews pull failed: {result.get('error', 'unknown error')}."
+        )
+        return
+    queued = result.get("queued") or []
+    skipped = result.get("skipped") or []
+    if not queued:
+        await update.message.reply_text(
+            f"No new reviews to draft. Already-queued: {len(skipped)}. "
+            f"Tap previously-queued cards via the existing decision list."
+        )
+        return
+    for q in queued:
+        decision = decision_get(q["decision_id"])
+        if not decision:
+            continue
+        payload = decision["payload"]
+        await update.message.reply_text(
+            build_card_text(payload),
+            reply_markup=approval_keyboard(payload["decision_id"]),
+        )
+    await update.message.reply_text(
+        f"⭐ {len(queued)} review draft(s) queued. {len(skipped)} skipped "
+        f"(already drafted or empty)."
+    )
 
 
 async def cmd_plan_marketing(update: Update, _ctx: ContextTypes.DEFAULT_TYPE) -> None:
@@ -624,6 +663,7 @@ def register_handlers(app: Application) -> None:
     app.add_handler(CommandHandler("care", cmd_care))
     app.add_handler(CommandHandler("marketing", cmd_marketing))
     app.add_handler(CommandHandler("plan_marketing", cmd_plan_marketing))
+    app.add_handler(CommandHandler("reviews", cmd_reviews))
     app.add_handler(CommandHandler("reports", cmd_reports))
     app.add_handler(CommandHandler("status", cmd_status))
     app.add_handler(CommandHandler("replay", cmd_replay))
