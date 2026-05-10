@@ -1,0 +1,52 @@
+{% extends "admin/_base.html" %}
+{% block title %}Audit log{% endblock %}
+{% block meta %}<span>{{ events|length }} events shown · limit {{ limit }}</span>{% endblock %}
+
+{% block content %}
+
+<section class="banner info">
+  <strong>Append-only audit log.</strong> Every state change writes a row here — customer messages, routing decisions, owner approvals, POS chain steps, kitchen actions. This is the evidence trail the evaluator scores against.
+</section>
+
+<section class="tabs">
+  <a href="/admin/audit" class="{{ 'active' if not kind else '' }}">All events</a>
+  {% for k in all_kinds %}
+    <a href="/admin/audit?kind={{ k }}" class="{{ 'active' if kind == k else '' }}">{{ k }}</a>
+  {% endfor %}
+</section>
+
+{% if events %}
+<section class="card">
+  <table class="t">
+    <thead><tr><th>When</th><th>Kind</th><th>Thread / decision / order</th><th>Detail</th></tr></thead>
+    <tbody>
+    {% for e in events %}
+      {% set p = e.payload or {} %}
+      <tr>
+        <td><code>{{ e.at[:10] }}</code><br><code style="color: var(--admin-muted);">{{ e.at[11:19] }}</code></td>
+        <td><span class="badge kind">{{ e.kind }}</span></td>
+        <td style="font-size: 12px;">
+          {% if p.thread_id %}thread <code>{{ p.thread_id }}</code><br>{% endif %}
+          {% if p.decision_id %}decision <code>{{ p.decision_id }}</code><br>{% endif %}
+          {% if p.order_id %}order <code>{{ p.order_id }}</code><br>{% endif %}
+          {% if p.ticket_id %}ticket <code>{{ p.ticket_id }}</code>{% endif %}
+        </td>
+        <td style="font-size: 12px; max-width: 50ch;">
+          {% if p.text %}"{{ p.text[:140] }}"{% endif %}
+          {% if p.reply_snippet %}"{{ p.reply_snippet[:140] }}"{% endif %}
+          {% if p.intent %}intent: {{ p.intent }}{% endif %}
+          {% if p.status %} · status: {{ p.status }}{% endif %}
+          {% if p.channel %} · channel: {{ p.channel }}{% endif %}
+          {% if p.reason_label %} · reason: {{ p.reason_label }}{% endif %}
+          {% if p.by %} · by {{ p.by }}{% endif %}
+        </td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</section>
+{% else %}
+<div class="empty"><div class="icon">📜</div>No audit events match this filter yet.</div>
+{% endif %}
+
+{% endblock %}

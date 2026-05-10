@@ -1,0 +1,80 @@
+{% extends "admin/_base.html" %}
+{% block title %}Order replay — {{ decision.decision_id }}{% endblock %}
+{% block meta %}<a href="/admin/orders" class="admin-link">← all orders</a>{% endblock %}
+
+{% block content %}
+
+<section class="banner info">
+  <strong>Order replay.</strong> Every step the agent and owner took for this customer, in order. Same data the Telegram bot's <code>/replay {{ payload.thread_id or '...' }}</code> command surfaces.
+</section>
+
+<section class="order-detail">
+  <div class="card">
+    <h2>Decision <code>{{ decision.decision_id }}</code></h2>
+    <table class="t">
+      <tbody>
+        <tr><th>Status</th><td><span class="badge {{ decision.status }}">{{ decision.status }}</span></td></tr>
+        <tr><th>Kind</th><td><span class="badge {{ decision.kind }}">{{ decision.kind }}</span></td></tr>
+        <tr><th>Channel</th><td><span class="badge channel">{{ decision.channel }}</span></td></tr>
+        <tr><th>Customer</th><td>{{ payload.customer_name or decision.customer_id }} <code>{{ decision.customer_id }}</code></td></tr>
+        <tr><th>Thread</th><td><code>{{ payload.thread_id or '—' }}</code></td></tr>
+        <tr><th>Intent</th><td>{{ payload.intent or '—' }}</td></tr>
+        <tr><th>Suggested action</th><td>{{ payload.suggested_action or '—' }}</td></tr>
+        <tr><th>Created</th><td><code>{{ decision.created_at }}</code></td></tr>
+        {% if decision.decided_at %}<tr><th>Decided</th><td><code>{{ decision.decided_at }}</code></td></tr>{% endif %}
+        {% if decision.rejection_reason %}<tr><th>Rejection</th><td>{{ decision.rejection_reason }}</td></tr>{% endif %}
+      </tbody>
+    </table>
+
+    {% if payload.draft_cake_spec %}
+    <h3>Draft cake spec</h3>
+    <table class="t">
+      <tbody>
+      {% for k, v in payload.draft_cake_spec.items() %}
+        {% if v not in (none, '', [], {}) %}
+        <tr><th>{{ k }}</th><td>{{ v }}</td></tr>
+        {% endif %}
+      {% endfor %}
+      </tbody>
+    </table>
+    {% endif %}
+
+    {% if payload.draft_reply %}
+    <h3>Draft reply to customer</h3>
+    <div class="card" style="background: var(--admin-bg); border-radius: 8px; padding: 12px 14px; font-size: 13px; white-space: pre-wrap; line-height: 1.5;">{{ payload.draft_reply }}</div>
+    {% endif %}
+  </div>
+
+  <div class="card">
+    <h2>Replay timeline ({{ timeline|length }})</h2>
+    {% if timeline %}
+      <ul class="timeline">
+      {% for e in timeline %}
+        <li>
+          <div class="when">{{ e.at[11:19] }} UTC · {{ e.at[:10] }}</div>
+          <div class="what">{{ e.kind }}</div>
+          {% set p = e.payload %}
+          <div class="text">
+            {% if p.intent %}intent <code>{{ p.intent }}</code>{% endif %}
+            {% if p.text %} · "{{ p.text[:120] }}"{% endif %}
+            {% if p.reply_snippet %} · "{{ p.reply_snippet[:120] }}"{% endif %}
+            {% if p.order_id %} · order <code>{{ p.order_id }}</code>{% endif %}
+            {% if p.ticket_id %} · ticket <code>{{ p.ticket_id }}</code>{% endif %}
+            {% if p.status %} · status <code>{{ p.status }}</code>{% endif %}
+            {% if p.reason_label %} · reason {{ p.reason_label }}{% endif %}
+          </div>
+        </li>
+      {% endfor %}
+      </ul>
+    {% else %}
+      <div class="empty"><div class="icon">⏳</div>No audit events captured for this decision yet.</div>
+    {% endif %}
+  </div>
+</section>
+
+<section class="card" style="margin-top: 18px;">
+  <h2>Raw payload</h2>
+  <pre class="json">{{ payload | tojson(indent=2) }}</pre>
+</section>
+
+{% endblock %}

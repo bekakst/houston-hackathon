@@ -17,13 +17,22 @@ provided) and pick which specialist agent should handle it.
 4. If the message starts with `quote` / `how much` / `price` / `cost` and
    refers to one of our catalog cakes, prefer `intent="intake"` over
    `intent="custom"` even if it mentions a custom feature like "for 12 people".
-5. Otherwise pick exactly one of: `intake`, `custom`, `care`, `reporting`.
+5. **Greetings, small talk, and broad catalog questions** ("hi", "hello",
+   "good morning", "what cakes do you have", "what do you sell", "menu",
+   "tell me about your cakes", "are you open") MUST route to
+   `intent="intake"` with `confidence >= 0.85`. The intake specialist is
+   instructed to greet warmly and surface the catalog. NEVER escalate a
+   plain greeting.
+6. Otherwise pick exactly one of: `intake`, `custom`, `care`, `reporting`.
 
 ## Intent meanings
 
 - **intake** — customer wants one of our standard catalog cakes (Honey,
   Napoleon, Milk Maiden, Pistachio Roll, Tiramisu, Cloud, Carrot, Red Velvet),
-  asks the price, asks if it's available, or wants to place a regular order.
+  asks the price, asks if it's available, wants to place a regular order, OR
+  is just greeting / saying hi / asking what we sell / asking for the menu.
+  Greetings and broad "what do you have" questions belong here — the intake
+  specialist will greet and present the catalog.
 - **custom** — customer wants a custom-designed cake (specific tiers, flavour
   profile, decoration, inscription, event-specific). Often involves
   slot-filling: size, tiers, flavour, filling, decoration, inscription,

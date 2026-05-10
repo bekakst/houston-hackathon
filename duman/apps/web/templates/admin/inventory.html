@@ -1,0 +1,53 @@
+{% extends "admin/_base.html" %}
+{% block title %}Inventory{% endblock %}
+{% block meta %}<span>Daily classics, 24-hour, custom capacity caps</span>{% endblock %}
+
+{% block content %}
+
+<section class="banner info">
+  <strong>Daily inventory.</strong> Capacity comes from <code>data/kitchen_calendar.yaml</code> — same source the dispatcher and intake agent ground against. Numbers degrade as decisions are approved.
+</section>
+
+<section class="card">
+  <h2>7-day availability</h2>
+  <div class="inv-row" style="border-bottom: 2px solid var(--admin-border);">
+    <div class="inv-cake">Cake</div>
+    {% for d in day_labels %}
+      <div class="inv-head">{{ d }}</div>
+    {% endfor %}
+  </div>
+  {% for r in rows %}
+    <div class="inv-row">
+      <div class="inv-cake">
+        {{ r.cake.display_name() }}
+        <div class="muted" style="font-weight: 400; font-size: 11px;">lead {{ r.cake.lead_time_hours }}h · serves {{ r.cake.serves_min }}–{{ r.cake.serves_max }}</div>
+      </div>
+      {% for d in r.days %}
+        {% set cls = 'ok' %}
+        {% if d.remaining == 0 %}{% set cls = 'bad' %}
+        {% elif d.capacity and d.remaining < (d.capacity / 3) %}{% set cls = 'warn' %}{% endif %}
+        <div class="inv-cell {{ cls }}" title="{{ d.date }}">
+          <strong>{{ d.remaining }}</strong>
+          <span style="font-size: 10px;">/ {{ d.capacity }}</span>
+        </div>
+      {% endfor %}
+    </div>
+  {% endfor %}
+</section>
+
+<section class="grid grid-3" style="margin-top: 22px;">
+  <div class="card">
+    <h2>Daily classics</h2>
+    <p class="muted">Honey, Napoleon, Milk Maiden, Tiramisu, Cloud, Carrot, Red Velvet — same-day pickup before 4 PM.</p>
+  </div>
+  <div class="card">
+    <h2>24-hour cakes</h2>
+    <p class="muted">Pistachio Roll — meringue base needs overnight to stabilise. Order by 4 PM for next-day pickup.</p>
+  </div>
+  <div class="card">
+    <h2>Custom jobs</h2>
+    <p class="muted">Tiered, decorated, inscriptioned cakes. Capacity is constrained per day to protect quality.</p>
+  </div>
+</section>
+
+{% endblock %}
