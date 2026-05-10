@@ -474,15 +474,28 @@ async def _handle_approve(q, decision: dict) -> None:
             1 for c in (loop.get("campaigns") or [])
             if c.get("create", {}).get("ok")
         )
+        leads_routed = sum(
+            sum(1 for r in (c.get("routes") or []) if r.get("ok"))
+            for c in (loop.get("campaigns") or [])
+        )
+        adjustments = loop.get("adjustments") or []
+        adjustments_made = sum(1 for a in adjustments if a.get("ok"))
         posts = loop.get("instagram_posts") or []
         posts_published = sum(
             1 for p in posts if p.get("publish", {}).get("ok")
         )
-        suffix = ""
+        bits: list[str] = []
+        if leads_routed:
+            bits.append(f"{leads_routed} lead(s) routed")
+        if adjustments_made:
+            bits.append(f"{adjustments_made} campaign(s) adjusted")
+        elif adjustments:
+            bits.append(f"{len(adjustments)} campaign(s) reviewed (no changes)")
         if posts:
-            suffix = (f", {posts_published}/{len(posts)} IG post(s) published"
-                      if posts_published else
-                      ", IG posts queued but did not publish — see /audit")
+            bits.append(f"{posts_published}/{len(posts)} IG post(s) published"
+                        if posts_published else
+                        "IG posts queued but did not publish — see /audit")
+        suffix = (", " + ", ".join(bits)) if bits else ""
         if loop.get("ok"):
             await q.message.reply_text(
                 f"📣 Closed loop ran: {campaigns_run} campaign(s) launched, "
