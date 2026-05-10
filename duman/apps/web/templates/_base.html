@@ -45,6 +45,8 @@
 </head>
 <body>
 
+<a class="skip-to-content" href="#main">Skip to content</a>
+
 <header class="site-header">
   <div class="bar">
     <a class="brand" href="/">
@@ -63,7 +65,7 @@
   </div>
 </header>
 
-<main class="page">
+<main id="main" class="page">
 {% block content %}{% endblock %}
 </main>
 
@@ -88,7 +90,6 @@
       <p><a href="/policies/delivery">Delivery</a><br><a href="/policies/allergens">Allergens</a><br><a href="/policies/refund">Refunds</a><br><a href="/faq">FAQ</a></p>
     </div>
   </div>
-  <p class="micro">Order on the site at happycake.us or send a message on WhatsApp.</p>
 </footer>
 
 {% include "_assistant.html" %}
