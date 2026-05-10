@@ -1,0 +1,166 @@
+{
+  "scenario_id": "launch-day-revenue-engine",
+  "started_at": "2026-05-10T09:50:01.059281+00:00",
+  "ended_at": "2026-05-10T09:51:29.638922+00:00",
+  "events_handled": [
+    {
+      "i": 0,
+      "channel": "whatsapp",
+      "sender": "+12815551001",
+      "text_snippet": "Can I get a custom birthday cake for tomorrow afternoon?",
+      "intent": "custom",
+      "needs_owner_approval": false
+    },
+    {
+      "i": 4,
+      "channel": "web",
+      "sender": "world_sender",
+      "text_snippet": "Cake was great but pickup timing was confusing.",
+      "intent": "care",
+      "needs_owner_approval": false
+    },
+    {
+      "i": 6,
+      "channel": "web",
+      "sender": "world_sender",
+      "text_snippet": "No more events in scenario.",
+      "intent": "escalate",
+      "needs_owner_approval": true
+    },
+    {
+      "i": 7,
+      "channel": "web",
+      "sender": "world_sender",
+      "text_snippet": "No more events in scenario.",
+      "intent": "escalate",
+      "needs_owner_approval": true
+    },
+    {
+      "i": 8,
+      "channel": "web",
+      "sender": "world_sender",
+      "text_snippet": "No more events in scenario.",
+      "intent": "escalate",
+      "needs_owner_approval": true
+    },
+    {
+      "i": 9,
+      "channel": "web",
+      "sender": "world_sender",
+      "text_snippet": "No more events in scenario.",
+      "intent": "escalate",
+      "needs_owner_approval": true
+    },
+    {
+      "i": 10,
+      "channel": "web",
+      "sender": "world_sender",
+      "text_snippet": "No more events in scenario.",
+      "intent": "escalate",
+      "needs_owner_approval": true
+    },
+    {
+      "i": 11,
+      "channel": "web",
+      "sender": "world_sender",
+      "text_snippet": "No more events in scenario.",
+      "intent": "escalate",
+      "needs_owner_approval": true
+    },
+    {
+      "i": 12,
+      "channel": "web",
+      "sender": "world_sender",
+      "text_snippet": "No more events in scenario.",
+      "intent": "escalate",
+      "needs_owner_approval": true
+    },
+    {
+      "i": 13,
+      "channel": "web",
+      "sender": "world_sender",
+      "text_snippet": "No more events in scenario.",
+      "intent": "escalate",
+      "needs_owner_approval": true
+    },
+    {
+      "i": 14,
+      "channel": "web",
+      "sender": "world_sender",
+      "text_snippet": "No more events in scenario.",
+      "intent": "escalate",
+      "needs_owner_approval": true
+    },
+    {
+      "i": 15,
+      "channel": "web",
+      "sender": "world_sender",
+      "text_snippet": "No more events in scenario.",
+      "intent": "escalate",
+      "needs_owner_approval": true
+    },
+    {
+      "i": 16,
+      "channel": "web",
+      "sender": "world_sender",
+      "text_snippet": "No more events in scenario.",
+      "intent": "escalate",
+      "needs_owner_approval": true
+    },
+    {
+      "i": 17,
+      "channel": "web",
+      "sender": "world_sender",
+      "text_snippet": "No more events in scenario.",
+      "intent": "escalate",
+      "needs_owner_approval": true
+    },
+    {
+      "i": 18,
+      "channel": "web",
+      "sender": "world_sender",
+      "text_snippet": "No more events in scenario.",
+      "intent": "escalate",
+      "needs_owner_approval": true
+    },
+    {
+      "i": 19,
+      "channel": "web",
+      "sender": "world_sender",
+      "text_snippet": "No more events in scenario.",
+      "intent": "escalate",
+      "needs_owner_approval": true
+    }
+  ],
+  "world_summary": {
+    "status": "complete",
+    "scenarioId": "launch-day-revenue-engine",
+    "currentMinute": 300,
+    "deliveredSeededEvents": 6,
+    "remainingSeededEvents": 0,
+    "timelineEvents": 23,
+    "byChannel": {
+      "system": 17,
+      "whatsapp": 1,
+      "instagram": 1,
+      "marketing": 1,
+      "square": 1,
+      "gbusiness": 1,
+      "kitchen": 1
+    },
+    "deterministic": true,
+    "timeCompression": "1 simulator hour = 10 real minutes"
+  },
+  "evaluator_score": {
+    "dimension": "world scenario execution",
+    "score": 100,
+    "maxScore": 100,
+    "evidence": [
+      "Scenario started",
+      "23 event(s) in timeline",
+      "6 event(s) delivered",
+      "200 recent MCP call(s) in mcp_audit_log"
+    ],
+    "gaps": []
+  }
+}
