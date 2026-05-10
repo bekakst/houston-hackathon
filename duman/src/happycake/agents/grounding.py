@@ -242,7 +242,12 @@ def _common_evidence() -> dict[str, Any]:
 def ground_for_intent(intent: str, text: str, *,
                       partial_spec: dict | None = None,
                       verified: bool = False) -> dict[str, Any]:
-    """Pre-fetch MCP/local facts for the specialist agent's prompt envelope."""
+    """Pre-fetch local facts for the specialist agent's prompt envelope.
+
+    Sync — local YAML mirrors only. For hosted-MCP-backed grounding use
+    `ground_for_intent_async` which adds live POS catalog + kitchen
+    capacity + menu constraints on top of the local base.
+    """
     base = _common_evidence()
     if intent == "intake":
         base["intake"] = _ground_intake(text)
@@ -250,4 +255,29 @@ def ground_for_intent(intent: str, text: str, *,
         base["custom"] = _ground_custom(text, partial_spec)
     elif intent == "care":
         base["care"] = _ground_care(text, verified=verified)
+    return base
+
+
+async def ground_for_intent_async(intent: str, text: str, *,
+                                  partial_spec: dict | None = None,
+                                  verified: bool = False) -> dict[str, Any]:
+    """Async grounding: local base + live hosted-MCP facts merged into evidence.
+
+    Adds `evidence.<intent>.hosted` with whatever the simulator returns for
+    POS catalog, kitchen capacity, and menu constraints. Falls back to
+    local-only evidence if MCP is unconfigured or any fetch fails — never
+    blocks the customer reply on an MCP outage.
+    """
+    base = ground_for_intent(intent, text, partial_spec=partial_spec,
+                             verified=verified)
+
+    if intent in ("intake", "custom"):
+        # Pull hosted facts only when we have a slug to anchor on. The
+        # helper handles `None` slug too (returns empty dict if MCP unavailable).
+        from happycake.mcp.hosted_grounding import hosted_facts_for
+        slug = (base.get(intent) or {}).get("detected", {}).get("cake_slug")
+        hosted = await hosted_facts_for(slug)
+        if hosted:
+            base.setdefault(intent, {})["hosted"] = hosted
+
     return base

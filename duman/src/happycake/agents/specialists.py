@@ -16,7 +16,7 @@ import logging
 from typing import Literal
 
 from happycake.agents.cli import CLIError, run_json
-from happycake.agents.grounding import ground_for_intent
+from happycake.agents.grounding import ground_for_intent, ground_for_intent_async
 from happycake.agents.prompts import load_prompt
 from happycake.schemas import CakeSpec, Evidence, Intent, Reply
 
@@ -103,7 +103,7 @@ def _ensure_spec_from_grounding(reply: Reply, evidence: dict, *,
 
 
 async def run_intake(text: str, *, history: list[dict] | None = None) -> Reply:
-    evidence = ground_for_intent("intake", text)
+    evidence = await ground_for_intent_async("intake", text)
     envelope = {
         "current_text": text,
         "thread_history": (history or [])[-6:],
@@ -115,7 +115,7 @@ async def run_intake(text: str, *, history: list[dict] | None = None) -> Reply:
 
 async def run_custom(text: str, *, history: list[dict] | None = None,
                      partial_spec: dict | None = None) -> Reply:
-    evidence = ground_for_intent("custom", text, partial_spec=partial_spec)
+    evidence = await ground_for_intent_async("custom", text, partial_spec=partial_spec)
     envelope = {
         "current_text": text,
         "thread_history": (history or [])[-6:],
