@@ -1,0 +1,93 @@
+{% extends "admin/_base.html" %}
+{% block title %}Sales{% endblock %}
+{% block meta %}{% if mcp_configured %}<span>Live MCP</span>{% else %}<span class="muted">MCP token missing</span>{% endif %}{% endblock %}
+
+{% block content %}
+
+{% if not mcp_configured %}
+<section class="banner warn">
+  <strong>MCP not configured.</strong> Set <code>MCP_TEAM_TOKEN</code> in <code>.env</code> to populate sales history and margins from the simulator.
+</section>
+{% endif %}
+
+{% if history %}
+<section class="card" style="margin-bottom: 22px;">
+  <h2>Monthly sales — last {{ history|length }} months</h2>
+  <table class="t">
+    <thead><tr><th>Month</th><th>Revenue (USD)</th><th>Orders</th><th>Avg ticket</th></tr></thead>
+    <tbody>
+    {% for h in history %}
+      {% set rev = (h.revenue_usd or h.revenueUsd or h.revenue or 0) | float %}
+      {% set ord = (h.orders or h.order_count or 0) | int %}
+      {% set avg = (rev / ord) if ord else 0 %}
+      <tr>
+        <td><code>{{ h.month or h.period or '—' }}</code></td>
+        <td>${{ "{:,.0f}".format(rev) }}</td>
+        <td>{{ ord }}</td>
+        <td>${{ "%.2f"|format(avg) }}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</section>
+{% endif %}
+
+{% if margins %}
+<section class="card" style="margin-bottom: 22px;">
+  <h2>Margin by product</h2>
+  <table class="t">
+    <thead><tr><th>Product</th><th>Avg margin %</th><th>Avg margin USD</th><th>Sales</th></tr></thead>
+    <tbody>
+    {% for m in margins %}
+      <tr>
+        <td>{{ m.name or m.product or m.kitchenProductId or '—' }}</td>
+        <td>{{ "%.1f"|format(((m.estimatedMarginPct or m.margin_pct or 0) | float)) }}%</td>
+        <td>${{ "%.2f"|format(((m.estimatedMarginUsd or m.margin_usd or 0) | float)) }}</td>
+        <td>{{ m.sales or m.units or '—' }}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</section>
+{% endif %}
+
+<section class="grid grid-2" style="margin-bottom: 22px;">
+  <div class="card">
+    <h2>Channel mix (today's audit)</h2>
+    {% if channels %}
+      <table class="t">
+        <thead><tr><th>Channel</th><th>Inbound messages</th></tr></thead>
+        <tbody>
+        {% for ch, n in channels %}
+          <tr><td><span class="badge channel">{{ ch }}</span></td><td>{{ n }}</td></tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <div class="empty">No inbound messages yet today.</div>
+    {% endif %}
+  </div>
+
+  <div class="card">
+    <h2>Recent Square orders</h2>
+    {% if recent_orders %}
+      <table class="t">
+        <thead><tr><th>Order</th><th>Status</th><th>Source</th><th>Total</th></tr></thead>
+        <tbody>
+        {% for o in recent_orders[:12] %}
+          <tr>
+            <td><code>{{ (o.id or o.orderId or '')[:14] }}</code></td>
+            <td><span class="badge {{ (o.status or '').lower() }}">{{ o.status or '—' }}</span></td>
+            <td>{{ o.source or '—' }}</td>
+            <td>${{ "%.2f"|format(((o.totalUsd or o.total_usd or 0) | float)) }}</td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <div class="empty">No POS orders yet — approve a decision in Telegram to populate this.</div>
+    {% endif %}
+  </div>
+</section>
+
+{% endblock %}

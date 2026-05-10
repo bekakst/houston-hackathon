@@ -1,0 +1,119 @@
+{% extends "admin/_base.html" %}
+{% block title %}Overview{% endblock %}
+{% block meta %}
+  <span>Today is {{ kpis and "" }}{{ "" }}</span>
+{% endblock %}
+
+{% block content %}
+
+<section class="banner info">
+  <strong>Read-only evidence dashboard.</strong>
+  Owner approves on Telegram <code>@HappyCakeOwnerTest_bot</code>; this page renders the lifecycle as it happens.
+</section>
+
+<section class="grid grid-4" style="margin-bottom: 22px;">
+  <div class="kpi">
+    <span class="label">Today inbound</span>
+    <span class="num">{{ kpis.today_inbound }}</span>
+    <span class="sub">customer messages</span>
+  </div>
+  <div class="kpi">
+    <span class="label">Today outbound</span>
+    <span class="num">{{ kpis.today_outbound }}</span>
+    <span class="sub">replies sent</span>
+  </div>
+  <div class="kpi">
+    <span class="label">Pending decisions</span>
+    <span class="num">{{ kpis.decisions_by_status.get('pending', 0) }}</span>
+    <span class="sub">
+      {% for k, v in kpis.pending_by_kind.items() %}{{ k }}:{{ v }}{% if not loop.last %} · {% endif %}{% endfor %}
+      {% if not kpis.pending_by_kind %}—{% endif %}
+    </span>
+  </div>
+  <div class="kpi">
+    <span class="label">POS chains run</span>
+    <span class="num">{{ kpis.pos_orders_total }}</span>
+    <span class="sub">{{ kpis.kitchen_tickets_total }} kitchen tickets</span>
+  </div>
+</section>
+
+<section class="card" style="margin-bottom: 22px;">
+  <h2>Customer-to-pickup pipeline</h2>
+  <p class="muted" style="margin-top: -6px;">Six steps from inbound message → completed order. Counts roll up from the audit log.</p>
+  <div class="pipeline">
+    {% for s in lifecycle %}
+    <div class="pipeline-step">
+      <span class="icon">{{ s.icon }}</span>
+      <div class="step-num">Step {{ s.step }}</div>
+      <div class="step-title">{{ s.title }}</div>
+      <div class="step-count">{{ s.count }}</div>
+      <div class="step-detail">{{ s.detail }}</div>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="grid grid-2" style="margin-bottom: 22px;">
+  <div class="card">
+    <h2>Pending decisions</h2>
+    {% if pending %}
+      <table class="t">
+        <thead><tr><th>When</th><th>Kind</th><th>Customer</th><th>Channel</th><th></th></tr></thead>
+        <tbody>
+        {% for d in pending %}
+          <tr>
+            <td>{{ d.created_at[11:19] }}</td>
+            <td><span class="badge {{ d.kind }}">{{ d.kind }}</span></td>
+            <td>{{ d.payload.customer_name or d.customer_id }}</td>
+            <td><span class="badge channel">{{ d.channel }}</span></td>
+            <td><a href="/admin/orders/{{ d.decision_id }}">open →</a></td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <div class="empty"><div class="icon">✨</div>No pending decisions. The owner is caught up.</div>
+    {% endif %}
+  </div>
+
+  <div class="card">
+    <h2>Recent activity</h2>
+    {% if audits %}
+      <ul class="timeline">
+      {% for e in audits[:8] %}
+        <li>
+          <div class="when">{{ e.at[11:19] }} UTC</div>
+          <div class="what">{{ e.kind }}</div>
+          {% set p = e.payload %}
+          <div class="text">
+            {% if p.thread_id %}thread <code>{{ p.thread_id }}</code>{% endif %}
+            {% if p.intent %} · {{ p.intent }}{% endif %}
+            {% if p.channel %} · {{ p.channel }}{% endif %}
+            {% if p.text %} · "{{ p.text[:80] }}"{% endif %}
+            {% if p.reply_snippet %} · "{{ p.reply_snippet[:80] }}"{% endif %}
+            {% if p.order_id %} · order <code>{{ p.order_id }}</code>{% endif %}
+            {% if p.ticket_id %} · ticket <code>{{ p.ticket_id }}</code>{% endif %}
+          </div>
+        </li>
+      {% endfor %}
+      </ul>
+      <p class="muted" style="margin-top: 14px;"><a href="/admin/audit">View full audit log →</a></p>
+    {% else %}
+      <div class="empty"><div class="icon">📜</div>No activity yet. Send a message in the chat widget to populate this.</div>
+    {% endif %}
+  </div>
+</section>
+
+<section class="card">
+  <h2>Quick links</h2>
+  <div class="grid grid-3">
+    <p class="muted">▸ <a href="/admin/orders">All orders by lifecycle bucket</a></p>
+    <p class="muted">▸ <a href="/admin/kitchen">Kitchen tickets + production capacity</a></p>
+    <p class="muted">▸ <a href="/admin/inventory">Per-cake inventory + 7-day view</a></p>
+    <p class="muted">▸ <a href="/admin/sales">Sales history + channel mix</a></p>
+    <p class="muted">▸ <a href="/admin/marketing">$500 plan + campaign metrics</a></p>
+    <p class="muted">▸ <a href="/admin/audit">Full audit log</a></p>
+  </div>
+</section>
+
+{% endblock %}

@@ -1,0 +1,54 @@
+{% extends "admin/_base.html" %}
+{% block title %}Pending decisions{% endblock %}
+{% block meta %}<span>{{ pending|length }} pending</span>{% endblock %}
+
+{% block content %}
+
+<section class="banner info">
+  <strong>Pending owner decisions.</strong> The owner approves these on Telegram <code>@HappyCakeOwnerTest_bot</code> using inline-keyboard cards. This page mirrors the queue read-only.
+</section>
+
+{% for kind in kinds %}
+{% set list = by_kind.get(kind) or [] %}
+<section class="card" style="margin-bottom: 18px;">
+  <h2>
+    <span class="badge {{ kind }}">{{ kind }}</span>
+    <span class="muted" style="font-weight: 400; font-size: 13px; margin-left: 8px;">{{ list|length }} pending</span>
+  </h2>
+  {% if list %}
+    {% for d in list %}
+      {% set p = d.payload %}
+      <div class="card" style="margin: 10px 0; background: var(--admin-bg); border-color: var(--admin-blue-200);">
+        <div style="display: flex; justify-content: space-between; gap: 12px; align-items: flex-start;">
+          <div>
+            <div style="font-size: 12px; color: var(--admin-muted);">
+              <code>{{ d.decision_id }}</code> · {{ d.created_at[5:16].replace('T', ' ') }} UTC ·
+              <span class="badge channel">{{ d.channel }}</span>
+            </div>
+            <div style="font-weight: 600; margin-top: 4px;">{{ p.customer_name or d.customer_id }}</div>
+            {% if p.intent %}<div class="muted" style="font-size: 12px;">intent: {{ p.intent }}{% if p.suggested_action %} · {{ p.suggested_action }}{% endif %}</div>{% endif %}
+          </div>
+          <a href="/admin/orders/{{ d.decision_id }}">replay →</a>
+        </div>
+        {% if p.draft_reply %}
+          <div style="margin-top: 10px; font-size: 13px; padding: 10px 12px; background: white; border-radius: 8px; border: 1px solid var(--admin-border); white-space: pre-wrap; line-height: 1.5;">{{ p.draft_reply }}</div>
+        {% endif %}
+        {% if p.draft_cake_spec %}
+          <div class="muted" style="margin-top: 8px; font-size: 12px;">
+            <strong>Spec:</strong>
+            {% set s = p.draft_cake_spec %}
+            {% if s.base_cake_slug %}{{ s.base_cake_slug }}{% endif %}
+            {% if s.size_label %} · {{ s.size_label }}{% endif %}
+            {% if s.fulfillment %} · {{ s.fulfillment }}{% endif %}
+            {% if s.deadline %} · by {{ s.deadline }}{% endif %}
+          </div>
+        {% endif %}
+      </div>
+    {% endfor %}
+  {% else %}
+    <div class="empty">No pending <strong>{{ kind }}</strong> decisions.</div>
+  {% endif %}
+</section>
+{% endfor %}
+
+{% endblock %}

@@ -4,13 +4,14 @@
     <header>
       <strong>HappyCake</strong>
       <span>Ask about cakes, allergens, or your order.</span>
+      <button id="hc-clear" aria-label="New chat" type="button" title="Start a new chat">↻</button>
       <button id="hc-close" aria-label="Close" type="button">×</button>
     </header>
     <div id="hc-log" role="log"></div>
     <form id="hc-form">
       <input id="hc-input" type="text" autocomplete="off"
              placeholder='e.g. cake "Honey" for 8 people Saturday' required>
-      <button type="submit">Send</button>
+      <button id="hc-send" type="submit">Send</button>
     </form>
     <p class="hint">Replies are written by HappyCake's assistant. Anything about
        allergens or special requests is reviewed by a human before we commit.</p>
@@ -18,58 +19,316 @@
 </div>
 <script>
 (function () {
+  const STORAGE_KEY = 'hc_chat_v2';
+  const LEGACY_KEYS = ['hc_chat_v1'];
+  const POLL_INTERVAL_MS = 1500;
+  const CHANNEL_NAME = 'hc_chat_channel';
+
+  // One-time cleanup: clear the old localStorage that survives tab close.
+  for (const k of LEGACY_KEYS) {
+    try { localStorage.removeItem(k); } catch (_) { /* ignore */ }
+  }
+
   const toggle = document.getElementById('hc-toggle');
   const panel = document.getElementById('hc-panel');
   const close = document.getElementById('hc-close');
+  const clearBtn = document.getElementById('hc-clear');
   const form = document.getElementById('hc-form');
   const input = document.getElementById('hc-input');
+  const sendBtn = document.getElementById('hc-send');
   const log = document.getElementById('hc-log');
-  const threadId = 'web_' + Math.random().toString(36).slice(2, 10);
 
-  function append(role, text) {
-    const li = document.createElement('div');
-    li.className = 'msg ' + role;
-    li.textContent = text;
-    log.appendChild(li);
+  const channel = ('BroadcastChannel' in window) ? new BroadcastChannel(CHANNEL_NAME) : null;
+
+  function newThreadId() {
+    return 'web_' + Math.random().toString(36).slice(2, 10);
+  }
+
+  function loadState() {
+    try {
+      const raw = sessionStorage.getItem(STORAGE_KEY);
+      if (!raw) return null;
+      const s = JSON.parse(raw);
+      if (!s || !s.thread_id || !Array.isArray(s.messages)) return null;
+      return s;
+    } catch (_) { return null; }
+  }
+
+  function saveState(broadcast) {
+    try { sessionStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
+    catch (_) { /* quota or disabled */ }
+    if (broadcast && channel) {
+      try { channel.postMessage({ type: 'state', state }); } catch (_) { /* ignore */ }
+    }
+  }
+
+  function freshState() {
+    return {
+      thread_id: newThreadId(),
+      messages: [],
+      greeted: false,
+      pending_request_id: null,
+    };
+  }
+
+  let state = loadState() || freshState();
+  if (!('pending_request_id' in state)) state.pending_request_id = null;
+  saveState(false);
+
+  let pollTimer = null;
+
+  // Safe inline formatter: bolds quoted cake names like cake "Honey" and
+  // marks dollar amounts. Uses only DOM nodes — no innerHTML, no HTML strings.
+  function appendInline(node, text) {
+    const re = /(cake\s+"[^"\n]+"|\$[0-9]+(?:\.[0-9]{1,2})?)/g;
+    let last = 0;
+    for (const m of text.matchAll(re)) {
+      if (m.index > last) node.appendChild(document.createTextNode(text.slice(last, m.index)));
+      const strong = document.createElement('strong');
+      strong.textContent = m[0];
+      node.appendChild(strong);
+      last = m.index + m[0].length;
+    }
+    if (last < text.length) node.appendChild(document.createTextNode(text.slice(last)));
+  }
+
+  // Convert a plain-text reply with "- " bullets and blank lines into a
+  // structured DOM tree so the chat bubble renders nicely.
+  function renderRichText(target, text) {
+    const lines = String(text || '').replace(/\r\n?/g, '\n').split('\n');
+    let i = 0;
+    while (i < lines.length) {
+      const line = lines[i];
+      const trimmed = line.trim();
+      if (!trimmed) {            // blank line → paragraph break
+        i++;
+        continue;
+      }
+      if (/^[-•]\s+/.test(trimmed)) {
+        const ul = document.createElement('ul');
+        while (i < lines.length && /^[-•]\s+/.test(lines[i].trim())) {
+          const li = document.createElement('li');
+          appendInline(li, lines[i].trim().replace(/^[-•]\s+/, ''));
+          ul.appendChild(li);
+          i++;
+        }
+        target.appendChild(ul);
+        continue;
+      }
+      // Plain paragraph (may span multiple consecutive non-bullet lines).
+      const p = document.createElement('p');
+      const buf = [trimmed];
+      i++;
+      while (i < lines.length && lines[i].trim() && !/^[-•]\s+/.test(lines[i].trim())) {
+        buf.push(lines[i].trim());
+        i++;
+      }
+      appendInline(p, buf.join(' '));
+      target.appendChild(p);
+    }
+    if (!target.childNodes.length) {
+      target.textContent = String(text || '');
+    }
+  }
+
+  function buildMessageNode(role, text) {
+    const div = document.createElement('div');
+    div.className = 'msg ' + role;
+    if (role === 'bot') {
+      renderRichText(div, text);
+    } else {
+      div.textContent = text;
+    }
+    return div;
+  }
+
+  function render() {
+    log.replaceChildren();
+    for (const m of state.messages) {
+      log.appendChild(buildMessageNode(m.role, m.text));
+    }
+    if (state.pending_request_id) {
+      const div = document.createElement('div');
+      div.className = 'msg bot pending';
+      div.id = 'hc-pending';
+      div.textContent = '…';
+      log.appendChild(div);
+    }
     log.scrollTop = log.scrollHeight;
+  }
+
+  function appendMessage(role, text, broadcast) {
+    state.messages.push({ role, text, at: Date.now() });
+    saveState(broadcast !== false);
+    log.appendChild(buildMessageNode(role, text));
+    log.scrollTop = log.scrollHeight;
+  }
+
+  function setBusy(busy) {
+    input.disabled = busy;
+    sendBtn.disabled = busy;
+    sendBtn.textContent = busy ? 'Sending…' : 'Send';
+    if (!busy && !panel.hidden) input.focus();
+  }
+
+  function ensureGreeting() {
+    if (state.greeted) return;
+    appendMessage('bot', "Good morning, friends. Ask me about today's bake, dates, allergens, or pickup.");
+    state.greeted = true;
+    saveState(true);
+  }
+
+  function clearPending() {
+    state.pending_request_id = null;
+    saveState(true);
+    const node = document.getElementById('hc-pending');
+    if (node) node.remove();
+    setBusy(false);
+  }
+
+  function resetConversation() {
+    if (pollTimer) { clearTimeout(pollTimer); pollTimer = null; }
+    state = freshState();
+    saveState(true);
+    render();
+    setBusy(false);
+    if (!panel.hidden) {
+      ensureGreeting();
+      input.focus();
+    }
+  }
+
+  async function pollOnce() {
+    const reqId = state.pending_request_id;
+    if (!reqId || reqId === 'optimistic') return;
+    let resp;
+    try {
+      resp = await fetch('/assistant/result/' + encodeURIComponent(reqId));
+    } catch (_) {
+      schedulePoll();
+      return;
+    }
+    if (resp.status === 404) {
+      clearPending();
+      appendMessage('bot', "I lost track of that message — please send it again. Apologies!");
+      return;
+    }
+    let data;
+    try { data = await resp.json(); }
+    catch (_) { schedulePoll(); return; }
+
+    if (data.status === 'pending') {
+      schedulePoll();
+      return;
+    }
+    if (data.status === 'done') {
+      const reply = data.reply || {};
+      const replyText = reply.reply_to_customer
+        || "I had trouble reaching the kitchen. Try again in a moment, or send a message on WhatsApp.";
+      clearPending();
+      appendMessage('bot', replyText);
+      if (reply.needs_owner_approval) {
+        appendMessage('note', 'A team member will review and reply shortly.');
+      }
+      return;
+    }
+    clearPending();
+    appendMessage('bot', "I had trouble reaching the kitchen. Try again in a moment, or send a message on WhatsApp.");
+  }
+
+  function schedulePoll() {
+    if (pollTimer) clearTimeout(pollTimer);
+    pollTimer = setTimeout(pollOnce, POLL_INTERVAL_MS);
+  }
+
+  render();
+  if (state.pending_request_id && state.pending_request_id !== 'optimistic') {
+    setBusy(true);
+    schedulePoll();
   }
 
   toggle.addEventListener('click', () => {
     panel.hidden = false;
     toggle.hidden = true;
-    if (!log.dataset.greeted) {
-      append('bot', 'Good morning, friends. Ask me about today’s bake, dates, allergens, or pickup.');
-      log.dataset.greeted = '1';
-    }
-    input.focus();
+    ensureGreeting();
+    if (!sendBtn.disabled) input.focus();
   });
   close.addEventListener('click', () => { panel.hidden = true; toggle.hidden = false; });
+  clearBtn.addEventListener('click', () => {
+    if (sendBtn.disabled) return;       // don't reset mid-request
+    resetConversation();
+  });
 
   form.addEventListener('submit', async (ev) => {
     ev.preventDefault();
+    if (sendBtn.disabled) return;
     const text = input.value.trim();
     if (!text) return;
-    append('me', text);
+
+    appendMessage('me', text);
     input.value = '';
-    append('bot', '…');
-    const placeholder = log.lastChild;
+    setBusy(true);
+
+    state.pending_request_id = 'optimistic';
+    saveState(true);
+    render();
+
+    let resp;
     try {
-      const resp = await fetch('/assistant/message', {
+      resp = await fetch('/assistant/submit', {
         method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({thread_id: threadId, text}),
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ thread_id: state.thread_id, text }),
       });
-      const data = await resp.json();
-      placeholder.textContent = data.reply_to_customer || 'I had trouble reaching the kitchen. Try again in a moment, or send a message on WhatsApp.';
-      if (data.needs_owner_approval) {
-        const note = document.createElement('div');
-        note.className = 'msg note';
-        note.textContent = 'A team member will review and reply shortly.';
-        log.appendChild(note);
-      }
-    } catch (e) {
-      placeholder.textContent = 'I had trouble reaching the kitchen. Try again in a moment, or send a message on WhatsApp.';
+    } catch (_) {
+      clearPending();
+      appendMessage('bot', "I couldn't reach the kitchen. Please try again.");
+      return;
     }
+    let data;
+    try { data = await resp.json(); }
+    catch (_) {
+      clearPending();
+      appendMessage('bot', "I couldn't reach the kitchen. Please try again.");
+      return;
+    }
+    if (!data.request_id) {
+      clearPending();
+      appendMessage('bot', "I couldn't reach the kitchen. Please try again.");
+      return;
+    }
+    state.pending_request_id = data.request_id;
+    saveState(true);
+    schedulePoll();
   });
+
+  input.addEventListener('keydown', (ev) => {
+    if (ev.key === 'Enter' && sendBtn.disabled) ev.preventDefault();
+  });
+
+  // Cross-tab sync via BroadcastChannel — only mirrors to other tabs that
+  // already have the page open. Closing the tab ends the session.
+  if (channel) {
+    channel.addEventListener('message', (ev) => {
+      const msg = ev.data;
+      if (!msg || msg.type !== 'state' || !msg.state) return;
+      const next = msg.state;
+      if (!next.thread_id || !Array.isArray(next.messages)) return;
+      // Only mirror if it's the same thread (same originating session).
+      // If this tab has its own thread already, ignore other-tab broadcasts.
+      if (state.thread_id && state.thread_id !== next.thread_id) return;
+      state = next;
+      if (!('pending_request_id' in state)) state.pending_request_id = null;
+      saveState(false);  // already broadcast by sender
+      render();
+      if (state.pending_request_id && state.pending_request_id !== 'optimistic') {
+        setBusy(true);
+        schedulePoll();
+      } else {
+        setBusy(false);
+        if (pollTimer) { clearTimeout(pollTimer); pollTimer = null; }
+      }
+    });
+  }
 })();
 </script>

@@ -128,6 +128,24 @@ def _ground_intake(text: str) -> dict[str, Any]:
             c.model_dump(mode="json") for c in catalog_mcp.search_by_serves(serves)
         ][:4]
 
+    # Always surface a compact catalog overview so the intake specialist can
+    # answer greetings and "what do you have" questions without re-prompting.
+    try:
+        all_cakes = catalog_mcp.list_all()
+    except Exception:  # noqa: BLE001
+        all_cakes = []
+    out["catalog_overview"] = [
+        {
+            "slug": c.slug,
+            "name": c.name,
+            "short_description": c.short_description,
+            "serves_min": c.serves_min,
+            "serves_max": c.serves_max,
+            "available_daily": c.available_daily,
+        }
+        for c in all_cakes
+    ]
+
     return out
 
 

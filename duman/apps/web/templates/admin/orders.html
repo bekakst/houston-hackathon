@@ -1,0 +1,114 @@
+{% extends "admin/_base.html" %}
+{% block title %}Orders{% endblock %}
+{% block meta %}<span>{{ rows|length }} decisions tracked</span>{% endblock %}
+
+{% block content %}
+
+<section class="banner info">
+  <strong>Lifecycle buckets.</strong> Each card shows where every decision currently sits — from owner approval through kitchen and pickup. Click an order to replay its full audit trail.
+</section>
+
+<section class="tabs">
+  {% for b in bucket_order %}
+    <a href="#bucket-{{ b }}" data-bucket="{{ b }}" class="tab-link">
+      {{ b.replace('_', ' ').title() }} <span class="badge {{ b }} dot">{{ by_bucket[b]|length }}</span>
+    </a>
+  {% endfor %}
+</section>
+
+{% for b in bucket_order %}
+<section class="card" id="bucket-{{ b }}" style="margin-bottom: 18px;">
+  <h2>
+    <span class="badge {{ b }} dot">{{ b.replace('_', ' ').title() }}</span>
+    <span class="muted" style="font-weight: 400; font-size: 13px; margin-left: 8px;">{{ by_bucket[b]|length }} order(s)</span>
+  </h2>
+
+  {% if by_bucket[b] %}
+    <table class="t">
+      <thead>
+        <tr>
+          <th>Created</th>
+          <th>Kind</th>
+          <th>Customer</th>
+          <th>Channel</th>
+          <th>Cake</th>
+          <th>Status / audit</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+      {% for r in by_bucket[b] %}
+        {% set d = r.decision %}
+        {% set p = r.payload %}
+        {% set spec = p.draft_cake_spec or {} %}
+        <tr>
+          <td><code>{{ d.created_at[5:16].replace('T', ' ') }}</code></td>
+          <td><span class="badge {{ d.kind }}">{{ d.kind }}</span></td>
+          <td>{{ p.customer_name or d.customer_id }}</td>
+          <td><span class="badge channel">{{ d.channel }}</span></td>
+          <td>
+            {% if spec.base_cake_slug %}
+              {{ spec.base_cake_slug }}{% if spec.size_label %} · {{ spec.size_label }}{% endif %}
+            {% else %}
+              <span class="muted">—</span>
+            {% endif %}
+          </td>
+          <td style="font-size: 12px;">
+            <span class="badge {{ d.status }}">{{ d.status }}</span>
+            {% if r.audits %}
+              <span class="muted">· {{ r.audits|length }} audit event(s)</span>
+            {% endif %}
+            {% if r.draft_reply_excerpt %}
+              <div class="muted" style="margin-top: 4px; max-width: 36ch;">"{{ r.draft_reply_excerpt }}…"</div>
+            {% endif %}
+          </td>
+          <td><a href="/admin/orders/{{ d.decision_id }}">replay →</a></td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <div class="empty">No orders in this bucket yet.</div>
+  {% endif %}
+</section>
+{% endfor %}
+
+{% if square_orders %}
+<section class="card" style="margin-top: 18px;">
+  <h2>Square POS — recent orders <span class="muted" style="font-weight: 400; font-size: 13px;">(live MCP)</span></h2>
+  <table class="t">
+    <thead><tr><th>Order id</th><th>Status</th><th>Source</th><th>Customer</th><th>Items</th><th>Total</th></tr></thead>
+    <tbody>
+    {% for o in square_orders[:25] %}
+      <tr>
+        <td><code>{{ o.id or o.orderId or "—" }}</code></td>
+        <td><span class="badge {{ (o.status or '').lower() }}">{{ o.status or "—" }}</span></td>
+        <td>{{ o.source or o.channel or "—" }}</td>
+        <td>{{ o.customerName or o.customer_name or "—" }}</td>
+        <td>
+          {% set order_items = o.get('items') or o.get('line_items') or [] %}
+          {% if order_items %}{{ order_items|length }} item(s){% else %}—{% endif %}
+        </td>
+        <td>${{ "%.2f"|format(((o.totalUsd or o.total_usd or o.total_amount or 0) | float)) }}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</section>
+{% endif %}
+
+<script>
+  // Smooth scroll + active tab tracking
+  (function () {
+    const links = document.querySelectorAll('.tab-link');
+    function activate(b) {
+      for (const a of links) a.classList.toggle('active', a.dataset.bucket === b);
+    }
+    if (links.length) activate(links[0].dataset.bucket);
+    for (const a of links) {
+      a.addEventListener('click', () => activate(a.dataset.bucket));
+    }
+  })();
+</script>
+
+{% endblock %}

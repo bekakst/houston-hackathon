@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{ page_title or "HappyCake — Admin" }}</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="stylesheet" href="/static/brand.css">
+<link rel="stylesheet" href="/static/admin.css">
+<link rel="icon" type="image/png" href="/static/logo/happy-cake-logo-1024.png">
+</head>
+<body class="admin-body">
+
+<aside class="admin-sidebar">
+  <a class="admin-brand" href="/admin/">
+    <img src="/static/logo/happy-cake-logo-1024.png" alt="HappyCake" width="32" height="32">
+    <div>
+      <strong>HappyCake</strong>
+      <span>Admin OS</span>
+    </div>
+  </a>
+  <nav class="admin-nav">
+    <a href="/admin/"           data-route="home">Overview</a>
+    <a href="/admin/orders"     data-route="orders">Orders</a>
+    <a href="/admin/decisions"  data-route="decisions">Pending decisions</a>
+    <a href="/admin/kitchen"    data-route="kitchen">Kitchen</a>
+    <a href="/admin/inventory"  data-route="inventory">Inventory</a>
+    <a href="/admin/sales"      data-route="sales">Sales</a>
+    <a href="/admin/marketing"  data-route="marketing">Marketing</a>
+    <a href="/admin/audit"      data-route="audit">Audit log</a>
+  </nav>
+  <div class="admin-foot">
+    <a href="/" class="admin-link">← Back to storefront</a>
+    <p class="admin-tip">Owner approves via <strong>Telegram</strong>.<br>This page is read-only evidence.</p>
+  </div>
+</aside>
+
+<main class="admin-main">
+  <header class="admin-topbar">
+    <h1>{% block title %}{{ page_title or "Admin" }}{% endblock %}</h1>
+    <div class="admin-meta">
+      {% block meta %}{% endblock %}
+    </div>
+  </header>
+
+  <div class="admin-content">
+    {% block content %}{% endblock %}
+  </div>
+</main>
+
+<script>
+  // Highlight current sidebar entry.
+  (function () {
+    const path = location.pathname;
+    const links = document.querySelectorAll('.admin-nav a');
+    let best = null;
+    for (const a of links) {
+      const href = a.getAttribute('href');
+      if (path === href) { best = a; break; }
+      if (href !== '/admin/' && path.startsWith(href)) best = a;
+    }
+    if (!best && path === '/admin/') best = links[0];
+    if (best) best.classList.add('active');
+  })();
+</script>
+</body>
+</html>

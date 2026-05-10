@@ -1,0 +1,73 @@
+{% extends "admin/_base.html" %}
+{% block title %}Kitchen{% endblock %}
+{% block meta %}
+  {% if mcp_configured %}<span>MCP live</span>{% else %}<span class="muted">MCP token missing</span>{% endif %}
+{% endblock %}
+
+{% block content %}
+
+{% if not mcp_configured %}
+<section class="banner warn">
+  <strong>MCP not configured.</strong>
+  Set <code>MCP_TEAM_TOKEN</code> in <code>.env</code> to load live kitchen tickets and production capacity from the hackathon sandbox.
+</section>
+{% endif %}
+
+{% if summary %}
+<section class="grid grid-4" style="margin-bottom: 22px;">
+  <div class="kpi">
+    <span class="label">Total tickets</span>
+    <span class="num">{{ summary.tickets or 0 }}</span>
+    <span class="sub">across all statuses</span>
+  </div>
+  <div class="kpi">
+    <span class="label">Capacity</span>
+    <span class="num">{{ summary.dailyCapacityMinutes or 0 }}m</span>
+    <span class="sub">{{ summary.usedPrepMinutes or 0 }}m used · {{ summary.remainingCapacityMinutes or 0 }}m left</span>
+  </div>
+  <div class="kpi">
+    <span class="label">Queued</span>
+    <span class="num">{{ (summary.byStatus or {}).get('queued', 0) }}</span>
+    <span class="sub">awaiting baker accept</span>
+  </div>
+  <div class="kpi">
+    <span class="label">Ready</span>
+    <span class="num">{{ (summary.byStatus or {}).get('ready', 0) }}</span>
+    <span class="sub">ready for pickup</span>
+  </div>
+</section>
+{% endif %}
+
+{% set status_order = ['queued', 'accepted', 'ready', 'rejected'] %}
+{% for s in status_order %}
+{% set list = by_status.get(s) or [] %}
+<section class="card" style="margin-bottom: 18px;">
+  <h2><span class="badge {{ s }} dot">{{ s.title() }}</span> <span class="muted" style="font-weight: 400; font-size: 13px;">{{ list|length }} ticket(s)</span></h2>
+  {% if list %}
+    <table class="t">
+      <thead><tr><th>Ticket</th><th>Order</th><th>Customer</th><th>Items</th><th>Pickup at</th><th>Created</th></tr></thead>
+      <tbody>
+      {% for t in list %}
+        <tr>
+          <td><code>{{ t.id or t.ticketId or '—' }}</code></td>
+          <td><code>{{ t.orderId or t.order_id or '—' }}</code></td>
+          <td>{{ t.customerName or t.customer_name or '—' }}</td>
+          <td>
+            {% set ticket_items = t.get('items') or [] %}
+            {% if ticket_items %}
+              {% for it in ticket_items %}{{ it.name or it.productId }}{% if not loop.last %}, {% endif %}{% endfor %}
+            {% else %}—{% endif %}
+          </td>
+          <td>{{ t.requestedPickupAt or t.requested_pickup_at or '—' }}</td>
+          <td>{{ t.createdAt or t.created_at or '—' }}</td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <div class="empty">No <strong>{{ s }}</strong> tickets right now.</div>
+  {% endif %}
+</section>
+{% endfor %}
+
+{% endblock %}
