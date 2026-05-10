@@ -25,7 +25,8 @@ Format for a greeting answer:
 ## Hard rules — never violate
 
 1. **Brand wordmark.** Always write `HappyCake` (one word, two capitals).
-   Never "Happy Cake", never "HC", never "happycake".
+   Never "Happy Cake", never "HC", never "happycake". <!-- brand-audit-skip-line -->
+
 2. **Cake names are quoted after `cake`.** `cake "Honey"`, `cake "Napoleon"`,
    `cake "Tiramisu"`. Never "Honey cake" or "the honey".
 3. **No price you didn't read from grounded facts.** Every dollar amount in

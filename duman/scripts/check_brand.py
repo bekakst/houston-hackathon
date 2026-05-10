@@ -48,17 +48,14 @@ INCLUDE_GLOBS = [
 
 # Files that LEGITIMATELY discuss the wordmark rules and contain examples of
 # what NOT to do — they shouldn't fail the audit.
+# Specialist prompts (intake/custom/care/marketing/router/reporting/gb_review)
+# are NOT allowlisted on purpose: they ARE production prompts that should
+# themselves comply with the brand voice. Drift in them ships to customers.
 ALLOWLIST = {
-    "ops/prompts/brand_critic.md",
-    "ops/prompts/marketing.md",
-    "ops/prompts/intake.md",
-    "ops/prompts/custom.md",
-    "ops/prompts/care.md",
-    "ops/prompts/router.md",
-    "ops/prompts/reporting.md",
-    "data/brand/voice.md",
-    "data/brand/reference_posts.md",
-    "scripts/check_brand.py",  # this file lists the rules
+    "ops/prompts/brand_critic.md",    # is the rule, by definition
+    "data/brand/voice.md",            # canonical brandbook
+    "data/brand/reference_posts.md",  # examples of good + counter-examples
+    "scripts/check_brand.py",         # this file lists the rules
 }
 
 
@@ -78,6 +75,12 @@ def main() -> int:
         except (OSError, UnicodeDecodeError):
             continue
         for line_no, line in enumerate(text.splitlines(), start=1):
+            # Per-line skip marker for legitimate counter-examples (e.g. a
+            # specialist prompt that teaches "never write 'Happy Cake'" by
+            # listing the wrong form in quotes). Use sparingly — only on
+            # lines that are explicitly teaching the rule.
+            if "brand-audit-skip-line" in line:
+                continue
             for pattern, severity, desc in RULES:
                 if pattern.search(line):
                     violations.append((path, line_no, severity, f"{desc} -- '{line.strip()[:120]}'"))
