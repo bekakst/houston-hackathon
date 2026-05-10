@@ -19,3 +19,4 @@ dist/
 judge/
 .coverage
 htmlcov/
+.claude/settings.local.json
