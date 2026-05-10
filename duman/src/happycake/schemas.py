@@ -24,6 +24,7 @@ class Channel(str, Enum):
     instagram = "instagram"
     telegram = "telegram"
     walk_in = "walk-in"
+    google_business = "google_business"
 
 
 class Intent(str, Enum):

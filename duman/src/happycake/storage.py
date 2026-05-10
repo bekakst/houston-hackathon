@@ -162,6 +162,20 @@ def decision_list_pending(kind: str | None = None, limit: int = 25) -> list[dict
     return out
 
 
+def decision_customer_ids(kind: str, statuses: tuple[str, ...] = ("pending", "approved")) -> set[str]:
+    """Return customer_ids for decisions of `kind` in any of `statuses`.
+
+    Used by the GB review pipeline to dedupe across both pending and
+    already-approved review replies.
+    """
+    placeholders = ",".join("?" * len(statuses))
+    sql = f"SELECT customer_id FROM decisions WHERE kind = ? AND status IN ({placeholders})"
+    params: list = [kind, *statuses]
+    with connect() as conn:
+        rows = conn.execute(sql, params).fetchall()
+    return {r["customer_id"] for r in rows if r["customer_id"]}
+
+
 def decision_set_status(decision_id: str, status: str,
                         rejection_reason: str | None = None) -> None:
     with connect() as conn:

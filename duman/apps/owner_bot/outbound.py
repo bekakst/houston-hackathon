@@ -63,6 +63,15 @@ async def send_to_customer(*, channel: str, customer_id: str, text: str,
             # response — there's no separate outbound. We log and call it done.
             result["ok"] = True
             result["note"] = "web reply already returned via assistant API"
+        elif channel == "google_business":
+            # customer_id holds the reviewId for gb_review decisions.
+            await h.call_tool(
+                "gb_simulate_reply",
+                {"reviewId": customer_id, "reply": text},
+            )
+            result["ok"] = True
+            result["surface"] = "gb_review"
+            result["review_id"] = customer_id
         else:
             result["ok"] = False
             result["error"] = f"unknown channel: {channel}"
