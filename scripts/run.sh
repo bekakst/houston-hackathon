@@ -3,7 +3,14 @@
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
-source .venv/Scripts/activate 2>/dev/null || source .venv/bin/activate
+if [ -f .venv/Scripts/activate ]; then
+  source .venv/Scripts/activate
+elif [ -f .venv/bin/activate ]; then
+  source .venv/bin/activate
+else
+  echo ".venv activation script not found. Run: python3 -m venv .venv && .venv/bin/python -m pip install -e \".[dev]\""
+  exit 1
+fi
 
 if [ ! -f .env ]; then
   echo ".env missing. Run: cp .env.example .env"
