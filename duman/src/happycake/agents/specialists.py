@@ -72,6 +72,36 @@ async def _run_specialist(prompt_name: str, intent: Intent,
     return _to_reply(result.parsed, intent=intent)
 
 
+def _ensure_spec_from_grounding(reply: Reply, evidence: dict, *,
+                                key: str = "intake") -> Reply:
+    """Safety net: when the LLM sets needs_owner_approval but forgets the
+    draft_cake_spec, synthesise one from the grounded heuristic detection so
+    the POS + kitchen chain has something to work with.
+
+    The synthesised spec is intentionally minimal — base_cake_slug,
+    size_label, and fulfillment. The downstream fulfillment helper only
+    requires the first two; everything else is best-effort.
+    """
+    if not reply.needs_owner_approval or reply.draft_cake_spec is not None:
+        return reply
+    detected = ((evidence or {}).get(key) or {}).get("detected") or {}
+    slug = detected.get("cake_slug")
+    size = detected.get("size_label")
+    if not (slug and size):
+        return reply
+    try:
+        reply.draft_cake_spec = CakeSpec(
+            base_cake_slug=slug,
+            size_label=size,
+            fulfillment=detected.get("fulfillment") or "pickup",
+        )
+        log.info("synthesized draft_cake_spec from grounding: %s/%s/%s",
+                 slug, size, detected.get("fulfillment") or "pickup")
+    except Exception as exc:  # noqa: BLE001
+        log.warning("draft_cake_spec synth failed: %s", exc)
+    return reply
+
+
 async def run_intake(text: str, *, history: list[dict] | None = None) -> Reply:
     evidence = ground_for_intent("intake", text)
     envelope = {
@@ -79,7 +109,8 @@ async def run_intake(text: str, *, history: list[dict] | None = None) -> Reply:
         "thread_history": (history or [])[-6:],
         "evidence": evidence,
     }
-    return await _run_specialist("intake", Intent.intake, envelope)
+    reply = await _run_specialist("intake", Intent.intake, envelope)
+    return _ensure_spec_from_grounding(reply, evidence, key="intake")
 
 
 async def run_custom(text: str, *, history: list[dict] | None = None,
@@ -91,7 +122,8 @@ async def run_custom(text: str, *, history: list[dict] | None = None,
         "cake_spec_so_far": partial_spec or {},
         "evidence": evidence,
     }
-    return await _run_specialist("custom", Intent.custom, envelope)
+    reply = await _run_specialist("custom", Intent.custom, envelope)
+    return _ensure_spec_from_grounding(reply, evidence, key="custom")
 
 
 async def run_care(text: str, *, history: list[dict] | None = None,

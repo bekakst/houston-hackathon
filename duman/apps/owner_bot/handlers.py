@@ -22,9 +22,13 @@ from telegram.ext import (
 )
 
 from apps.owner_bot.cards import (
+    KITCHEN_REJECT_REASONS,
     REJECT_REASONS,
     approval_keyboard,
     build_card_text,
+    build_kitchen_card,
+    kitchen_keyboard,
+    kitchen_reject_reason_keyboard,
     main_menu_keyboard,
     reject_reason_keyboard,
     report_period_keyboard,
@@ -33,6 +37,7 @@ from apps.owner_bot.cards import (
 from apps.owner_bot.outbound import send_to_customer
 from happycake.mcp import orders as orders_mcp
 from happycake.mcp.fulfillment import fulfill_approved
+from happycake.mcp.hosted import MCPError, hosted_mcp
 from happycake.mcp.marketing_loop import launch_marketing_plan, plan_and_queue
 from happycake.settings import settings
 from happycake.storage import (
@@ -125,6 +130,8 @@ async def cmd_help(update: Update, _ctx: ContextTypes.DEFAULT_TYPE) -> None:
         "/status `<order_id>` — quick lookup\n"
         "/replay `<thread_id>` — see the agent's reasoning trace\n"
         "/audit — last 20 audit events\n"
+        "/kitchen — open kitchen tickets (accept · mark ready · reject)\n"
+        "/kitchen\\_summary — production capacity + ticket-status counts\n"
         "/whoami — your chat id (for setup)\n\n"
         "Every approval is a tap. Reject reasons are buttons — never typing."
     )
@@ -270,6 +277,66 @@ async def cmd_replay(update: Update, ctx: ContextTypes.DEFAULT_TYPE) -> None:
     await update.message.reply_text("\n".join(lines), parse_mode=ParseMode.MARKDOWN)
 
 
+async def cmd_kitchen(update: Update, _ctx: ContextTypes.DEFAULT_TYPE) -> None:
+    if not _is_owner(update):
+        await _reject_non_owner(update)
+        return
+    h = hosted_mcp()
+    try:
+        result = await h.call_tool("kitchen_list_tickets")
+    except MCPError as exc:
+        await update.message.reply_text(f"⚠ kitchen_list_tickets failed: {exc}")
+        return
+    tickets = result if isinstance(result, list) else (result or {}).get("tickets") or []
+    open_tickets = [t for t in tickets
+                    if (t.get("status") or "").lower() in ("queued", "accepted")]
+    if not open_tickets:
+        await update.message.reply_text(
+            "No queued or accepted kitchen tickets right now. Use "
+            "/kitchen_summary for the full state."
+        )
+        return
+    open_tickets.sort(key=lambda t: t.get("createdAt", ""), reverse=True)
+    await update.message.reply_text(
+        f"🎂 {len(open_tickets)} open kitchen ticket(s). Newest first:"
+    )
+    for t in open_tickets[:8]:
+        await update.message.reply_text(
+            build_kitchen_card(t),
+            reply_markup=kitchen_keyboard(t.get("id", "?"), t.get("status", "?")),
+        )
+
+
+async def cmd_kitchen_summary(update: Update, _ctx: ContextTypes.DEFAULT_TYPE) -> None:
+    if not _is_owner(update):
+        await _reject_non_owner(update)
+        return
+    h = hosted_mcp()
+    try:
+        s = await h.call_tool("kitchen_get_production_summary") or {}
+    except MCPError as exc:
+        await update.message.reply_text(f"⚠ kitchen_get_production_summary failed: {exc}")
+        return
+    by_status = s.get("byStatus") or {}
+    lines = [
+        "🍰 *Kitchen production summary*",
+        "",
+        f"Tickets: {s.get('tickets', 0)} total",
+        f"  · queued:    {by_status.get('queued', 0)}",
+        f"  · accepted:  {by_status.get('accepted', 0)}",
+        f"  · ready:     {by_status.get('ready', 0)}",
+        f"  · rejected:  {by_status.get('rejected', 0)}",
+        "",
+        f"Daily prep capacity: {s.get('dailyCapacityMinutes', 0)} min",
+        f"Used:                {s.get('usedPrepMinutes', 0)} min",
+        f"Remaining:           {s.get('remainingCapacityMinutes', 0)} min",
+        "",
+        ("⚠ Over capacity — reject incoming"
+         if s.get('overCapacity') else "✅ Capacity available"),
+    ]
+    await update.message.reply_text("\n".join(lines), parse_mode=ParseMode.MARKDOWN)
+
+
 async def cmd_audit(update: Update, _ctx: ContextTypes.DEFAULT_TYPE) -> None:
     if not _is_owner(update):
         await _reject_non_owner(update)
@@ -318,6 +385,10 @@ async def on_callback(update: Update, _ctx: ContextTypes.DEFAULT_TYPE) -> None:
             f"Reporting for period `{arg1}` — coming via /reports flow.",
             parse_mode=ParseMode.MARKDOWN,
         )
+        return
+
+    if action in ("kit_accept", "kit_ready", "kit_reject", "kit_rreason"):
+        await _handle_kitchen_action(q, action, arg1, arg2)
         return
 
     decision_id = arg1
@@ -440,6 +511,75 @@ async def _handle_approve(q, decision: dict) -> None:
         )
 
 
+async def _handle_kitchen_action(q, action: str, ticket_id: str, arg2: str = "") -> None:
+    """Drive the kitchen lifecycle from inline-keyboard taps."""
+    h = hosted_mcp()
+    if action == "kit_accept":
+        try:
+            await h.call_tool("kitchen_accept_ticket", {"ticketId": ticket_id})
+        except MCPError as exc:
+            await q.message.reply_text(f"⚠ accept failed for {ticket_id}: {exc}")
+            return
+        audit_write(
+            event_id=f"kit_acc_{ticket_id}",
+            kind="kitchen_ticket_accepted",
+            payload={"ticket_id": ticket_id, "by": "owner"},
+        )
+        await q.edit_message_reply_markup(reply_markup=kitchen_keyboard(ticket_id, "accepted"))
+        await q.message.reply_text(f"✅ Ticket `{ticket_id}` accepted.",
+                                    parse_mode=ParseMode.MARKDOWN)
+        return
+
+    if action == "kit_ready":
+        try:
+            await h.call_tool(
+                "kitchen_mark_ready",
+                {"ticketId": ticket_id,
+                 "pickupNote": "Ready on counter — owner-marked from Telegram."},
+            )
+        except MCPError as exc:
+            await q.message.reply_text(f"⚠ mark-ready failed for {ticket_id}: {exc}")
+            return
+        audit_write(
+            event_id=f"kit_rdy_{ticket_id}",
+            kind="kitchen_ticket_ready",
+            payload={"ticket_id": ticket_id, "by": "owner"},
+        )
+        await q.edit_message_reply_markup(reply_markup=kitchen_keyboard(ticket_id, "ready"))
+        await q.message.reply_text(f"🔥 Ticket `{ticket_id}` marked ready.",
+                                    parse_mode=ParseMode.MARKDOWN)
+        return
+
+    if action == "kit_reject":
+        await q.edit_message_reply_markup(
+            reply_markup=kitchen_reject_reason_keyboard(ticket_id),
+        )
+        return
+
+    if action == "kit_rreason":
+        reason_code = arg2 or "other"
+        label = dict(KITCHEN_REJECT_REASONS).get(reason_code, reason_code)
+        try:
+            await h.call_tool(
+                "kitchen_reject_ticket",
+                {"ticketId": ticket_id, "reason": label},
+            )
+        except MCPError as exc:
+            await q.message.reply_text(f"⚠ reject failed for {ticket_id}: {exc}")
+            return
+        audit_write(
+            event_id=f"kit_rej_{ticket_id}",
+            kind="kitchen_ticket_rejected",
+            payload={"ticket_id": ticket_id, "reason_code": reason_code,
+                     "reason_label": label},
+        )
+        await q.edit_message_reply_markup(reply_markup=kitchen_keyboard(ticket_id, "rejected"))
+        await q.message.reply_text(
+            f"❌ Ticket `{ticket_id}` rejected — *{label}*.",
+            parse_mode=ParseMode.MARKDOWN,
+        )
+
+
 async def _handle_reject_with_reason(q, decision: dict, *, reason_code: str) -> None:
     payload = decision["payload"]
     decision_id = payload["decision_id"]
@@ -479,6 +619,8 @@ def register_handlers(app: Application) -> None:
     app.add_handler(CommandHandler("status", cmd_status))
     app.add_handler(CommandHandler("replay", cmd_replay))
     app.add_handler(CommandHandler("audit", cmd_audit))
+    app.add_handler(CommandHandler("kitchen", cmd_kitchen))
+    app.add_handler(CommandHandler("kitchen_summary", cmd_kitchen_summary))
     app.add_handler(CallbackQueryHandler(on_callback))
     # Catch-all for free-text the owner sends — gentle nudge.
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, _on_text))

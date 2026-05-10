@@ -19,6 +19,15 @@ REJECT_REASONS: list[tuple[str, str]] = [
 ]
 
 
+KITCHEN_REJECT_REASONS: list[tuple[str, str]] = [
+    ("capacity",   "Over capacity"),
+    ("stock",      "Out of stock"),
+    ("equipment",  "Equipment issue"),
+    ("staff",      "Staffing"),
+    ("other",      "Other"),
+]
+
+
 def approval_keyboard(decision_id: str) -> InlineKeyboardMarkup:
     """The 2x3 grid the owner sees on every approval card."""
     return InlineKeyboardMarkup([
@@ -76,6 +85,56 @@ def sent_keyboard(when_iso: str) -> InlineKeyboardMarkup:
     ]])
 
 
+def kitchen_keyboard(ticket_id: str, status: str) -> InlineKeyboardMarkup:
+    """Build the keyboard for a kitchen ticket card based on its status."""
+    s = (status or "").lower()
+    rows: list[list[InlineKeyboardButton]] = []
+    if s == "queued":
+        rows.append([
+            InlineKeyboardButton("✅ Accept", callback_data=f"kit_accept:{ticket_id}"),
+            InlineKeyboardButton("🔥 Mark ready", callback_data=f"kit_ready:{ticket_id}"),
+            InlineKeyboardButton("❌ Reject", callback_data=f"kit_reject:{ticket_id}"),
+        ])
+    elif s == "accepted":
+        rows.append([
+            InlineKeyboardButton("🔥 Mark ready", callback_data=f"kit_ready:{ticket_id}"),
+            InlineKeyboardButton("❌ Reject", callback_data=f"kit_reject:{ticket_id}"),
+        ])
+    else:
+        rows.append([InlineKeyboardButton(f"({status})", callback_data="noop")])
+    return InlineKeyboardMarkup(rows)
+
+
+def kitchen_reject_reason_keyboard(ticket_id: str) -> InlineKeyboardMarkup:
+    return InlineKeyboardMarkup([
+        [InlineKeyboardButton(label, callback_data=f"kit_rreason:{ticket_id}:{code}")]
+        for code, label in KITCHEN_REJECT_REASONS
+    ])
+
+
+def build_kitchen_card(ticket: dict) -> str:
+    items = ticket.get("items") or []
+    item_str = ", ".join(
+        f"{i.get('quantity',1)}× {i.get('productId') or i.get('name','?')}"
+        for i in items
+    ) or "(no items)"
+    eta = (ticket.get("estimatedReadyAt") or "")[:19].replace("T", " ")
+    prep = ticket.get("estimatedPrepMinutes")
+    lines = [
+        f"🎂 Ticket {ticket.get('id', '?')} — {ticket.get('status', '?').upper()}",
+        f"Order: {ticket.get('orderId', '?')}",
+        f"Customer: {ticket.get('customerName', '?')}",
+        f"Items: {item_str}",
+    ]
+    if prep is not None:
+        lines.append(f"Prep: {prep} min")
+    if eta:
+        lines.append(f"ETA: {eta} UTC")
+    if ticket.get("rejectionReason"):
+        lines.append(f"Rejection reason: {ticket['rejectionReason']}")
+    return "\n".join(lines)
+
+
 def build_card_text(payload: dict) -> str:
     """Pretty-print the OwnerDecision payload as a card body.
 
@@ -120,4 +179,8 @@ __all__ = [
     "sent_keyboard",
     "build_card_text",
     "REJECT_REASONS",
+    "KITCHEN_REJECT_REASONS",
+    "kitchen_keyboard",
+    "kitchen_reject_reason_keyboard",
+    "build_kitchen_card",
 ]
